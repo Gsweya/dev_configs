@@ -1,4 +1,4 @@
-# 🌸 Sakura Night — a rose + mint + violet Ghostty setup (light & fast)
+# 👻 Neon Night — a rose + mint + violet Ghostty setup (light & fast)
 
 # ── ✒️ Font ──────────────────────────────────────────
 font-family = Lilex
@@ -44,7 +44,7 @@ background-opacity = 0.93
 background-blur = 12
 window-decoration = auto
 window-theme = auto
-title = "🌸 Ghostty"
+title = "👻 Ghostty"
 window-padding-x = 16
 window-padding-y = 12
 window-padding-balance = true
