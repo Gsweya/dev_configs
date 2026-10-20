@@ -1,6 +1,6 @@
-# 👾 Kronikus prompt — a lightweight bash prompt (pure bash, no extra tools)
+# 🥽 Kronikus prompt — a lightweight bash prompt (pure bash, no extra tools)
 #
-#   ╭─ 👾 Kronikus  in 📂 ~/code/app  on ⎇ main
+#   ╭─ 🥽 Kronikus  in 📂 ~/code/app  on ⎇ main
 #   ╰─❯ npm test
 #   ⠹ …                                   (quick spinner, only for slow commands)
 #   ✅ npm test · ⏱ 3.4s · 🕒 14:02:11
@@ -8,16 +8,20 @@
 # Source it from ~/.bashrc:  source ~/.config/kronikus/prompt.bash
 # Tweak with env vars set *before* sourcing:
 #   KRONIKUS_NAME    display name           (default: Kronikus)
-#   KRONIKUS_AVATAR  small profile icon     (default: 👾)
+#   KRONIKUS_AVATAR  small profile icon     (default: 🥽)
 #   KRONIKUS_ANIM    1 = spinner on finish  (default: 1)
 #   KRONIKUS_ANIM_MIN  min seconds before the spinner plays (default: 2)
+#   KRONIKUS_PICTURE   picture shown once when a terminal opens (Ghostty/kitty only)
+#   KRONIKUS_GREET   1 = show that greeting (default: 1)
 
 [[ $- == *i* ]] || return
 
 KRONIKUS_NAME=${KRONIKUS_NAME:-Kronikus}
-KRONIKUS_AVATAR=${KRONIKUS_AVATAR:-👾}
+KRONIKUS_AVATAR=${KRONIKUS_AVATAR:-🥽}
 KRONIKUS_ANIM=${KRONIKUS_ANIM:-1}
 KRONIKUS_ANIM_MIN=${KRONIKUS_ANIM_MIN:-2}
+KRONIKUS_PICTURE=${KRONIKUS_PICTURE:-$HOME/.config/kronikus/avatar.png}
+KRONIKUS_GREET=${KRONIKUS_GREET:-1}
 
 __k_ready=
 __k_start=
@@ -30,7 +34,7 @@ __k_branch() {
     while [[ -n $dir ]]; do
         if [[ -f $dir/.git/HEAD ]]; then
             read -r head < "$dir/.git/HEAD"
-            [[ $head == ref:* ]] && printf '%s' "${head##*/}" || printf '%.7s' "$head"
+            [[ $head == ref:* ]] && printf '%s' "${head#ref: refs/heads/}" || printf '%.7s' "$head"
             return
         fi
         dir=${dir%/*}
@@ -85,6 +89,26 @@ __k_precmd() {
     PS1+="\n\[\e[35m\]╰─\[\e[${arrow}m\]❯\[\e[0m\] "
     __k_ready=1
 }
+
+# Tiny round picture + name, once per new terminal (kitty graphics protocol, 4×2 cells).
+__k_greet() {
+    [[ $KRONIKUS_GREET == 1 ]] || return
+    if [[ ($TERM_PROGRAM == ghostty || $TERM == xterm-kitty) && -f $KRONIKUS_PICTURE ]]; then
+        local data chunk ctl='f=100,a=T,c=4,r=2,C=1,q=2,'
+        data=$(base64 -w0 "$KRONIKUS_PICTURE")
+        while [[ -n $data ]]; do
+            chunk=${data:0:4096} data=${data:4096}
+            printf '\e_G%sm=%d;%s\e\\' "$ctl" "$([[ -n $data ]] && echo 1 || echo 0)" "$chunk"
+            ctl=
+        done
+        printf '     '
+    else
+        printf '%s ' "$KRONIKUS_AVATAR"
+    fi
+    printf '\e[1;35m%s\e[0m \e[2mis back\e[0m\n' "$KRONIKUS_NAME"
+    printf "     \e[2m%(%A %d %b · %H:%M)T\e[0m\n" -1
+}
+__k_greet
 
 trap '__k_preexec' DEBUG
 # Array form (bash 5.1+) so __k_precmd runs after every other hook (e.g. Fedora's systemd one).
