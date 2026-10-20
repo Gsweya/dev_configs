@@ -1,0 +1,65 @@
+# 🌸 Sakura Night — a rose + mint + violet Ghostty setup (light & fast)
+
+# ── ✒️ Font ──────────────────────────────────────────
+font-family = Lilex
+font-size = 13
+font-style = "Medium"
+font-thicken = true
+font-feature = +calt
+font-feature = +liga
+
+# ── 🎨 Colors ────────────────────────────────────────
+background = #1a1b26
+foreground = #e6dfef
+selection-background = #3b2f4f
+selection-foreground = #ffffff
+cursor-color = #ff8fb8
+cursor-text = #1a1b26
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1f1d2e
+palette = 1=#ff6b8b
+palette = 2=#7ee8c0
+palette = 3=#ffd28a
+palette = 4=#8ab4ff
+palette = 5=#c79bff
+palette = 6=#7fe3f0
+palette = 7=#d7cfe6
+palette = 8=#4a4560
+palette = 9=#ff8fa8
+palette = 10=#a6f5d8
+palette = 11=#ffe0a8
+palette = 12=#a8c8ff
+palette = 13=#dbb8ff
+palette = 14=#a8f0f8
+palette = 15=#f5f0ff
+
+# ── ✨ Cursor ────────────────────────────────────────
+cursor-style = bar
+cursor-style-blink = true
+adjust-cursor-thickness = 3
+
+# ── 🪟 Window ────────────────────────────────────────
+background-opacity = 0.93
+background-blur = 12
+window-decoration = auto
+window-theme = auto
+title = "🌸 Ghostty"
+window-padding-x = 16
+window-padding-y = 12
+window-padding-balance = true
+window-padding-color = background
+
+# ── 🐚 Shell ─────────────────────────────────────────
+shell-integration = detect
+shell-integration-features = title
+scrollback-limit = 12000
+
+# ── ⚡ Quality of life ───────────────────────────────
+mouse-hide-while-typing = true
+copy-on-select = true
+confirm-close-surface = false
+resize-overlay = never
+gtk-single-instance = true
+link-url = true
+link-previews = false
