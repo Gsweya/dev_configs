@@ -68,7 +68,7 @@ Then open a new terminal.
 > With ImageMagick you can make a round one from any photo:
 >
 > ```sh
-> magick me.jpg -gravity center -crop 1:1 -resize 96x96 \
+> magick me.jpg -gravity center -crop 1:1 +repage -resize 96x96 \
 >   \( -size 96x96 xc:black -fill white -draw "circle 47.5,47.5 47.5,1" \) \
 >   -alpha off -compose CopyOpacity -composite ~/.config/kronikus/avatar.png
 > ```
