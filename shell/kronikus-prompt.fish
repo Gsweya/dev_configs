@@ -5,11 +5,20 @@
 #   ✅ npm test · ⏱ 3.4s · 🕒 14:02:11
 #
 # Source it from ~/.config/fish/config.fish:  source ~/.config/kronikus/prompt.fish
-# Same settings as the bash version (set them before sourcing):
+# Same settings as the bash version (ksettings, or set them before sourcing):
 #   KRONIKUS_NAME, KRONIKUS_AVATAR, KRONIKUS_ANIM, KRONIKUS_ANIM_MIN,
 #   KRONIKUS_PICTURE, KRONIKUS_GREET, KRONIKUS_TIPS, KRONIKUS_STARSHIP
 
 status is-interactive; or return
+
+# Settings saved by ksettings (KRONIKUS_*=value). A variable already set above still wins.
+set -l __k_settings (set -q XDG_CONFIG_HOME; and echo $XDG_CONFIG_HOME; or echo ~/.config)/kronikus/settings
+if test -f $__k_settings
+    for line in (string match -r '^KRONIKUS_\w+=.*' <$__k_settings)
+        set -l kv (string split -m1 = -- $line)
+        set -q $kv[1]; or set -g $kv[1] $kv[2]
+    end
+end
 
 set -q KRONIKUS_NAME; or set -g KRONIKUS_NAME Kronikus
 set -q KRONIKUS_AVATAR; or set -g KRONIKUS_AVATAR 🥽

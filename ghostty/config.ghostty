@@ -14,6 +14,8 @@ font-feature = +liga
 # writes theme.ghostty next to this file, which overrides the line below.
 theme = light:Neon Day,dark:Neon Night
 config-file = ?theme.ghostty
+# ⚙ ksettings writes see-through (background-opacity) here, overriding the line below.
+config-file = ?kronikus.ghostty
 
 # ── ✨ Cursor ────────────────────────────────────────
 cursor-style = bar

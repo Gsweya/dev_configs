@@ -18,6 +18,9 @@ tips=(
     'Right-click a window in the top bar to rename, move or close it'
     'Click the 👻 session name in the top bar to switch sessions'
     'Click ✎ next to the session name to rename the session'
+    'Click your avatar in the top bar (or Ctrl+b S) for ⚙ settings'
+    'ksettings: avatar, name, greeting, tips, see-through and bar position'
+    'Window too see-through? ⚙ settings → See-through → 100% makes it solid'
     'In gterminal, r renames a session, saved ones too'
     'Click ❓ in the top bar (or Ctrl+b ?) for all shortcuts'
     'Click 🎨 in the top bar (or Ctrl+b T) to try other themes live'
@@ -72,8 +75,8 @@ tips=(
     'git diff --staged shows what the next commit will contain'
     # 🥽 Kronikus
     'The prompt arrow turns red when the last command failed'
-    'KRONIKUS_ANIM=0 turns off the finish spinner'
-    'KRONIKUS_TIPS=0 hides the tip when a terminal opens'
+    'The finish spinner can be turned off in ⚙ settings (ksettings)'
+    'Tips like this one can be turned off in ⚙ settings (ksettings)'
 )
 
 state=${XDG_STATE_HOME:-$HOME/.local/state}/kronikus
@@ -113,7 +116,7 @@ draw() {
     printf '\e[H\e[2J\n  %s❓ help & tips%s\n' "$b$m" "$r"
 
     title '🖱️  TOP BAR' '(tmux)'
-    row '🥽 Kronikus' 'you (KRONIKUS_AVATAR + KRONIKUS_NAME)'
+    row '🥽 Kronikus' 'you: click for ⚙ settings (avatar, name, greeting…)'
     row '👻 session' 'switch, reopen or start sessions (gterminal)'
     row '✎'          'rename the session'
     row '1 🐚 bash'  'click to switch · scroll the wheel to flip through'
@@ -132,6 +135,7 @@ draw() {
     row ','   'rename window'      'd'      'detach (keeps running)'
     row 's'   'sessions'           '['      'scroll, q leaves'
     row '$'   'rename session'     'T'      'theme'
+    row 'S'   'settings'           '?'      'this screen'
 
     title '📋 COPY & PASTE'
     row 'drag'          'copied as soon as you let go'

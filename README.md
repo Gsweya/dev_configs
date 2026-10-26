@@ -6,7 +6,7 @@ Personal configs for the dev tools I use, mainly terminals.
 | --- | --- |
 | `ghostty/` | [Ghostty](https://ghostty.org) terminal config with 👻 Neon themes: 🌙 Night (dark) and ☀️ Day (light), following the desktop |
 | `shell/` | 🥽 Kronikus prompt for bash and fish: avatar, name, folder, git (with starship icons), command timing |
-| `tmux/` | 👻 tmux config (clickable tab bar on top, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker) and `ktour` (hands-on tour) |
+| `tmux/` | 👻 tmux config (clickable tab bar on top, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker), `ktour` (hands-on tour) and `ksettings` (⚙ settings) |
 
 **New here?** Install everything (the sections below), open a new terminal and press `⏎` when it asks
 *"First time here?"*. That starts 🎓 `ktour`, a 5-minute hands-on tour. You can run `ktour` again any time.
@@ -99,7 +99,8 @@ Then open a new terminal.
 
 ### Optional settings
 
-Set these above the `source` line.
+The easy way is ⚙ `ksettings` (see the tmux section): it saves to `~/.config/kronikus/settings`.
+You can also set them yourself above the `source` line; a variable set there wins over the settings file.
 
 bash:
 
@@ -121,7 +122,7 @@ fish: the same names, set like `set -g KRONIKUS_AVATAR 🥽`.
 ```sh
 cp tmux/tmux.conf ~/.tmux.conf
 mkdir -p ~/.local/bin
-cp tmux/gterminal tmux/ktips tmux/ktheme tmux/ktour ~/.local/bin/
+cp tmux/gterminal tmux/ktips tmux/ktheme tmux/ktour tmux/ksettings ~/.local/bin/
 ```
 
 If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
@@ -129,10 +130,11 @@ If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
 ### 🖱️ Clickable top bar
 
 ```
- 🥽 Kronikus ›  👻 work   ✎   ◀   1 🐚 bash   2 📝 nvim   3 🐟 fish    ▶  ＋ ▾     🎨  ❓   📂 app   🕒 14:02 
+ 🥽 Kronikus ›  👻 work  ✎  │ ◀   1 🐚 bash   2 📝 nvim   3 🐟 fish  ▶ │ ＋ ▾      🎨  ❓  │ 📂 app   🕒 14:02 
 ```
 
-On the far left is **you**: the same avatar and name as the greeting (`KRONIKUS_AVATAR`, `KRONIKUS_NAME`). The Kronikus prompt hands them to tmux, so changing them in your shell config changes the bar too (from the next new shell).
+On the far left is **you**: the same avatar and name as the greeting. Click it to open ⚙ settings (below) and change them; the bar updates right away.
+Thin `│` lines split the bar into groups, and ◀ ▶ are solid round buttons so they're easy to spot.
 tmux can't draw pictures in its bar, so it's the emoji avatar here, not the photo. The name hides on windows narrower than 120 columns.
 
 The bar sits at the **top**, like browser tabs, with an empty line under it so it doesn't crowd your terminal.
@@ -142,13 +144,13 @@ Prefer it at the bottom? Change `status-position top` to `bottom` in `~/.tmux.co
 
 | Click | Does |
 | --- | --- |
-| `🥽 Kronikus` | just you, nothing to click |
+| `🥽 Kronikus` | ⚙ settings: avatar, name, picture, greeting, tips, see-through, bar position (also `prefix + S`) |
 | `👻 work` (session name) | opens `gterminal` to switch, reopen or start a session |
 | `✎` | renames the session (also `prefix + $`, or `r` in gterminal) |
 | a window (`1 🐚 bash`) | switches to it. Scroll the wheel over the bar to flip through windows. Right-click any tab for ✎ rename, ◀ ▶ move, ＋ new after, ✕ close |
 | `◀` / `▶` | previous / next terminal (wraps around) |
 | `＋` | new terminal in the current folder |
-| `▾` | menu: 🐚 bash, 🐟 fish, ↔ split side, ↕ split down, 👻 sessions, 🎨 theme, ✎ rename session, 🎓 tour, ❓ help |
+| `▾` | menu: 🐚 bash, 🐟 fish, ↔ split side, ↕ split down, 👻 sessions, 🎨 theme, ⚙ settings, ✎ rename session, 🎓 tour, ❓ help |
 | `🎨` | theme picker (also `prefix + T`) |
 | `❓` | help & tips (also `prefix + ?`) |
 
@@ -208,6 +210,44 @@ Click `🎨`, press `prefix + T` or type `ktheme`:
 - `⏎` keeps it in **auto**: light or dark follows your desktop. `d` / `l` keep only the dark / light side. `esc` puts back what you had
 - Any of Ghostty's 460+ themes works from the command line: `ktheme "Rose Pine"`, `ktheme "light:Nord Light,dark:Nord"`. `ktheme --list` shows all names, and a name Ghostty doesn't know is refused, so the config never breaks
 - Needs Ghostty 1.2+ for the live reload. Older versions: press `Ctrl+Shift+,` after picking
+
+### ⚙ ksettings: settings
+
+Click your avatar in the bar, press `prefix + S`, pick ▾ → ⚙ settings or type `ksettings`:
+
+```
+  ⚙ settings   saved as you go
+
+  👤 PROFILE
+  ❯ Avatar        🥽                               ← → pick · ⏎ type your own
+    Name          Kronikus
+    Picture       ~/.config/kronikus/avatar.png ✓
+
+  👋 GREETING
+    Greeting      ● on
+    Tip           ● on
+    Spinner       ● on
+
+  🎨 LOOK
+    Theme         ☀️ Neon Day  🌙 Neon Night
+    See-through   93%
+    Bar           top
+
+  🎓 HELP
+    Tour
+    Shortcuts
+
+  preview
+    🥽 Kronikus is back
+    ╭─ 🥽 Kronikus in 📂 ~/code/app
+```
+
+- Every change is **saved right away**, and the preview shows the greeting and prompt as you go
+- Avatar: `←` `→` flip through a few emoji, `⏎` types any emoji you like. Name and picture: `⏎` to edit
+- Profile and greeting go to `~/.config/kronikus/settings` (`KRONIKUS_*=value` lines), which the bash and fish prompts read. Avatar and name change in the tmux bar at once; the greeting in new terminals
+- **See-through** sets Ghostty's `background-opacity` (100% = solid) in `~/.config/ghostty/kronikus.ghostty` and reloads Ghostty. Turn it up if windows behind Ghostty show through and clutter the bar
+- **Bar** puts the tmux bar on top or at the bottom (`~/.config/kronikus/tmux.conf`, loaded at the end of the tmux config)
+- **Theme**, **Tour** and **Shortcuts** open ktheme, ktour and ktips
 
 ### 🎓 ktour: hands-on tour
 

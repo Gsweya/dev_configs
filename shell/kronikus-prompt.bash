@@ -6,7 +6,7 @@
 #   ✅ npm test · ⏱ 3.4s · 🕒 14:02:11
 #
 # Source it from ~/.bashrc:  source ~/.config/kronikus/prompt.bash
-# Tweak with env vars set *before* sourcing:
+# Tweak with ksettings (saved in ~/.config/kronikus/settings), or env vars set *before* sourcing:
 #   KRONIKUS_NAME    display name           (default: Kronikus)
 #   KRONIKUS_AVATAR  small profile icon     (default: 🥽)
 #   KRONIKUS_ANIM    1 = spinner on finish  (default: 1)
@@ -19,6 +19,14 @@
 #                      if starship or this file is missing, a plain ⎇ branch is shown
 
 [[ $- == *i* ]] || return
+
+# Settings saved by ksettings (KRONIKUS_*=value). A variable already set above still wins.
+if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/kronikus/settings ]]; then
+    while IFS='=' read -r __k_key __k_val; do
+        [[ $__k_key == KRONIKUS_* && -z ${!__k_key+x} ]] && printf -v "$__k_key" '%s' "$__k_val"
+    done < "${XDG_CONFIG_HOME:-$HOME/.config}/kronikus/settings"
+    unset __k_key __k_val
+fi
 
 KRONIKUS_NAME=${KRONIKUS_NAME:-Kronikus}
 KRONIKUS_AVATAR=${KRONIKUS_AVATAR:-🥽}
