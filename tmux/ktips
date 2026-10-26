@@ -5,16 +5,20 @@
 #   ktips --one    one random tip, never the same twice in a row
 #                  (the Kronikus greeting shows one each time a terminal opens)
 #
-# Help screen keys: n / p next / previous tip · a all tmux keys · q close
+# Help screen keys: n / p next / previous tip · t take the tour · a all tmux keys · q close
 # Inside tmux: click ❓ in the bottom bar or press prefix + ?.
 
 tips=(
     # 🖱️ bottom bar
     'Click ＋ in the bottom bar for a new terminal in this folder'
+    'Click ◀ ▶ in the bottom bar to go to the previous / next terminal'
+    'New here or rusty? ktour is a hands-on tour, chapter by chapter'
     'Click ▾ in the bottom bar to open bash, fish or a split'
     'Scroll the mouse wheel over the bottom bar to flip through windows'
     'Right-click a window in the bottom bar to rename, move or close it'
     'Click the 👻 session name in the bottom bar to switch sessions'
+    'Click ✎ next to the session name to rename the session'
+    'In gterminal, r renames a session, saved ones too'
     'Click ❓ in the bottom bar (or Ctrl+b ?) for all shortcuts'
     'Click 🎨 in the bottom bar (or Ctrl+b T) to try other themes live'
     'Themes follow your desktop: light when it is light, dark when it is dark'
@@ -28,7 +32,7 @@ tips=(
     'Ctrl+b [ scrolls back with the keys, q leaves'
     'Ctrl+b Space cycles through split layouts'
     'Ctrl+b ! moves the current split into its own window'
-    'Ctrl+b $ renames the current session'
+    'Ctrl+b $ renames the current session (its saved folder + command come along)'
     'Ctrl+b x closes the current split (it asks first)'
     'Drag the line between two splits with the mouse to resize them'
     'Click a split to focus it, no keys needed'
@@ -110,10 +114,12 @@ draw() {
 
     title '🖱️  BOTTOM BAR' '(tmux)'
     row '👻 session' 'switch, reopen or start sessions (gterminal)'
+    row '✎'          'rename the session'
     row '1 🐚 bash'  'click to switch · scroll the wheel to flip through'
+    row '◀ ▶'        'previous / next terminal'
     row 'right-click' 'a window: rename, move or close it'
     row '＋'         'new terminal in this folder'
-    row '▾'          'bash, fish, split side / down, sessions'
+    row '▾'          'bash, fish, split side / down, sessions, tour'
     row '🎨'         'theme: preview live, light / dark follow the desktop'
     row '❓'         'this screen'
 
@@ -124,7 +130,7 @@ draw() {
     row 'z'   'zoom split'         'x'      'close split'
     row ','   'rename window'      'd'      'detach (keeps running)'
     row 's'   'sessions'           '['      'scroll, q leaves'
-    row 'T'   'theme'              '?'      'this screen'
+    row '$'   'rename session'     'T'      'theme'
 
     title '📋 COPY & PASTE'
     row 'drag'          'copied as soon as you let go'
@@ -135,7 +141,7 @@ draw() {
     title '💡 TIP' "$(( tip + 1 ))/${#tips[@]}"
     printf '    %s%s%s\n\n' "$y" "${tips[tip]//Ctrl+b/$prefix}" "$r"
 
-    printf '  %sn%s %snext tip%s   %sp%s %sprevious%s' "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r"
+    printf '  %sn%s %snext tip%s   %sp%s %sprevious%s   %st%s %stour%s' "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r"
     [[ -n $TMUX ]] && printf '   %sa%s %sall tmux keys%s' "$b" "$r" "$d" "$r"
     printf '   %sq%s %sclose%s' "$b" "$r" "$d" "$r"
 }
@@ -152,6 +158,9 @@ while :; do
     case $key in
         n|' '|$'\e[C'|$'\e[B') tip=$(( (tip + 1) % ${#tips[@]} )) ;;
         p|$'\e[D'|$'\e[A')     tip=$(( (tip - 1 + ${#tips[@]}) % ${#tips[@]} )) ;;
+        t) if [[ -n $TMUX ]]; then tmux new-window -S -n tour "${BASH_SOURCE%/*}/ktour"; exit 0
+           else printf '\e[?25h\e[?1049l'; trap - EXIT; exec "${BASH_SOURCE%/*}/ktour"
+           fi ;;
         a) [[ -n $TMUX ]] && { printf '\e[?25h'; tmux list-keys -N | less; printf '\e[?25l'; } ;;
         q|$'\e'|'') exit 0 ;;
     esac

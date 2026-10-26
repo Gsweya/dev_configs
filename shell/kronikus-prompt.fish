@@ -69,8 +69,12 @@ function __k_postexec --on-event fish_postexec
         printf '\r\e[K'
     end
     printf '%s %s \e[2m· ⏱ %s · 🕒 %s\e[0m\n' $icon $argv[1] $dur (date +%H:%M:%S)
-    test -n "$__k_tmux"; and not string match -q "gterminal*" -- $argv[1]
-    and printf '%s\n%s\n' $PWD (string join '; ' -- (string split \n -- $argv[1])) >$__k_state/$__k_tmux
+    if test -n "$__k_tmux"; and not string match -q "gterminal*" -- $argv[1]
+        # Asked every time: the session may have been renamed since this shell started.
+        set __k_tmux (tmux display -p -t "$TMUX_PANE" '#S' 2>/dev/null)
+        test -n "$__k_tmux"
+        and printf '%s\n%s\n' $PWD (string join '; ' -- (string split \n -- $argv[1])) >$__k_state/$__k_tmux
+    end
 end
 
 function fish_prompt
@@ -122,7 +126,11 @@ function fish_greeting
     end
     printf '\e[1;35m%s\e[0m \e[2mis back\e[0m\n' $KRONIKUS_NAME
     printf '     \e[2m%s\e[0m\n' (date '+%A %d %b · %H:%M')
-    if test "$KRONIKUS_TIPS" = 1; and command -q ktips
+    # First terminal ever: offer the tour (asked once). After that: a tip.
+    set -l state (set -q XDG_STATE_HOME; and echo $XDG_STATE_HOME; or echo ~/.local/state)/kronikus
+    if not test -e $state/welcomed; and command -q ktour
+        ktour --first-run
+    else if test "$KRONIKUS_TIPS" = 1; and command -q ktips
         printf '     '
         ktips --one
     end

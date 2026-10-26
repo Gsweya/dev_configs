@@ -22,11 +22,17 @@
 #    continues it. The Kronikus prompt saves folder + command after every
 #    command run inside tmux.
 #
-# Keys: ↑/↓ or j/k move · enter open · 1-9 open that one · n new · x kill/forget · ? help · q quit
+# Keys: ↑/↓ or j/k move · enter open · 1-9 open that one · n new · r rename · x kill/forget · ? help · q quit
 # Run `gterminal` anywhere, or prefix + s inside tmux.
 
 state=${XDG_STATE_HOME:-$HOME/.local/state}/kronikus/tmux
 mkdir -p "$state"
+
+# tmux runs this when a session is renamed: the saved folder + command go along with it.
+if [[ $1 == --renamed ]]; then
+    [[ -n $2 && $2 != "$3" && -f $state/$2 && ! -e $state/$3 ]] && mv -- "$state/$2" "$state/$3"
+    exit 0
+fi
 
 b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m'
 
@@ -177,8 +183,8 @@ draw() {
     done
 
     at "$rows" 3
-    printf '%s↑↓%s move   %s⏎%s open   %s1-9%s jump   %sn%s new   %sx%s kill   %s?%s help   %sq%s quit%s' \
-        "$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r"
+    printf '%s↑↓%s move   %s⏎%s open   %s1-9%s jump   %sn%s new   %sr%s rename   %sx%s kill   %s?%s help   %sq%s quit%s' \
+        "$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r"
 }
 
 tui_on()  { printf '\e[?1049h\e[?25l'; }
@@ -221,6 +227,25 @@ new_session() {
     go "$name"
 }
 
+# Live sessions are renamed in tmux, saved ones just get their save file renamed.
+rename() {
+    local old=${names[sel]} name rows cols
+    [[ ${kinds[sel]} == new ]] && return
+    read -r rows cols < <(stty size </dev/tty)
+    at $(( rows - 1 )) 3; printf '\e[K\e[?25h✎ %srename%s %s → ' "$b" "$r" "$old"
+    read -r -e -i "$old" name
+    printf '\e[?25l'
+    name=${name//[.:]/_}
+    [[ -z $name || $name == "$old" ]] && return
+    # Don't take the name of another session, live or saved.
+    tmux has-session -t "=$name" 2>/dev/null || [[ -e $state/$name ]] && return
+    if [[ ${kinds[sel]} != saved ]]; then
+        tmux rename-session -t "=$old" -- "$name" || return
+    fi
+    [[ -f $state/$old ]] && mv -- "$state/$old" "$state/$name"
+    load
+}
+
 forget() {
     case ${kinds[sel]} in
         new) return ;;
@@ -245,6 +270,7 @@ while :; do
         [1-9])     (( key <= ${#names[@]} )) && { sel=$(( key - 1 )); open; tui_on; } ;;
         '')        open; tui_on ;;
         n)         new_session; tui_on ;;
+        r)         rename ;;
         x)         forget ;;
         '?')       "${BASH_SOURCE%/*}/ktips"; tui_on ;;
         q|$'\e')   exit 0 ;;

@@ -6,7 +6,10 @@ Personal configs for the dev tools I use, mainly terminals.
 | --- | --- |
 | `ghostty/` | [Ghostty](https://ghostty.org) terminal config with 👻 Neon themes: 🌙 Night (dark) and ☀️ Day (light), following the desktop |
 | `shell/` | 🥽 Kronikus prompt for bash and fish: avatar, name, folder, git (with starship icons), command timing |
-| `tmux/` | 👻 tmux config (clickable bottom bar, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips) and `ktheme` (theme picker) |
+| `tmux/` | 👻 tmux config (clickable bottom bar, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker) and `ktour` (hands-on tour) |
+
+**New here?** Install everything (the sections below), open a new terminal and press `⏎` when it asks
+*"First time here?"*. That starts 🎓 `ktour`, a 5-minute hands-on tour. You can run `ktour` again any time.
 
 ## 👻 Ghostty
 
@@ -45,6 +48,7 @@ What it looks like:
 
 - Greets you with a tiny round profile picture (`shell/kronikus-avatar.png`) when a terminal opens. This needs Ghostty or kitty. Other terminals show the emoji instead
 - 💡 Adds a random tip under the greeting (a different one each time), if `ktips` is installed (see tmux below)
+- 👋 The very first terminal asks *"First time here?"* instead, and `⏎` starts the tour (`ktour`). It asks only once
 - Shows the avatar, name, current folder and git branch
 - Inside a git repo, the branch and status icons come from [starship](https://starship.rs) (`!` modified, `+` staged, `?` untracked, `⇡`/`⇣` ahead/behind, …). It only uses starship for that part. Without starship you get a plain `⎇ main`
 - After each command, prints what ran, ✅ or ❌ with the exit code, how long it took and when it finished
@@ -117,7 +121,7 @@ fish: the same names, set like `set -g KRONIKUS_AVATAR 🥽`.
 ```sh
 cp tmux/tmux.conf ~/.tmux.conf
 mkdir -p ~/.local/bin
-cp tmux/gterminal tmux/ktips tmux/ktheme ~/.local/bin/
+cp tmux/gterminal tmux/ktips tmux/ktheme tmux/ktour ~/.local/bin/
 ```
 
 If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
@@ -125,19 +129,23 @@ If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
 ### 🖱️ Clickable bottom bar
 
 ```
- 👻 work   1 🐚 bash   2 📝 nvim   3 🐟 fish   ＋ ▾             🎨 ❓ │ 📂 app · 🕒 14:02
+ 👻 work  ✎  ◀  1 🐚 bash   2 📝 nvim   3 🐟 fish   ▶  ＋ ▾        🎨 ❓ │ 📂 app · 🕒 14:02
 ```
 
 | Click | Does |
 | --- | --- |
 | `👻 work` (session name) | opens `gterminal` to switch, reopen or start a session |
+| `✎` | renames the session (also `prefix + $`, or `r` in gterminal) |
 | a window (`1 🐚 bash`) | switches to it. Scroll the wheel over the bar to flip through windows, right-click one to rename, move or close it |
+| `◀` / `▶` | previous / next terminal (wraps around) |
 | `＋` | new terminal in the current folder |
-| `▾` | menu: 🐚 bash, 🐟 fish, ↔ split side, ↕ split down, 👻 sessions, 🎨 theme, ❓ help |
+| `▾` | menu: 🐚 bash, 🐟 fish, ↔ split side, ↕ split down, 👻 sessions, 🎨 theme, ✎ rename session, 🎓 tour, ❓ help |
 | `🎨` | theme picker (also `prefix + T`) |
 | `❓` | help & tips (also `prefix + ?`) |
 
-Each window shows an icon for what runs in it (🐚 bash, 🐟 fish, 📝 editor, 🟩 node, 🐍 python, 🌿 git, 🔐 ssh, 🤖 claude, 🔧 anything else).
+Each window shows an icon for what runs in it (🐚 bash, 🐟 fish, 📝 editor, 🟩 node, 🐍 python, 🌿 git, 🔐 ssh, 🤖 claude, 🎓 the tour, 🔧 anything else).
+
+✎ **Renaming keeps your place.** Renaming a session (any way: ✎, `prefix + $`, gterminal `r`) moves its saved folder + last command to the new name, so gterminal never shows a stale 💤 copy under the old one.
 
 ### ❓ ktips: shortcuts + tips
 
@@ -148,7 +156,9 @@ Click `❓`, press `prefix + ?` inside tmux, press `?` in gterminal or type `kti
 
   🖱️  BOTTOM BAR (tmux)
     👻 session      switch, reopen or start sessions (gterminal)
+    ✎               rename the session
     1 🐚 bash       click to switch · scroll the wheel to flip through
+    ◀ ▶             previous / next terminal
     ＋              new terminal in this folder
     ...
   ⌨️  KEYS press Ctrl+b, let go, then:
@@ -159,10 +169,10 @@ Click `❓`, press `prefix + ?` inside tmux, press `?` in gterminal or type `kti
   💡 TIP 16/50
     Drag the line between two splits with the mouse to resize them
 
-  n next tip   p previous   a all tmux keys   q close
+  n next tip   p previous   t tour   a all tmux keys   q close
 ```
 
-- About 50 tips on the bottom bar, tmux, gterminal, Ghostty, bash/fish and git
+- About 60 tips on the bottom bar, tmux, gterminal, Ghostty, bash/fish and git
 - `ktips --one` prints one random tip, never the same twice in a row. The Kronikus greeting uses it, so every new terminal teaches you something
 - If you change the tmux prefix, the help and tips show your prefix instead of `Ctrl+b`
 - To add your own tips, add lines to the `tips=(...)` list at the top of `ktips`
@@ -190,6 +200,30 @@ Click `🎨`, press `prefix + T` or type `ktheme`:
 - Any of Ghostty's 460+ themes works from the command line: `ktheme "Rose Pine"`, `ktheme "light:Nord Light,dark:Nord"`. `ktheme --list` shows all names, and a name Ghostty doesn't know is refused, so the config never breaks
 - Needs Ghostty 1.2+ for the live reload. Older versions: press `Ctrl+Shift+,` after picking
 
+### 🎓 ktour: hands-on tour
+
+Type `ktour`, pick ▾ → 🎓 tour in the bar, or press `t` on the ❓ help screen:
+
+```
+  🎓 tour   ▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱   🪟 Terminals · 1/4
+
+  Click ＋ in the bottom bar to open a new terminal.
+  It opens in the same folder as this one, and you land in it right away.
+
+  Then click the 🎓 tab in the bottom bar to come back here.
+
+  Keys: Ctrl+b then c opens one too.
+
+  ⏳ waiting for you…  ⏎ skips
+
+  ⏎ next   ← back   m chapters   q quit
+```
+
+- **Hands-on**: most steps watch tmux and move on by themselves once you've done the thing (opened a terminal, clicked ◀ ▶, split, zoomed, copied a word, renamed the session, opened gterminal / the theme picker / help). `⏎` skips any step
+- **8 chapters**: 🖱️ the bottom bar, 🪟 terminals, ↔️ splits, 📋 copy & paste, 👻 sessions, 🎨 themes, 🐚 prompt & shell, ❓ help. The menu lets you take the full tour or one chapter, and ticks off ✓ the ones you've done
+- **First run**: the Kronikus greeting asks once, on the very first terminal. Outside tmux, the tour opens a `tour` tmux session for itself
+- Run inside an existing tab, it calls that tab "tour" while it runs and puts the old name back after
+
 ### 👻 gterminal
 
 Type `gterminal` in any terminal (or press `prefix + s` / click the session name inside tmux):
@@ -210,14 +244,14 @@ Type `gterminal` in any terminal (or press `prefix + s` / click the session name
                                    │ 📜 RECENT OUTPUT
                                    │ │ Tests: 12 passed
 
-  ↑↓ move   ⏎ open   1-9 jump   n new   x kill   ? help   q quit
+  ↑↓ move   ⏎ open   1-9 jump   n new   r rename   x kill   ? help   q quit
 ```
 
 - 🟢 / 🔵 **live** sessions (attached / in the background) reopen exactly as you left them
 - 💤 **saved** sessions were closed or are gone after a reboot. Opening one starts it again **in the same folder** and **types the last command** for you, so `Enter` continues it
 - The right panel shows the selected session's folder, last command, windows and what's on screen
 - Saving needs the Kronikus prompt (bash or fish). It writes to `~/.local/state/kronikus/tmux/`
-- Keys: `↑↓` or `j`/`k` move, `⏎` open, `1-9` jump to that row, `n` new session (asks for a name), `x` kill a live session or forget a saved one, `?` help & tips, `q` quit
+- Keys: `↑↓` or `j`/`k` move, `⏎` open, `1-9` jump to that row, `n` new session (asks for a name), `r` rename (live or saved), `x` kill a live session or forget a saved one, `?` help & tips, `q` quit
 - A saved session comes back in your default shell, so a fish command saved from a fish session is retyped in bash if bash is your default
 - Pure bash, no fzf or other tools
 

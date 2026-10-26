@@ -14,6 +14,7 @@
 #   KRONIKUS_PICTURE   picture shown once when a terminal opens (Ghostty/kitty only)
 #   KRONIKUS_GREET   1 = show that greeting (default: 1)
 #   KRONIKUS_TIPS    1 = add a random tip to it, from ktips (default: 1)
+#                    the very first terminal asks "take the tour?" (ktour) instead
 #   KRONIKUS_STARSHIP  starship config for the git part (default: ~/.config/kronikus/starship.toml)
 #                      if starship or this file is missing, a plain ⎇ branch is shown
 
@@ -89,7 +90,11 @@ __k_precmd() {
             printf '\r\e[K'
         fi
         printf "$icon %s \e[2m· ⏱ %s · 🕒 %(%H:%M:%S)T\e[0m\n" "$__k_cmd" "$dur" -1
-        [[ -n $__k_tmux && $__k_cmd != gterminal* ]] && printf '%s\n%s\n' "$PWD" "$__k_cmd" > "$__k_state/$__k_tmux"
+        if [[ -n $__k_tmux && $__k_cmd != gterminal* ]]; then
+            # Asked every time: the session may have been renamed since this shell started.
+            __k_tmux=$(tmux display -p -t "$TMUX_PANE" '#S' 2>/dev/null)
+            [[ -n $__k_tmux ]] && printf '%s\n%s\n' "$PWD" "$__k_cmd" > "$__k_state/$__k_tmux"
+        fi
         __k_start=
     fi
 
@@ -130,7 +135,12 @@ __k_greet() {
     fi
     printf '\e[1;35m%s\e[0m \e[2mis back\e[0m\n' "$KRONIKUS_NAME"
     printf "     \e[2m%(%A %d %b · %H:%M)T\e[0m\n" -1
-    [[ $KRONIKUS_TIPS == 1 ]] && type -P ktips >/dev/null && { printf '     '; ktips --one; }
+    # First terminal ever: offer the tour (asked once). After that: a tip.
+    if [[ ! -e ${XDG_STATE_HOME:-$HOME/.local/state}/kronikus/welcomed ]] && type -P ktour >/dev/null; then
+        ktour --first-run
+    elif [[ $KRONIKUS_TIPS == 1 ]] && type -P ktips >/dev/null; then
+        printf '     '; ktips --one
+    fi
 }
 __k_greet
 

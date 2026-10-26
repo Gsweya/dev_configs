@@ -1,0 +1,342 @@
+#!/usr/bin/env bash
+# 🎓 ktour — a hands-on tour of this terminal (pure bash, no extra tools)
+#
+#   🎓 tour   ▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱   🪟 Terminals · 1/4
+#
+#   Click ＋ in the bottom bar to open a new terminal.
+#   You land in it right away: click the 🎓 tab to come back here.
+#
+#   ⏳ waiting for you…  ⏎ skips
+#
+#   ⏎ next   ← back   m chapters   q quit
+#
+# Most steps watch tmux and move on by themselves once you have done the thing
+# (opened a window, split, copied a word, opened a picker…). The rest are a
+# quick read: ⏎ goes on.
+#
+#   ktour              chapter menu: full tour or one chapter (✓ = done)
+#   ktour --start N    start right away: "all" or a chapter number (1-8)
+#   ktour --first-run  welcome + "take the tour?"; the Kronikus greeting runs it
+#                      once, on the very first terminal
+#
+# It needs tmux for the hands-on parts. Outside tmux it opens a tmux session
+# for the tour. Also on ▾ → 🎓 tour in the bar and t on the ❓ help screen.
+
+state=${XDG_STATE_HOME:-$HOME/.local/state}/kronikus
+mkdir -p "$state"
+b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m' y=$'\e[33m'
+
+if [[ $1 == --first-run ]]; then
+    : > "$state/welcomed"
+    printf '\n     👋 %sFirst time here?%s Take the 5-minute hands-on tour of this terminal.\n' "$b$m" "$r"
+    printf '     %s⏎%s start   %sn%s not now %s(type ktour any time)%s ' "$b" "$r" "$b" "$r" "$d" "$r"
+    IFS= read -rsn1 key </dev/tty
+    printf '\n'
+    [[ -z $key || $key == [yY] ]] && exec "$0" --start all
+    exit 0
+fi
+
+P=Ctrl+b
+if [[ -n $TMUX ]]; then
+    p=$(tmux show -gv prefix 2>/dev/null)
+    [[ -n $p ]] && { p=${p/C-/Ctrl+}; P=${p/M-/Alt+}; }
+fi
+K() { printf '%s%s%s' "$b$c" "$1" "$r"; }  # a key or a button, highlighted
+# Columns for the little tables in the steps (emoji widths would throw spaces off).
+c2=$'\e[19G' c4=$'\e[49G'
+
+chapters=('🖱️  The bottom bar' '🪟 Terminals' '↔️  Splits' '📋 Copy & paste' '👻 Sessions' '🎨 Themes' '🐚 Prompt & shell' '❓ Help')
+
+# Steps: chapter index, check (a function below, or - for "just read it"), text.
+chap=() check=() body=()
+step() { chap+=("$1") check+=("$2") body+=("$3"); }
+
+step 0 - "This is your terminal. The bar at the bottom is clickable:
+
+   $(K '👻 work') $(K ✎)  $(K ◀)  1 🐚 bash  2 🎓 tour  $(K ▶)  $(K ＋) $(K ▾)          $(K 🎨) $(K ❓) │ 📂 app · 🕒 14:02
+
+   $(K '👻 work')${c2}the session: a group of terminals that keeps running
+   $(K ✎)${c2}rename the session
+   $(K '1 🐚 bash')${c2}a terminal (tmux calls it a window), click it to switch
+   $(K '◀ ▶')${c2}previous / next terminal
+   $(K ＋)  $(K ▾)${c2}new terminal here · bash, fish, splits and more
+   $(K 🎨)  $(K ❓)${c2}theme · help
+   📂  🕒${c2}the folder you are in, and the time
+
+The icon on each tab tells what runs in it: 🐚 shell, 📝 editor, 🟩 node, 🐍 python…"
+
+step 1 check_newwin "Click $(K ＋) in the bottom bar to open a new terminal.
+It opens in the same folder as this one, and you land in it right away.
+
+Then click the $(K '🎓') tab in the bottom bar to come back here.
+
+${d}Keys: $P then c opens one too.$r"
+
+step 1 check_arrows "Now click $(K ▶) in the bottom bar to go to the next terminal,
+then $(K ◀) until you are back here.
+
+${d}Scrolling the mouse wheel over the bar flips through them as well.
+Keys: $P then n (next) / p (previous), or $P then the tab's number.$r"
+
+step 1 check_closewin "Close the terminal you opened: click its tab, type ${b}exit$r and press Enter.
+You come back here by yourself.
+
+${d}Right-clicking a tab also has Kill, Rename and Swap Left / Right.$r"
+
+step 1 - "Recap:
+   $(K ＋)${c2}new terminal${c4}$(K '1 🐚 bash')  click a tab to switch
+   $(K '◀ ▶')${c2}previous / next${c4}${b}exit$r  close the one you are in
+   right-click${c2}rename, move, kill${c4}wheel  flip through tabs"
+
+step 2 check_split "Splits put two terminals side by side in one tab.
+Click $(K ▾) in the bottom bar and pick $(K '↔ split side').
+
+${d}Keys: $P then % (side) or \" (down).$r"
+
+step 2 check_zoom "Click a split to type in it, drag the line between them to resize.
+
+Now click into the new split and press $P then z: it fills the whole tab.
+Press $P then z again to put it back.
+
+${d}A zoomed tab shows its split hidden; nothing is closed.$r"
+
+step 2 check_unsplit "Close the extra split: click into it, type ${b}exit$r and press Enter."
+
+step 3 check_copy "Drag the mouse over the word below. When you let go, it is copied:
+
+        👉  ${b}${m}boo-from-the-ghost$r  👈
+
+${d}Press, move, let go: the highlight disappears on release, that is the copy.$r"
+
+step 3 - "It is on your clipboard: $(K Ctrl+Shift+V) pastes it anywhere, even outside the terminal.
+
+   double-click${c2}copies a word
+   triple-click${c2}copies the whole line
+   Shift + drag${c2}uses Ghostty's own selection instead of tmux's"
+
+step 4 check_gterminal "Sessions keep running when you close the window, even for days.
+
+Click $(K '👻 work') (the session name, far left in the bar) to open ${b}gterminal$r:
+it lists live 🟢 and saved 💤 sessions with what is on their screen.
+Look around, then press q to come back."
+
+step 4 check_rename "Give this session a name you will recognise later:
+click $(K ✎) next to the session name in the bar, type a name and press Enter.
+
+${d}Keys: $P then \$. In gterminal, r renames any session, even a saved one.
+The saved folder + last command move along with the name.$r"
+
+step 4 - "Leaving and coming back:
+
+   $P then d${c2}detach: the window closes, everything keeps running
+   ${b}gterminal$r${c2}in any terminal, jump back into a session
+   💤 saved${c2}sessions gone after a reboot reopen in the same folder,
+${c2}with your last command already typed: Enter continues it"
+
+step 5 check_ktheme "Click $(K 🎨) in the bottom bar.
+↑↓ previews each theme live, ⏎ keeps one, esc goes back to what you had.
+
+Themes follow your desktop: light when it is light, dark when it is dark.
+In the picker, d keeps only the dark side, l only the light one."
+
+step 6 - "Your prompt:
+
+   ╭─ 🥽 Kronikus in 📂 ~/code/app on  main !? ⇡1
+   ╰─❯ npm test
+   ✅ npm test · ⏱ 3.4s · 🕒 14:02:11
+
+   📂${c2}the folder you are in
+    main !? ⇡1${c2}git branch: ! changed, ? new files, + staged, ⇡ ahead
+   ✅ / ❌${c2}how the last command went, how long it took, when it ended
+   ❯${c2}turns red when the last command failed"
+
+step 6 - "Handy keys in any shell:
+
+   $(K Ctrl+R)${c2}search old commands${c4}$(K 'Tab Tab')  show completions
+   $(K 'Ctrl+A / E')${c2}start / end of line${c4}$(K Ctrl+W)  delete a word
+   $(K Ctrl+L)${c2}clear the screen${c4}$(K 'cd -')  back to the last folder
+
+Every new Ghostty window greets you with a random tip like these."
+
+step 7 check_ktips "Whenever you forget something, click $(K ❓) in the bottom bar (or $P then ?):
+every click and key on one screen, plus a tip (n for more).
+
+Open it now, then q to come back."
+
+# ── Checks: each returns 0 once the step is done ──────
+tm() { tmux display -p -t "$TMUX_PANE" "$1" 2>/dev/null; }
+active()  { [[ $(tm '#{window_active}') == 1 ]]; }
+# By command line: these are bash scripts, so their process name is just "bash".
+running() { pgrep -u "$UID" -f "^[^ ]*bash ([^ ]*/)?$1( |\$)" >/dev/null; }
+
+check_newwin()   { (( ph == 0 )) && (( $(tm '#{session_windows}') > base_wins )) && ph=1; (( ph == 1 )) && active; }
+check_arrows()   { (( ph == 0 )) && ! active && ph=1; (( ph == 1 )) && active; }
+check_closewin() { (( $(tm '#{session_windows}') < base_wins )) && active; }
+check_split()    { (( $(tm '#{window_panes}') > 1 )); }
+check_zoom()     { (( ph == 0 )) && [[ $(tm '#{window_zoomed_flag}') == 1 ]] && ph=1; (( ph == 1 )) && [[ $(tm '#{window_zoomed_flag}') == 0 ]]; }
+check_unsplit()  { (( $(tm '#{window_panes}') == 1 )); }
+check_copy()     { local s; s=$(tmux show-buffer 2>/dev/null | head -c 300); [[ $s != "$base_buf" && ( $s == *boo* || $s == *gho* ) ]]; }
+check_rename()   { [[ $(tm '#S') != "$base_name" ]]; }
+check_program()  { (( ph == 0 )) && running "$1" && ph=1; (( ph == 1 )) && ! running "$1"; }
+check_gterminal() { check_program gterminal; }
+check_ktheme()    { check_program ktheme; }
+check_ktips()     { check_program ktips; }
+
+# ── Screens ───────────────────────────────────────────
+at() { printf '\e[%d;%dH' "$1" "$2"; }
+
+draw_step() {  # $1 step, $2 first, $3 last step of this run
+    local rows cols i row=5 bar= line
+    read -r rows cols < <(stty size </dev/tty)
+    printf '\e[H\e[2J'
+    for (( i = $2; i <= $3; i++ )); do (( i <= $1 )) && bar+=▰ || bar+=▱; done
+    local n=0 k=0
+    for i in "${!chap[@]}"; do
+        (( chap[i] == chap[$1] )) || continue
+        (( n++ )); (( i <= $1 )) && (( k++ ))
+    done
+    at 2 3; printf '%s🎓 tour%s   %s%s%s   %s%s%s · %d/%d' "$b$m" "$r" "$m" "$bar" "$r" "$b" "${chapters[chap[$1]]}" "$r" "$k" "$n"
+    while IFS= read -r line; do at $(( row++ )) 3; printf '%s' "$line"; done <<< "${body[$1]}"
+    at $(( row + 1 )) 3
+    if (( ok )); then printf '%s✅ nice!%s' "$b$g" "$r"
+    elif [[ ${check[$1]} != - ]]; then
+        if [[ -n $TMUX ]]; then printf '%s⏳ waiting for you…%s  %s⏎ skips%s' "$y" "$r" "$d" "$r"
+        else printf '%s(this step is hands-on inside tmux)%s' "$d" "$r"
+        fi
+    fi
+    at "$rows" 3
+    printf '%s⏎%s %snext%s   %s←%s %sback%s   %sm%s %schapters%s   %sq%s %squit%s' \
+        "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r"
+}
+
+# Base values a step compares against, taken when it starts.
+enter() {
+    ph=0 ok=0
+    base_wins=$(tm '#{session_windows}')
+    base_name=$(tm '#S')
+    base_buf=$(tmux show-buffer 2>/dev/null | head -c 300)
+}
+
+# Plays steps $1..$2. Returns 0 when done, 1 on quit, 2 for the chapter menu.
+play() {
+    local i=$1 key rest
+    while (( i <= $2 )); do
+        enter
+        draw_step "$i" "$1" "$2"
+        while :; do
+            if IFS= read -rsn1 -t 0.4 key; then
+                [[ $key == $'\e' ]] && { IFS= read -rsn2 -t 0.05 rest; key+=$rest; }
+                case $key in
+                    ''|' '|$'\e[C'|n) (( i++ )); break ;;
+                    $'\e[D'|p)        (( i > $1 )) && (( i-- )); break ;;
+                    m)                return 2 ;;
+                    q|$'\e')          return 1 ;;
+                esac
+            else
+                [[ -n $resized ]] && { resized=; draw_step "$i" "$1" "$2"; }
+                if [[ -n $TMUX && ${check[i]} != - ]] && "${check[i]}"; then
+                    ok=1; draw_step "$i" "$1" "$2"
+                    read -rsn1 -t 1.2 _
+                    (( i++ )); break
+                fi
+            fi
+        done
+    done
+}
+
+done_mark() { grep -qxF "$1" "$state/tour" 2>/dev/null || echo "$1" >> "$state/tour"; }
+
+finish() {
+    local rows cols
+    read -r rows cols < <(stty size </dev/tty)
+    printf '\e[H\e[2J'
+    at 2 3; printf '%s🎉 that is the tour!%s' "$b$m" "$r"
+    at 4 3; printf 'You know the bar, terminals, splits, copy & paste, sessions, themes and help.'
+    at 6 3; printf '%sAny time:%s ktour (or %s▾%s → 🎓 tour) for a chapter again · %s❓%s for every shortcut' "$d" "$r" "$b" "$r" "$b" "$r"
+    at "$rows" 3; printf '%sany key%s %sback to the chapters%s' "$b" "$r" "$d" "$r"
+    IFS= read -rsn1 _
+}
+
+# Runs "all" or chapter number $1 (1-based). Outside tmux it starts tmux for it.
+start() {
+    if [[ -z $TMUX ]] && command -v tmux >/dev/null; then
+        local cmd="'$0' --start $1"
+        printf '\e[?25h\e[?1049l'
+        if tmux has-session -t =tour 2>/dev/null; then
+            tmux new-window -t =tour: -n tour "$cmd"
+            exec tmux attach -t =tour
+        fi
+        exec tmux new-session -s tour -n tour "$cmd"
+    fi
+    local first=0 last=$(( ${#chap[@]} - 1 )) i ret
+    if [[ $1 != all ]]; then
+        first=-1
+        for i in "${!chap[@]}"; do
+            (( chap[i] == $1 - 1 )) || continue
+            (( first < 0 )) && first=$i
+            last=$i
+        done
+    fi
+    play "$first" "$last"; ret=$?
+    (( ret == 0 )) || return "$ret"
+    if [[ $1 == all ]]; then
+        for i in "${!chapters[@]}"; do done_mark "$(( i + 1 ))"; done
+        finish
+    else
+        done_mark "$1"
+    fi
+}
+
+menu() {
+    local sel=0 key rest i rows cols mark
+    while :; do
+        read -r rows cols < <(stty size </dev/tty)
+        printf '\e[H\e[2J'
+        at 2 3; printf '%s🎓 tour%s   %sa hands-on guide to this terminal%s' "$b$m" "$r" "$d" "$r"
+        at 4 3; (( sel == 0 )) && printf '%s❯%s %s▶ full tour%s  %sabout 5 minutes%s' "$m" "$r" "$b$m" "$r" "$d" "$r" \
+                               || printf '  ▶ full tour  %sabout 5 minutes%s' "$d" "$r"
+        for i in "${!chapters[@]}"; do
+            mark=; grep -qxF "$(( i + 1 ))" "$state/tour" 2>/dev/null && mark="$g✓$r"
+            at $(( 6 + i )) 3
+            (( sel == i + 1 )) && printf '%s❯%s %s%d %s%s' "$m" "$r" "$b$m" $(( i + 1 )) "${chapters[i]}" "$r" \
+                               || printf '  %d %s' $(( i + 1 )) "${chapters[i]}"
+            [[ -n $mark ]] && { at $(( 6 + i )) 28; printf '%s' "$mark"; }
+        done
+        at $(( 7 + ${#chapters[@]} )) 3
+        if [[ -z $TMUX ]]; then
+            command -v tmux >/dev/null && printf '%s💡 not inside tmux: starting opens a tmux session for the tour%s' "$y" "$r" \
+                                       || printf '%s💡 tmux is not installed, so the hands-on steps are just text%s' "$y" "$r"
+        fi
+        at "$rows" 3
+        printf '%s↑↓%s %smove%s   %s⏎%s %sstart%s   %s1-8%s %schapter%s   %sq%s %squit%s' \
+            "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r"
+
+        IFS= read -rsn1 key || continue
+        [[ $key == $'\e' ]] && { IFS= read -rsn2 -t 0.05 rest; key+=$rest; }
+        case $key in
+            $'\e[A'|k) (( sel > 0 )) && (( sel-- )) ;;
+            $'\e[B'|j) (( sel < ${#chapters[@]} )) && (( sel++ )) ;;
+            [1-8])     start "$key"; [[ $? == 1 ]] && return ;;
+            '')        if (( sel )); then start "$sel"; else start all; fi; [[ $? == 1 ]] && return ;;
+            q|$'\e')   return ;;
+        esac
+    done
+}
+
+: > "$state/welcomed"  # taking the tour counts as the welcome
+
+# Inside tmux, call this tab "tour" (the steps say "click the 🎓 tab"), and put it back after.
+restore=
+if [[ -n $TMUX && $(tm '#W') != tour ]]; then
+    if [[ $(tm '#{automatic-rename}') == 1 ]]; then restore="tmux set -w -t '$TMUX_PANE' automatic-rename on"
+    else restore="tmux rename-window -t '$TMUX_PANE' '$(tm '#W')'"
+    fi
+    tmux rename-window -t "$TMUX_PANE" tour
+fi
+printf '\e[?1049h\e[?25l'
+trap "printf '\e[?25h\e[?1049l'; $restore" EXIT
+trap 'resized=1' WINCH
+if [[ $1 == --start ]]; then
+    start "${2:-all}"; [[ $? == 1 ]] && exit 0
+fi
+menu
