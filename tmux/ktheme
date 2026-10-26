@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+# 🎨 ktheme — switch the Ghostty theme; tmux and the prompt follow it (pure bash)
+#
+#   🎨 theme   🌗 desktop is light → ☀️ side
+#
+#   ❯ 👻 Neon         ☀️ Neon Day               🌙 Neon Night            ✓ auto
+#     🐱 Catppuccin   ☀️ Catppuccin Latte       🌙 Catppuccin Mocha
+#     🌹 Rose Pine    ☀️ Rose Pine Dawn         🌙 Rose Pine
+#     …
+#
+# Moving through the list previews each theme live in every Ghostty window.
+# ⏎ keeps it in auto: light or dark follows your desktop. d / l keep only the
+# dark / light one. esc or q puts back what you had.
+#
+#   ktheme                 the picker (or click 🎨 in the tmux bar, prefix + T)
+#   ktheme "Rose Pine"     any Ghostty theme by name, or "light:A,dark:B"
+#   ktheme --list          every theme name Ghostty knows (ghostty +list-themes)
+#
+# Writes theme.ghostty next to the Ghostty config (pulled in by its config-file
+# line), then sends Ghostty SIGUSR2 so it reloads. tmux, the Kronikus prompt,
+# gterminal and ktips only use the 16 terminal colors, so they change with it.
+
+# Name, light theme, dark theme (empty light = dark only).
+themes=(
+    '👻 Neon|Neon Day|Neon Night'
+    '🐱 Catppuccin|Catppuccin Latte|Catppuccin Mocha'
+    '🌹 Rose Pine|Rose Pine Dawn|Rose Pine'
+    '🗼 Tokyo Night|TokyoNight Day|TokyoNight'
+    '🍂 Gruvbox|Gruvbox Light|Gruvbox Dark'
+    '❄️ Nord|Nord Light|Nord'
+    '🌲 Everforest|Everforest Light Med|Everforest Dark Hard'
+    '🌊 Kanagawa|Kanagawa Lotus|Kanagawa Wave'
+    '🐙 GitHub|GitHub Light Default|GitHub Dark Default'
+    '☀️ Solarized|iTerm2 Solarized Light|iTerm2 Solarized Dark'
+    '🧛 Dracula||Dracula'
+)
+
+file=${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/theme.ghostty
+b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m' y=$'\e[33m'
+
+# Writes "theme = $1" (or removes the file when $1 is empty) and reloads Ghostty.
+apply() {
+    mkdir -p "${file%/*}"
+    if [[ -n $1 ]]; then printf 'theme = %s\n' "$1" > "$file"
+    else rm -f "$file"
+    fi
+    pkill -USR2 -x ghostty 2>/dev/null
+}
+
+# The theme in use: theme.ghostty if there is one, else the theme line of the main config.
+current() {
+    local f line
+    REPLY=
+    for f in "$file" "${file%/*}/config.ghostty" "${file%/*}/config"; do
+        [[ -f $f ]] || continue
+        while IFS= read -r line; do
+            [[ $line =~ ^theme\ *=\ *(.+)$ ]] && REPLY=${BASH_REMATCH[1]}
+        done < "$f"
+        [[ -n $REPLY ]] && return
+    done
+}
+
+# "light:A,dark:B" for a list entry, or just B when it has no light side.
+auto() {
+    local l=${1#*|} dk=${1##*|}
+    l=${l%%|*}
+    [[ -n $l ]] && REPLY="light:$l,dark:$dk" || REPLY=$dk
+}
+
+case $1 in
+    --list) ghostty +list-themes --plain | sed 's/ (.*)$//'; exit ;;
+    -h|--help) sed -n '2,/^$/s/^# \{0,1\}//p' "$0"; exit ;;
+    ?*)
+        # Every name must be one Ghostty has, or it would refuse the whole config.
+        known=$(ghostty +list-themes --plain | sed 's/ (.*)$//')
+        IFS=, read -ra parts <<< "$1"
+        for p in "${parts[@]}"; do
+            p=${p#light:} p=${p#dark:}
+            grep -qxF -- "$p" <<< "$known" || { echo "🎨 no theme called \"$p\" (see ktheme --list)" >&2; exit 1; }
+        done
+        apply "$1"
+        echo "🎨 theme = $1"
+        exit ;;
+esac
+
+# Which side "auto" shows right now, when the desktop says (GNOME and friends).
+side=
+case $(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null) in
+    *dark*) side=dark ;;
+    ?*)     side=light ;;
+esac
+
+draw() {
+    local i name l dk mark rows cols
+    read -r rows cols < <(stty size </dev/tty)
+    printf '\e[H\e[2J'
+    printf '\e[2;3H%s🎨 theme%s' "$b$m" "$r"
+    [[ $side == dark ]]  && printf '   %s🌗 desktop is dark → 🌙 side%s' "$d" "$r"
+    [[ $side == light ]] && printf '   %s🌗 desktop is light → ☀️ side%s' "$d" "$r"
+
+    for i in "${!themes[@]}"; do
+        IFS='|' read -r name l dk <<< "${themes[i]}"
+        auto "${themes[i]}"
+        mark=
+        if   [[ $orig == "$REPLY" ]]; then mark="$g✓ auto$r"
+        elif [[ $orig == "$dk" ]];    then mark="$g✓ dark$r"
+        elif [[ -n $l && $orig == "$l" ]]; then mark="$g✓ light$r"
+        fi
+        printf '\e[%d;3H' $(( 4 + i ))
+        (( i == sel )) && printf '%s❯%s %s%s%s' "$m" "$r" "$b$m" "$name" "$r" || printf '  %s' "$name"
+        if [[ -n $l ]]; then printf '\e[%d;20H%s☀️ %s%s' $(( 4 + i )) "$d" "${l#iTerm2 }" "$r"
+        else printf '\e[%d;20H%s   dark only%s' $(( 4 + i )) "$d" "$r"
+        fi
+        printf '\e[%d;45H%s🌙 %s%s' $(( 4 + i )) "$d" "${dk#iTerm2 }" "$r"
+        [[ -n $mark ]] && printf '\e[%d;70H%s' $(( 4 + i )) "$mark"
+    done
+
+    # A strip of the 16 colors, so the preview shows more than the background.
+    printf '\e[%d;3H' $(( 5 + ${#themes[@]} ))
+    for i in 1 2 3 4 5 6; do printf '\e[3%dm●\e[0m ' "$i"; done
+    printf '  '
+    for i in 1 2 3 4 5 6; do printf '\e[9%dm●\e[0m ' "$i"; done
+    printf '  %s%s❯ prompt%s %sdim%s' "$c" "$b" "$r" "$d" "$r"
+
+    printf '\e[%d;3H%s↑↓%s preview   %s⏎%s keep (auto)   %sd%s dark   %sl%s light   %sesc%s cancel%s' "$rows" \
+        "$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r"
+}
+
+preview() { auto "${themes[sel]}"; apply "$REPLY"; }
+
+current
+orig=$REPLY had_file=0
+[[ -f $file ]] && had_file=1
+sel=0
+for i in "${!themes[@]}"; do
+    [[ $orig == *"${themes[i]##*|}"* ]] && { sel=$i; break; }
+done
+
+printf '\e[?1049h\e[?25l'
+trap "printf '\e[?25h\e[?1049l'" EXIT
+trap : WINCH  # resize: interrupts read below, so the loop redraws
+while :; do
+    draw
+    IFS= read -rsn1 key || continue
+    [[ $key == $'\e' ]] && { IFS= read -rsn2 -t 0.05 rest; key+=$rest; }
+    case $key in
+        $'\e[A'|k) (( sel > 0 )) && { (( sel-- )); preview; } ;;
+        $'\e[B'|j) (( sel < ${#themes[@]} - 1 )) && { (( sel++ )); preview; } ;;
+        '')        preview; exit ;;
+        d)         apply "${themes[sel]##*|}"; exit ;;
+        l)         IFS='|' read -r _ l _ <<< "${themes[sel]}"; [[ -n $l ]] && { apply "$l"; exit; } ;;
+        q|$'\e')   (( had_file )) && apply "$orig" || apply ''; exit ;;
+    esac
+done

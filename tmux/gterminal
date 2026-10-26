@@ -22,7 +22,7 @@
 #    continues it. The Kronikus prompt saves folder + command after every
 #    command run inside tmux.
 #
-# Keys: ↑/↓ or j/k move · enter open · 1-9 open that one · n new · x kill/forget · q quit
+# Keys: ↑/↓ or j/k move · enter open · 1-9 open that one · n new · x kill/forget · ? help · q quit
 # Run `gterminal` anywhere, or prefix + s inside tmux.
 
 state=${XDG_STATE_HOME:-$HOME/.local/state}/kronikus/tmux
@@ -177,8 +177,8 @@ draw() {
     done
 
     at "$rows" 3
-    printf '%s↑↓%s move   %s⏎%s open   %s1-9%s jump   %sn%s new   %sx%s kill   %sq%s quit%s' \
-        "$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r"
+    printf '%s↑↓%s move   %s⏎%s open   %s1-9%s jump   %sn%s new   %sx%s kill   %s?%s help   %sq%s quit%s' \
+        "$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r"
 }
 
 tui_on()  { printf '\e[?1049h\e[?25l'; }
@@ -246,6 +246,7 @@ while :; do
         '')        open; tui_on ;;
         n)         new_session; tui_on ;;
         x)         forget ;;
+        '?')       "${BASH_SOURCE%/*}/ktips"; tui_on ;;
         q|$'\e')   exit 0 ;;
     esac
 done

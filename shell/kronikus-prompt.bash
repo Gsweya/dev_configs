@@ -13,6 +13,7 @@
 #   KRONIKUS_ANIM_MIN  min seconds before the spinner plays (default: 2)
 #   KRONIKUS_PICTURE   picture shown once when a terminal opens (Ghostty/kitty only)
 #   KRONIKUS_GREET   1 = show that greeting (default: 1)
+#   KRONIKUS_TIPS    1 = add a random tip to it, from ktips (default: 1)
 #   KRONIKUS_STARSHIP  starship config for the git part (default: ~/.config/kronikus/starship.toml)
 #                      if starship or this file is missing, a plain ⎇ branch is shown
 
@@ -24,6 +25,7 @@ KRONIKUS_ANIM=${KRONIKUS_ANIM:-1}
 KRONIKUS_ANIM_MIN=${KRONIKUS_ANIM_MIN:-2}
 KRONIKUS_PICTURE=${KRONIKUS_PICTURE:-$HOME/.config/kronikus/avatar.png}
 KRONIKUS_GREET=${KRONIKUS_GREET:-1}
+KRONIKUS_TIPS=${KRONIKUS_TIPS:-1}
 KRONIKUS_STARSHIP=${KRONIKUS_STARSHIP:-$HOME/.config/kronikus/starship.toml}
 
 __k_ready=
@@ -110,7 +112,7 @@ __k_precmd() {
     __k_ready=1
 }
 
-# Tiny round picture + name, once per new terminal (kitty graphics protocol, 4×2 cells).
+# Tiny round picture + name (+ a tip), once per new terminal (kitty graphics protocol, 4×2 cells).
 __k_greet() {
     # Not inside tmux: there every new pane would greet again.
     [[ $KRONIKUS_GREET == 1 && -z $TMUX ]] || return
@@ -128,6 +130,7 @@ __k_greet() {
     fi
     printf '\e[1;35m%s\e[0m \e[2mis back\e[0m\n' "$KRONIKUS_NAME"
     printf "     \e[2m%(%A %d %b · %H:%M)T\e[0m\n" -1
+    [[ $KRONIKUS_TIPS == 1 ]] && type -P ktips >/dev/null && { printf '     '; ktips --one; }
 }
 __k_greet
 

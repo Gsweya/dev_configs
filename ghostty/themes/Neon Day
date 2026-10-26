@@ -1,0 +1,25 @@
+# ☀️ Neon Day — the same rose + mint + violet, deepened for a light lavender background
+background = #faf7ff
+foreground = #2b2540
+selection-background = #e4d6fa
+selection-foreground = #2b2540
+cursor-color = #e0447c
+cursor-text = #faf7ff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#4a4560
+palette = 1=#c92a62
+palette = 2=#0a7d5f
+palette = 3=#94600a
+palette = 4=#3566d6
+palette = 5=#8a48d4
+palette = 6=#08778a
+palette = 7=#b9b1ca
+palette = 8=#7a7290
+palette = 9=#d63d74
+palette = 10=#11906f
+palette = 11=#a86f12
+palette = 12=#4472d9
+palette = 13=#9555db
+palette = 14=#0c879b
+palette = 15=#ddd5ea

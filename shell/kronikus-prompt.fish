@@ -7,7 +7,7 @@
 # Source it from ~/.config/fish/config.fish:  source ~/.config/kronikus/prompt.fish
 # Same settings as the bash version (set them before sourcing):
 #   KRONIKUS_NAME, KRONIKUS_AVATAR, KRONIKUS_ANIM, KRONIKUS_ANIM_MIN,
-#   KRONIKUS_PICTURE, KRONIKUS_GREET, KRONIKUS_STARSHIP
+#   KRONIKUS_PICTURE, KRONIKUS_GREET, KRONIKUS_TIPS, KRONIKUS_STARSHIP
 
 status is-interactive; or return
 
@@ -17,6 +17,7 @@ set -q KRONIKUS_ANIM; or set -g KRONIKUS_ANIM 1
 set -q KRONIKUS_ANIM_MIN; or set -g KRONIKUS_ANIM_MIN 2
 set -q KRONIKUS_PICTURE; or set -g KRONIKUS_PICTURE ~/.config/kronikus/avatar.png
 set -q KRONIKUS_GREET; or set -g KRONIKUS_GREET 1
+set -q KRONIKUS_TIPS; or set -g KRONIKUS_TIPS 1
 set -q KRONIKUS_STARSHIP; or set -g KRONIKUS_STARSHIP ~/.config/kronikus/starship.toml
 
 # Inside tmux: remember the session, so each command can save "folder + last command" for gterminal.
@@ -100,7 +101,7 @@ function fish_title
     echo "👻 $dir"
 end
 
-# Tiny round picture + name, once per new terminal (kitty graphics protocol, 4×2 cells).
+# Tiny round picture + name (+ a tip), once per new terminal (kitty graphics protocol, 4×2 cells).
 function fish_greeting
     # Not inside tmux: there every new pane would greet again.
     test "$KRONIKUS_GREET" = 1; and not set -q TMUX; or return
@@ -121,4 +122,8 @@ function fish_greeting
     end
     printf '\e[1;35m%s\e[0m \e[2mis back\e[0m\n' $KRONIKUS_NAME
     printf '     \e[2m%s\e[0m\n' (date '+%A %d %b · %H:%M')
+    if test "$KRONIKUS_TIPS" = 1; and command -q ktips
+        printf '     '
+        ktips --one
+    end
 end
