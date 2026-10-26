@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 # ❓ ktips — shortcuts + tips for the Neon Night terminal (pure bash, no extra tools)
 #
-#   ktips          help screen: the bottom bar, keys, copy & paste, and a tip
+#   ktips          help screen: the top bar, keys, copy & paste, and a tip
 #   ktips --one    one random tip, never the same twice in a row
 #                  (the Kronikus greeting shows one each time a terminal opens)
 #
 # Help screen keys: n / p next / previous tip · t take the tour · a all tmux keys · q close
-# Inside tmux: click ❓ in the bottom bar or press prefix + ?.
+# Inside tmux: click ❓ in the top bar or press prefix + ?.
 
 tips=(
-    # 🖱️ bottom bar
-    'Click ＋ in the bottom bar for a new terminal in this folder'
-    'Click ◀ ▶ in the bottom bar to go to the previous / next terminal'
+    # 🖱️ top bar
+    'Click ＋ in the top bar for a new terminal in this folder'
+    'Click ◀ ▶ in the top bar to go to the previous / next terminal'
     'New here or rusty? ktour is a hands-on tour, chapter by chapter'
-    'Click ▾ in the bottom bar to open bash, fish or a split'
-    'Scroll the mouse wheel over the bottom bar to flip through windows'
-    'Right-click a window in the bottom bar to rename, move or close it'
-    'Click the 👻 session name in the bottom bar to switch sessions'
+    'Click ▾ in the top bar to open bash, fish or a split'
+    'Scroll the mouse wheel over the top bar to flip through windows'
+    'Right-click a window in the top bar to rename, move or close it'
+    'Click the 👻 session name in the top bar to switch sessions'
     'Click ✎ next to the session name to rename the session'
     'In gterminal, r renames a session, saved ones too'
-    'Click ❓ in the bottom bar (or Ctrl+b ?) for all shortcuts'
-    'Click 🎨 in the bottom bar (or Ctrl+b T) to try other themes live'
+    'Click ❓ in the top bar (or Ctrl+b ?) for all shortcuts'
+    'Click 🎨 in the top bar (or Ctrl+b T) to try other themes live'
     'Themes follow your desktop: light when it is light, dark when it is dark'
     'In the theme picker, d keeps the dark side only, l the light side only'
     'ktheme "Rose Pine" sets any Ghostty theme, ktheme --list shows all'
@@ -112,7 +112,7 @@ title() { printf '\n  %s%s%s %s%s%s\n' "$b" "$1" "$r" "$d" "$2" "$r"; }
 draw() {
     printf '\e[H\e[2J\n  %s❓ help & tips%s\n' "$b$m" "$r"
 
-    title '🖱️  BOTTOM BAR' '(tmux)'
+    title '🖱️  TOP BAR' '(tmux)'
     row '👻 session' 'switch, reopen or start sessions (gterminal)'
     row '✎'          'rename the session'
     row '1 🐚 bash'  'click to switch · scroll the wheel to flip through'

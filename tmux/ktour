@@ -3,7 +3,7 @@
 #
 #   🎓 tour   ▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱   🪟 Terminals · 1/4
 #
-#   Click ＋ in the bottom bar to open a new terminal.
+#   Click ＋ in the top bar to open a new terminal.
 #   You land in it right away: click the 🎓 tab to come back here.
 #
 #   ⏳ waiting for you…  ⏎ skips
@@ -45,15 +45,15 @@ K() { printf '%s%s%s' "$b$c" "$1" "$r"; }  # a key or a button, highlighted
 # Columns for the little tables in the steps (emoji widths would throw spaces off).
 c2=$'\e[19G' c4=$'\e[49G'
 
-chapters=('🖱️  The bottom bar' '🪟 Terminals' '↔️  Splits' '📋 Copy & paste' '👻 Sessions' '🎨 Themes' '🐚 Prompt & shell' '❓ Help')
+chapters=('🖱️  The top bar' '🪟 Terminals' '↔️  Splits' '📋 Copy & paste' '👻 Sessions' '🎨 Themes' '🐚 Prompt & shell' '❓ Help')
 
 # Steps: chapter index, check (a function below, or - for "just read it"), text.
 chap=() check=() body=()
 step() { chap+=("$1") check+=("$2") body+=("$3"); }
 
-step 0 - "This is your terminal. The bar at the bottom is clickable:
+step 0 - "This is your terminal. The bar at the top is clickable:
 
-   $(K '👻 work') $(K ✎)  $(K ◀)  1 🐚 bash  2 🎓 tour  $(K ▶)  $(K ＋) $(K ▾)          $(K 🎨) $(K ❓) │ 📂 app · 🕒 14:02
+   $(K '👻 work') $(K ✎)  $(K ◀)  1 🐚 bash  2 🎓 tour  $(K ▶)  $(K ＋) $(K ▾)        $(K 🎨)  $(K ❓)  📂 app  🕒 14:02
 
    $(K '👻 work')${c2}the session: a group of terminals that keeps running
    $(K ✎)${c2}rename the session
@@ -61,18 +61,18 @@ step 0 - "This is your terminal. The bar at the bottom is clickable:
    $(K '◀ ▶')${c2}previous / next terminal
    $(K ＋)  $(K ▾)${c2}new terminal here · bash, fish, splits and more
    $(K 🎨)  $(K ❓)${c2}theme · help
-   📂  🕒${c2}the folder you are in, and the time
+   📂  🕒${c2}the folder (on wide windows) and the time
 
 The icon on each tab tells what runs in it: 🐚 shell, 📝 editor, 🟩 node, 🐍 python…"
 
-step 1 check_newwin "Click $(K ＋) in the bottom bar to open a new terminal.
+step 1 check_newwin "Click $(K ＋) in the top bar to open a new terminal.
 It opens in the same folder as this one, and you land in it right away.
 
-Then click the $(K '🎓') tab in the bottom bar to come back here.
+Then click the $(K '🎓') tab in the top bar to come back here.
 
 ${d}Keys: $P then c opens one too.$r"
 
-step 1 check_arrows "Now click $(K ▶) in the bottom bar to go to the next terminal,
+step 1 check_arrows "Now click $(K ▶) in the top bar to go to the next terminal,
 then $(K ◀) until you are back here.
 
 ${d}Scrolling the mouse wheel over the bar flips through them as well.
@@ -89,7 +89,7 @@ step 1 - "Recap:
    right-click${c2}rename, move, kill${c4}wheel  flip through tabs"
 
 step 2 check_split "Splits put two terminals side by side in one tab.
-Click $(K ▾) in the bottom bar and pick $(K '↔ split side').
+Click $(K ▾) in the top bar and pick $(K '↔ split side').
 
 ${d}Keys: $P then % (side) or \" (down).$r"
 
@@ -133,7 +133,7 @@ step 4 - "Leaving and coming back:
    💤 saved${c2}sessions gone after a reboot reopen in the same folder,
 ${c2}with your last command already typed: Enter continues it"
 
-step 5 check_ktheme "Click $(K 🎨) in the bottom bar.
+step 5 check_ktheme "Click $(K 🎨) in the top bar.
 ↑↓ previews each theme live, ⏎ keeps one, esc goes back to what you had.
 
 Themes follow your desktop: light when it is light, dark when it is dark.
@@ -158,7 +158,7 @@ step 6 - "Handy keys in any shell:
 
 Every new Ghostty window greets you with a random tip like these."
 
-step 7 check_ktips "Whenever you forget something, click $(K ❓) in the bottom bar (or $P then ?):
+step 7 check_ktips "Whenever you forget something, click $(K ❓) in the top bar (or $P then ?):
 every click and key on one screen, plus a tip (n for more).
 
 Open it now, then q to come back."

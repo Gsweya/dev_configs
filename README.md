@@ -6,7 +6,7 @@ Personal configs for the dev tools I use, mainly terminals.
 | --- | --- |
 | `ghostty/` | [Ghostty](https://ghostty.org) terminal config with 👻 Neon themes: 🌙 Night (dark) and ☀️ Day (light), following the desktop |
 | `shell/` | 🥽 Kronikus prompt for bash and fish: avatar, name, folder, git (with starship icons), command timing |
-| `tmux/` | 👻 tmux config (clickable bottom bar, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker) and `ktour` (hands-on tour) |
+| `tmux/` | 👻 tmux config (clickable tab bar on top, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker) and `ktour` (hands-on tour) |
 
 **New here?** Install everything (the sections below), open a new terminal and press `⏎` when it asks
 *"First time here?"*. That starts 🎓 `ktour`, a 5-minute hands-on tour. You can run `ktour` again any time.
@@ -126,11 +126,16 @@ cp tmux/gterminal tmux/ktips tmux/ktheme tmux/ktour ~/.local/bin/
 
 If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
 
-### 🖱️ Clickable bottom bar
+### 🖱️ Clickable top bar
 
 ```
- 👻 work  ✎  ◀  1 🐚 bash   2 📝 nvim   3 🐟 fish   ▶  ＋ ▾        🎨 ❓ │ 📂 app · 🕒 14:02
+  👻 work   ✎   ◀   1 🐚 bash   2 📝 nvim   3 🐟 fish    ▶  ＋ ▾        🎨  ❓   📂 app   🕒 14:02 
 ```
+
+The bar sits at the **top**, like browser tabs, with an empty line under it so it doesn't crowd your terminal.
+The session name, the current tab and the clock are rounded pills (Nerd Font glyphs, built into Ghostty), and the other tabs take the same width so nothing moves when you switch.
+The 📂 folder only shows on windows wider than 140 columns, so tabs and buttons keep their room. Long tab names are cut at 14 characters.
+Prefer it at the bottom? Change `status-position top` to `bottom` in `~/.tmux.conf`. No gap line? `status 2` → `status on`.
 
 | Click | Does |
 | --- | --- |
@@ -154,7 +159,7 @@ Click `❓`, press `prefix + ?` inside tmux, press `?` in gterminal or type `kti
 ```
   ❓ help & tips
 
-  🖱️  BOTTOM BAR (tmux)
+  🖱️  TOP BAR (tmux)
     👻 session      switch, reopen or start sessions (gterminal)
     ✎               rename the session
     1 🐚 bash       click to switch · scroll the wheel to flip through
@@ -172,7 +177,7 @@ Click `❓`, press `prefix + ?` inside tmux, press `?` in gterminal or type `kti
   n next tip   p previous   t tour   a all tmux keys   q close
 ```
 
-- About 60 tips on the bottom bar, tmux, gterminal, Ghostty, bash/fish and git
+- About 60 tips on the top bar, tmux, gterminal, Ghostty, bash/fish and git
 - `ktips --one` prints one random tip, never the same twice in a row. The Kronikus greeting uses it, so every new terminal teaches you something
 - If you change the tmux prefix, the help and tips show your prefix instead of `Ctrl+b`
 - To add your own tips, add lines to the `tips=(...)` list at the top of `ktips`
@@ -207,10 +212,10 @@ Type `ktour`, pick ▾ → 🎓 tour in the bar, or press `t` on the ❓ help sc
 ```
   🎓 tour   ▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱   🪟 Terminals · 1/4
 
-  Click ＋ in the bottom bar to open a new terminal.
+  Click ＋ in the top bar to open a new terminal.
   It opens in the same folder as this one, and you land in it right away.
 
-  Then click the 🎓 tab in the bottom bar to come back here.
+  Then click the 🎓 tab in the top bar to come back here.
 
   Keys: Ctrl+b then c opens one too.
 
@@ -220,7 +225,7 @@ Type `ktour`, pick ▾ → 🎓 tour in the bar, or press `t` on the ❓ help sc
 ```
 
 - **Hands-on**: most steps watch tmux and move on by themselves once you've done the thing (opened a terminal, clicked ◀ ▶, split, zoomed, copied a word, renamed the session, opened gterminal / the theme picker / help). `⏎` skips any step
-- **8 chapters**: 🖱️ the bottom bar, 🪟 terminals, ↔️ splits, 📋 copy & paste, 👻 sessions, 🎨 themes, 🐚 prompt & shell, ❓ help. The menu lets you take the full tour or one chapter, and ticks off ✓ the ones you've done
+- **8 chapters**: 🖱️ the top bar, 🪟 terminals, ↔️ splits, 📋 copy & paste, 👻 sessions, 🎨 themes, 🐚 prompt & shell, ❓ help. The menu lets you take the full tour or one chapter, and ticks off ✓ the ones you've done
 - **First run**: the Kronikus greeting asks once, on the very first terminal. Outside tmux, the tour opens a `tour` tmux session for itself
 - Run inside an existing tab, it calls that tab "tour" while it runs and puts the old name back after
 
