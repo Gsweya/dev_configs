@@ -129,8 +129,11 @@ If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
 ### 🖱️ Clickable top bar
 
 ```
-  👻 work   ✎   ◀   1 🐚 bash   2 📝 nvim   3 🐟 fish    ▶  ＋ ▾        🎨  ❓   📂 app   🕒 14:02 
+ 🥽 Kronikus ›  👻 work   ✎   ◀   1 🐚 bash   2 📝 nvim   3 🐟 fish    ▶  ＋ ▾     🎨  ❓   📂 app   🕒 14:02 
 ```
+
+On the far left is **you**: the same avatar and name as the greeting (`KRONIKUS_AVATAR`, `KRONIKUS_NAME`). The Kronikus prompt hands them to tmux, so changing them in your shell config changes the bar too (from the next new shell).
+tmux can't draw pictures in its bar, so it's the emoji avatar here, not the photo. The name hides on windows narrower than 120 columns.
 
 The bar sits at the **top**, like browser tabs, with an empty line under it so it doesn't crowd your terminal.
 The session name, the current tab and the clock are rounded pills (Nerd Font glyphs, built into Ghostty), and the other tabs take the same width so nothing moves when you switch.
@@ -139,6 +142,7 @@ Prefer it at the bottom? Change `status-position top` to `bottom` in `~/.tmux.co
 
 | Click | Does |
 | --- | --- |
+| `🥽 Kronikus` | just you, nothing to click |
 | `👻 work` (session name) | opens `gterminal` to switch, reopen or start a session |
 | `✎` | renames the session (also `prefix + $`, or `r` in gterminal) |
 | a window (`1 🐚 bash`) | switches to it. Scroll the wheel over the bar to flip through windows. Right-click any tab for ✎ rename, ◀ ▶ move, ＋ new after, ✕ close |

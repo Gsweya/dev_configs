@@ -113,6 +113,7 @@ draw() {
     printf '\e[H\e[2J\n  %s❓ help & tips%s\n' "$b$m" "$r"
 
     title '🖱️  TOP BAR' '(tmux)'
+    row '🥽 Kronikus' 'you (KRONIKUS_AVATAR + KRONIKUS_NAME)'
     row '👻 session' 'switch, reopen or start sessions (gterminal)'
     row '✎'          'rename the session'
     row '1 🐚 bash'  'click to switch · scroll the wheel to flip through'

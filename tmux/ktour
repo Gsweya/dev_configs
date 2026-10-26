@@ -53,8 +53,9 @@ step() { chap+=("$1") check+=("$2") body+=("$3"); }
 
 step 0 - "This is your terminal. The bar at the top is clickable:
 
-   $(K '👻 work') $(K ✎)  $(K ◀)  1 🐚 bash  2 🎓 tour  $(K ▶)  $(K ＋) $(K ▾)        $(K 🎨)  $(K ❓)  📂 app  🕒 14:02
+   🥽 Kronikus › $(K '👻 work') $(K ✎)  $(K ◀)  1 🐚 bash  2 🎓 tour  $(K ▶)  $(K ＋) $(K ▾)    $(K 🎨)  $(K ❓)  🕒 14:02
 
+   🥽 Kronikus${c2}you: the avatar + name from your greeting
    $(K '👻 work')${c2}the session: a group of terminals that keeps running
    $(K ✎)${c2}rename the session
    $(K '1 🐚 bash')${c2}a terminal (tmux calls it a window), click it to switch

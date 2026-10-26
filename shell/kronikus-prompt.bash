@@ -42,6 +42,8 @@ __k_state=${XDG_STATE_HOME:-$HOME/.local/state}/kronikus/tmux
 if [[ -n $TMUX ]]; then
     __k_tmux=$(tmux display -p -t "$TMUX_PANE" '#S' 2>/dev/null)
     mkdir -p "$__k_state"
+    # Your avatar + name at the left of the tmux bar.
+    tmux set -g @k-avatar "$KRONIKUS_AVATAR" \; set -g @k-user "$KRONIKUS_NAME" 2>/dev/null
 fi
 
 # Current git branch, found by walking up to .git/HEAD (no git process spawned).
