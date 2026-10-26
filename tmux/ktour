@@ -81,7 +81,7 @@ Keys: $P then n (next) / p (previous), or $P then the tab's number.$r"
 step 1 check_closewin "Close the terminal you opened: click its tab, type ${b}exit$r and press Enter.
 You come back here by yourself.
 
-${d}Right-clicking a tab also has Kill, Rename and Swap Left / Right.$r"
+${d}Right-clicking a tab has ✎ rename, ◀ ▶ move and ✕ close.$r"
 
 step 1 - "Recap:
    $(K ＋)${c2}new terminal${c4}$(K '1 🐚 bash')  click a tab to switch

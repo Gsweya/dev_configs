@@ -136,7 +136,7 @@ If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
 | --- | --- |
 | `👻 work` (session name) | opens `gterminal` to switch, reopen or start a session |
 | `✎` | renames the session (also `prefix + $`, or `r` in gterminal) |
-| a window (`1 🐚 bash`) | switches to it. Scroll the wheel over the bar to flip through windows, right-click one to rename, move or close it |
+| a window (`1 🐚 bash`) | switches to it. Scroll the wheel over the bar to flip through windows. Right-click any tab for ✎ rename, ◀ ▶ move, ＋ new after, ✕ close |
 | `◀` / `▶` | previous / next terminal (wraps around) |
 | `＋` | new terminal in the current folder |
 | `▾` | menu: 🐚 bash, 🐟 fish, ↔ split side, ↕ split down, 👻 sessions, 🎨 theme, ✎ rename session, 🎓 tour, ❓ help |
