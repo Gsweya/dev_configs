@@ -1,0 +1,30 @@
+# 🥽 Kronikus × starship — only the git part of the prompt
+#
+# The Kronikus prompt draws everything else itself and asks starship only for
+# the repo bits:   on  main !? ⇡1
+#   !  modified   +  staged    ?  untracked   ✘  deleted   »  renamed
+#   $  stashed    =  conflict  ⇡  ahead       ⇣  behind    ⇕  diverged
+#
+# Lives at ~/.config/kronikus/starship.toml (not ~/.config/starship.toml),
+# so it never touches a normal starship setup.
+
+format = "$git_branch$git_commit$git_state$git_status"
+add_newline = false
+command_timeout = 300
+
+[git_branch]
+format = "[$symbol$branch(:$remote_branch)]($style)"
+style = "green"
+
+[git_commit]
+format = "[ $hash$tag]($style)"
+style = "green"
+tag_disabled = false
+
+[git_state]
+format = "( [$state( $progress_current/$progress_total)]($style))"
+style = "bold yellow"
+
+[git_status]
+format = "( [$all_status$ahead_behind]($style))"
+style = "bold red"

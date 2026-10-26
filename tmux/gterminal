@@ -1,0 +1,251 @@
+#!/usr/bin/env bash
+# 👻 gterminal — pick a tmux session and jump back in (pure bash, no extra tools)
+#
+#   👻 gterminal   🟢 2 live  💤 1 saved
+#
+#   📋 SESSIONS                  │  ⚡ work
+#   ──────────────────────────    │  ──────────────────────────────
+#   ❯ 🟢 work         🪟 2        │  📂 ~/code/app
+#     🔵 api          🪟 1        │  🕒 active 3m ago · attached
+#     💤 notes        saved       │  ❯  npm test
+#     ✨ new session              │
+#                                 │  🪟 WINDOWS
+#                                 │  ▸ 1 📝 editor   nvim · ~/code/app
+#                                 │    2 🟩 server   node · ~/code/app/api
+#                                 │
+#                                 │  📜 RECENT OUTPUT
+#                                 │  │ Tests: 12 passed
+#
+# 🟢 attached / 🔵 in the background: reattach, everything is where you left it.
+# 💤 saved: a session that was closed or is gone after a reboot. gterminal opens
+#    it again in the same folder and types the last command for you, so Enter
+#    continues it. The Kronikus prompt saves folder + command after every
+#    command run inside tmux.
+#
+# Keys: ↑/↓ or j/k move · enter open · 1-9 open that one · n new · x kill/forget · q quit
+# Run `gterminal` anywhere, or prefix + s inside tmux.
+
+state=${XDG_STATE_HOME:-$HOME/.local/state}/kronikus/tmux
+mkdir -p "$state"
+
+b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m'
+
+load() {
+    names=() kinds=() dirs=() cmds=() wins=() times=()
+    nlive=0 nsaved=0
+    local name win att act dir cmd f
+    while IFS=$'\t' read -r name win att act dir; do
+        cmd=
+        [[ -f $state/$name ]] && { read -r _; read -r cmd; } < "$state/$name"
+        names+=("$name") dirs+=("$dir") cmds+=("$cmd") wins+=("$win") times+=("$act")
+        (( att )) && kinds+=(attached) || kinds+=(live)
+        (( nlive++ ))
+    done < <(tmux list-sessions -F $'#{session_name}\t#{session_windows}\t#{session_attached}\t#{session_activity}\t#{pane_current_path}' 2>/dev/null)
+    for f in "$state"/*; do
+        [[ -f $f ]] || continue
+        name=${f##*/}
+        is_live "$name" && continue
+        { read -r dir; read -r cmd; } < "$f"
+        names+=("$name") kinds+=(saved) dirs+=("$dir") cmds+=("$cmd") wins+=(0) times+=("$(stat -c %Y "$f")")
+        (( nsaved++ ))
+    done
+    names+=("") kinds+=(new) dirs+=("$PWD") cmds+=("") wins+=(0) times+=(0)
+    (( sel >= ${#names[@]} )) && sel=$(( ${#names[@]} - 1 ))
+}
+
+is_live() {
+    local n
+    for n in "${names[@]}"; do [[ $n == "$1" ]] && return; done
+    return 1
+}
+
+at() { printf '\e[%d;%dH' "$1" "$2"; }
+
+ago() {
+    local s=$(( now - $1 ))
+    if (( s < 60 )); then REPLY='just now'
+    elif (( s < 3600 )); then REPLY="$(( s / 60 ))m ago"
+    elif (( s < 86400 )); then REPLY="$(( s / 3600 ))h ago"
+    else REPLY="$(( s / 86400 ))d ago"
+    fi
+}
+
+# Emoji for the program running in a window.
+icon() {
+    case $1 in
+        bash|fish|zsh|sh)            REPLY=🐚 ;;
+        nvim|vim|vi|nano|hx|micro)   REPLY=📝 ;;
+        node|npm|npx|pnpm|yarn|bun|deno) REPLY=🟩 ;;
+        python*|pip*|uv)             REPLY=🐍 ;;
+        cargo|rustc)                 REPLY=🦀 ;;
+        go)                          REPLY=🐹 ;;
+        git|lazygit|tig)             REPLY=🌿 ;;
+        ssh|mosh)                    REPLY=🔐 ;;
+        docker|podman)               REPLY=🐳 ;;
+        htop|btop|top)               REPLY=📊 ;;
+        claude)                      REPLY=🤖 ;;
+        *)                           REPLY=🔧 ;;
+    esac
+}
+
+# Fills R with the activity panel for the selected entry: R[0] is the title.
+# $1 = panel width, $2 = panel height.
+activity() {
+    local w=$1 h=$2 name=${names[sel]} kind=${kinds[sel]} here line idx act wname cmd dir mark
+    here=${dirs[sel]/#$HOME/\~}
+    R=()
+    case $kind in
+        new)
+            R+=("$b$c✨ NEW SESSION$r" "📂 $c${here:0:w-4}$r" "" "${d}⏎ starts a fresh session in this folder$r")
+            return ;;
+        saved)
+            ago "${times[sel]}"
+            R+=("$b$m💤 ${name:0:w-4}$r" "📂 $c${here:0:w-4}$r" "🕒 ${d}last used $REPLY$r")
+            [[ -n ${cmds[sel]} ]] && R+=("$m❯$r  ${cmds[sel]:0:w-4}")
+            R+=("" "${d}⏎ opens it again in this folder and types$r" "${d}  the last command, so Enter continues it$r")
+            return ;;
+    esac
+    ago "${times[sel]}"
+    R+=("$b$m⚡ ${name:0:w-4}$r" "📂 $c${here:0:w-4}$r")
+    if [[ $kind == attached ]]; then R+=("🕒 ${d}active $REPLY · ${r}${g}attached$r")
+    else R+=("🕒 ${d}active $REPLY · in the background$r")
+    fi
+    [[ -n ${cmds[sel]} ]] && R+=("$m❯$r  ${cmds[sel]:0:w-4}")
+
+    R+=("" "$b🪟 WINDOWS$r")
+    while IFS=$'\t' read -r idx act wname cmd dir; do
+        icon "$cmd"
+        mark=' '; (( act )) && mark="$m▸$r"
+        printf -v line '%s %s %s %-10.10s %s%s · %s%s' "$mark" "$idx" "$REPLY" "$wname" "$d" "$cmd" "${dir/#$HOME/\~}" "$r"
+        R+=("${line:0:w+20}")
+    done < <(tmux list-windows -t "=$name" -F $'#{window_index}\t#{window_active}\t#{window_name}\t#{pane_current_command}\t#{pane_current_path}' 2>/dev/null)
+
+    # Last lines on screen in the active pane, as much as still fits.
+    local room=$(( h - ${#R[@]} - 2 )) out=() i
+    (( room > 0 )) || return
+    mapfile -t out < <(tmux capture-pane -p -J -t "=$name:" 2>/dev/null)
+    while (( ${#out[@]} )) && [[ -z ${out[-1]//[[:space:]]/} ]]; do unset 'out[-1]'; done
+    R+=("" "$b📜 RECENT OUTPUT$r")
+    i=$(( ${#out[@]} > room ? ${#out[@]} - room : 0 ))
+    while (( i < ${#out[@]} )) && [[ -z ${out[i]//[[:space:]]/} ]]; do (( i++ )); done
+    for (( ; i < ${#out[@]}; i++ )); do
+        line=${out[i]//$'\t'/  }
+        R+=("$d│$r ${line:0:w-4}")
+    done
+}
+
+draw() {
+    local rows cols lw rx ry rw i y info ico rule
+    read -r rows cols < <(stty size </dev/tty)
+    printf -v now '%(%s)T' -1
+
+    # Side by side when wide enough, otherwise activity goes under the list.
+    if (( cols >= 84 )); then
+        lw=32 rx=38 ry=4 rw=$(( cols - 40 ))
+    else
+        lw=$(( cols - 6 )) rx=3 ry=$(( 8 + ${#names[@]} )) rw=$(( cols - 6 ))
+    fi
+
+    printf '\e[H\e[2J'
+    at 2 3; printf '%s👻 gterminal%s   %s🟢 %d live  💤 %d saved%s' "$b$m" "$r" "$d" "$nlive" "$nsaved" "$r"
+
+    printf -v rule '%*s' "$lw" ''
+    at 4 3; printf '%s📋 SESSIONS%s' "$b" "$r"
+    at 5 3; printf '%s%s%s' "$d" "${rule// /─}" "$r"
+    for i in "${!names[@]}"; do
+        at $(( 6 + i )) 3
+        (( i == sel )) && printf '%s❯%s ' "$m" "$r" || printf '  '
+        case ${kinds[i]} in
+            attached) ico=🟢 info="🪟 ${wins[i]}" ;;
+            live)     ico=🔵 info="🪟 ${wins[i]}" ;;
+            saved)    ico=💤 info="${d}saved$r" ;;
+            new)      printf '✨ %snew session%s' "$c" "$r"; continue ;;
+        esac
+        (( i == sel )) && printf '%s %s%-14.14s%s  %s' "$ico" "$b$m" "${names[i]}" "$r" "$info" \
+                       || printf '%s %-14.14s  %s' "$ico" "${names[i]}" "$info"
+    done
+
+    activity "$rw" $(( rows - ry - 2 ))
+    if (( cols >= 84 )); then
+        for (( y = 4; y < rows - 1; y++ )); do at "$y" 36; printf '%s│%s' "$d" "$r"; done
+    fi
+    printf -v rule '%*s' "$(( rw < 40 ? rw : 40 ))" ''
+    at "$ry" "$rx"; printf '%s' "${R[0]}"
+    at $(( ry + 1 )) "$rx"; printf '%s%s%s' "$d" "${rule// /─}" "$r"
+    for (( i = 1; i < ${#R[@]} && ry + 1 + i < rows - 1; i++ )); do
+        at $(( ry + 1 + i )) "$rx"; printf '%s' "${R[i]}"
+    done
+
+    at "$rows" 3
+    printf '%s↑↓%s move   %s⏎%s open   %s1-9%s jump   %sn%s new   %sx%s kill   %sq%s quit%s' \
+        "$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r"
+}
+
+tui_on()  { printf '\e[?1049h\e[?25l'; }
+tui_off() { printf '\e[?25h\e[?1049l'; }
+
+# Attach (outside tmux) or switch (inside tmux) to session $1.
+go() {
+    tui_off
+    [[ -n $TMUX ]] && exec tmux switch-client -t "=$1"
+    exec tmux attach -t "=$1"
+}
+
+open() {
+    local name=${names[sel]} dir=${dirs[sel]} cmd=${cmds[sel]} id
+    case ${kinds[sel]} in
+        new) new_session; return ;;
+        saved)
+            [[ -d $dir ]] || dir=$HOME
+            id=$(tmux new-session -d -P -F '#{session_id}' -s "$name" -c "$dir") || return
+            # Type the last command (not run it) once the prompt is up, i.e. the cursor has moved.
+            [[ -n $cmd ]] && setsid -f sh -c '
+                i=0
+                while [ $i -lt 50 ] && [ "$(tmux display -p -t "$1:" "#{cursor_x}")" = 0 ]; do sleep 0.1; i=$((i+1)); done
+                tmux send-keys -t "$1:" -l -- "$2"' _ "$id" "$cmd"
+            ;;
+    esac
+    go "$name"
+}
+
+new_session() {
+    local def=${PWD##*/} name rows cols
+    [[ -z $def ]] && def=main
+    read -r rows cols < <(stty size </dev/tty)
+    at $(( rows - 1 )) 3; printf '\e[K\e[?25h✨ %sname%s %s[%s]%s: ' "$b" "$r" "$d" "$def" "$r"
+    read -r name
+    printf '\e[?25l'
+    name=${name:-$def}
+    name=${name//[.:]/_}
+    tmux has-session -t "=$name" 2>/dev/null || tmux new-session -d -s "$name" -c "$PWD" || return
+    go "$name"
+}
+
+forget() {
+    case ${kinds[sel]} in
+        new) return ;;
+        live|attached) tmux kill-session -t "=${names[sel]}" ;;
+    esac
+    rm -f "$state/${names[sel]}"
+    load
+}
+
+sel=0
+load
+trap tui_off EXIT
+trap : WINCH  # resize: interrupts read below, so the loop redraws
+tui_on
+while :; do
+    draw
+    IFS= read -rsn1 key || continue
+    [[ $key == $'\e' ]] && { IFS= read -rsn2 -t 0.05 rest; key+=$rest; }
+    case $key in
+        $'\e[A'|k) (( sel > 0 )) && (( sel-- )) ;;
+        $'\e[B'|j) (( sel < ${#names[@]} - 1 )) && (( sel++ )) ;;
+        [1-9])     (( key <= ${#names[@]} )) && { sel=$(( key - 1 )); open; tui_on; } ;;
+        '')        open; tui_on ;;
+        n)         new_session; tui_on ;;
+        x)         forget ;;
+        q|$'\e')   exit 0 ;;
+    esac
+done

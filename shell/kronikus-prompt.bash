@@ -13,6 +13,8 @@
 #   KRONIKUS_ANIM_MIN  min seconds before the spinner plays (default: 2)
 #   KRONIKUS_PICTURE   picture shown once when a terminal opens (Ghostty/kitty only)
 #   KRONIKUS_GREET   1 = show that greeting (default: 1)
+#   KRONIKUS_STARSHIP  starship config for the git part (default: ~/.config/kronikus/starship.toml)
+#                      if starship or this file is missing, a plain ⎇ branch is shown
 
 [[ $- == *i* ]] || return
 
@@ -22,11 +24,22 @@ KRONIKUS_ANIM=${KRONIKUS_ANIM:-1}
 KRONIKUS_ANIM_MIN=${KRONIKUS_ANIM_MIN:-2}
 KRONIKUS_PICTURE=${KRONIKUS_PICTURE:-$HOME/.config/kronikus/avatar.png}
 KRONIKUS_GREET=${KRONIKUS_GREET:-1}
+KRONIKUS_STARSHIP=${KRONIKUS_STARSHIP:-$HOME/.config/kronikus/starship.toml}
 
 __k_ready=
 __k_start=
 __k_cmd=
 __k_status=0
+__k_starship=
+[[ -f $KRONIKUS_STARSHIP ]] && __k_starship=$(type -P starship)
+
+# Inside tmux: remember the session, so each command can save "folder + last command" for gterminal.
+__k_tmux=
+__k_state=${XDG_STATE_HOME:-$HOME/.local/state}/kronikus/tmux
+if [[ -n $TMUX ]]; then
+    __k_tmux=$(tmux display -p -t "$TMUX_PANE" '#S' 2>/dev/null)
+    mkdir -p "$__k_state"
+fi
 
 # Current git branch, found by walking up to .git/HEAD (no git process spawned).
 __k_branch() {
@@ -74,6 +87,7 @@ __k_precmd() {
             printf '\r\e[K'
         fi
         printf "$icon %s \e[2m· ⏱ %s · 🕒 %(%H:%M:%S)T\e[0m\n" "$__k_cmd" "$dur" -1
+        [[ -n $__k_tmux && $__k_cmd != gterminal* ]] && printf '%s\n%s\n' "$PWD" "$__k_cmd" > "$__k_state/$__k_tmux"
         __k_start=
     fi
 
@@ -85,14 +99,21 @@ __k_precmd() {
     branch=$(__k_branch)
     (( st != 0 )) && arrow=31
     PS1="\n\[\e[35m\]╭─\[\e[0m\] ${KRONIKUS_AVATAR} \[\e[1;35m\]${KRONIKUS_NAME}\[\e[0m\] \[\e[2m\]in\[\e[0m\] 📂 \[\e[36m\]\w\[\e[0m\]"
-    [[ -n $branch ]] && PS1+=" \[\e[2m\]on\[\e[0m\] \[\e[32m\]⎇ ${branch//\\/\\\\}\[\e[0m\]"
+    if [[ -n $branch ]]; then
+        local git=
+        # starship only runs inside a repo, for its branch + status icons ( main !? ⇡1)
+        [[ -n $__k_starship ]] && git=$(STARSHIP_SHELL=bash STARSHIP_CONFIG=$KRONIKUS_STARSHIP "$__k_starship" prompt)
+        [[ -z $git ]] && git="\[\e[32m\]⎇ ${branch//\\/\\\\}\[\e[0m\]"
+        PS1+=" \[\e[2m\]on\[\e[0m\] $git"
+    fi
     PS1+="\n\[\e[35m\]╰─\[\e[${arrow}m\]❯\[\e[0m\] "
     __k_ready=1
 }
 
 # Tiny round picture + name, once per new terminal (kitty graphics protocol, 4×2 cells).
 __k_greet() {
-    [[ $KRONIKUS_GREET == 1 ]] || return
+    # Not inside tmux: there every new pane would greet again.
+    [[ $KRONIKUS_GREET == 1 && -z $TMUX ]] || return
     if [[ ($TERM_PROGRAM == ghostty || $TERM == xterm-kitty) && -f $KRONIKUS_PICTURE ]]; then
         local data chunk ctl='f=100,a=T,c=4,r=2,C=1,q=2,'
         data=$(base64 -w0 "$KRONIKUS_PICTURE")

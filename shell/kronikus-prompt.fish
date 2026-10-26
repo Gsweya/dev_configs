@@ -7,7 +7,7 @@
 # Source it from ~/.config/fish/config.fish:  source ~/.config/kronikus/prompt.fish
 # Same settings as the bash version (set them before sourcing):
 #   KRONIKUS_NAME, KRONIKUS_AVATAR, KRONIKUS_ANIM, KRONIKUS_ANIM_MIN,
-#   KRONIKUS_PICTURE, KRONIKUS_GREET
+#   KRONIKUS_PICTURE, KRONIKUS_GREET, KRONIKUS_STARSHIP
 
 status is-interactive; or return
 
@@ -17,6 +17,15 @@ set -q KRONIKUS_ANIM; or set -g KRONIKUS_ANIM 1
 set -q KRONIKUS_ANIM_MIN; or set -g KRONIKUS_ANIM_MIN 2
 set -q KRONIKUS_PICTURE; or set -g KRONIKUS_PICTURE ~/.config/kronikus/avatar.png
 set -q KRONIKUS_GREET; or set -g KRONIKUS_GREET 1
+set -q KRONIKUS_STARSHIP; or set -g KRONIKUS_STARSHIP ~/.config/kronikus/starship.toml
+
+# Inside tmux: remember the session, so each command can save "folder + last command" for gterminal.
+set -g __k_tmux
+set -g __k_state (set -q XDG_STATE_HOME; and echo $XDG_STATE_HOME; or echo ~/.local/state)/kronikus/tmux
+if set -q TMUX
+    set __k_tmux (tmux display -p -t "$TMUX_PANE" '#S' 2>/dev/null)
+    mkdir -p $__k_state
+end
 
 # Current git branch, found by walking up to .git/HEAD (no git process spawned).
 function __k_branch
@@ -59,6 +68,8 @@ function __k_postexec --on-event fish_postexec
         printf '\r\e[K'
     end
     printf '%s %s \e[2m· ⏱ %s · 🕒 %s\e[0m\n' $icon $argv[1] $dur (date +%H:%M:%S)
+    test -n "$__k_tmux"; and not string match -q "gterminal*" -- $argv[1]
+    and printf '%s\n%s\n' $PWD (string join '; ' -- (string split \n -- $argv[1])) >$__k_state/$__k_tmux
 end
 
 function fish_prompt
@@ -72,8 +83,14 @@ function fish_prompt
         (set_color -o magenta) $KRONIKUS_NAME (set_color normal) \
         (set_color -d) (set_color normal) \
         (set_color cyan) (string replace -r "^$HOME" '~' -- $PWD) (set_color normal)
-    test -n "$branch"; and printf ' %son%s %s⎇ %s%s' \
-        (set_color -d) (set_color normal) (set_color green) $branch (set_color normal)
+    if test -n "$branch"
+        set -l git
+        # starship only runs inside a repo, for its branch + status icons ( main !? ⇡1)
+        test -f "$KRONIKUS_STARSHIP"; and command -q starship
+        and set git (STARSHIP_SHELL=fish STARSHIP_CONFIG=$KRONIKUS_STARSHIP starship prompt | string replace -a \e'[J' '')
+        test -n "$git"; or set git (set_color green)"⎇ $branch"(set_color normal)
+        printf ' %son%s %s' (set_color -d) (set_color normal) "$git"
+    end
     printf '\n%s╰─%s❯%s ' (set_color magenta) (set_color $arrow) (set_color normal)
 end
 
@@ -85,7 +102,8 @@ end
 
 # Tiny round picture + name, once per new terminal (kitty graphics protocol, 4×2 cells).
 function fish_greeting
-    test "$KRONIKUS_GREET" = 1; or return
+    # Not inside tmux: there every new pane would greet again.
+    test "$KRONIKUS_GREET" = 1; and not set -q TMUX; or return
     if begin; test "$TERM_PROGRAM" = ghostty; or test "$TERM" = xterm-kitty; end; and test -f "$KRONIKUS_PICTURE"
         set -l data (base64 -w0 $KRONIKUS_PICTURE)
         set -l ctl 'f=100,a=T,c=4,r=2,C=1,q=2,'
