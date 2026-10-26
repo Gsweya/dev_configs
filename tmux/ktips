@@ -21,6 +21,7 @@ tips=(
     'Click your avatar in the top bar (or Ctrl+b S) for ⚙ settings'
     'ksettings: avatar, name, greeting, tips, see-through and bar position'
     'Window too see-through? ⚙ settings → See-through → 100% makes it solid'
+    'Cursor as a bar │, underline _, block █ or dot ●, thin or thick: ⚙ settings → Cursor'
     'In gterminal, r renames a session, saved ones too'
     'Click ❓ in the top bar (or Ctrl+b ?) for all shortcuts'
     'Click 🎨 in the top bar (or Ctrl+b T) to try other themes live'
@@ -116,7 +117,7 @@ draw() {
     printf '\e[H\e[2J\n  %s❓ help & tips%s\n' "$b$m" "$r"
 
     title '🖱️  TOP BAR' '(tmux)'
-    row '🥽 Kronikus' 'you: click for ⚙ settings (avatar, name, greeting…)'
+    row '🥽 Kronikus' 'you: click for ⚙ settings (avatar, greeting, cursor…)'
     row '👻 session' 'switch, reopen or start sessions (gterminal)'
     row '✎'          'rename the session'
     row '1 🐚 bash'  'click to switch · scroll the wheel to flip through'

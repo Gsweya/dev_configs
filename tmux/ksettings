@@ -9,14 +9,16 @@
 #     Picture       ~/.config/kronikus/avatar.png  ✓
 #   👋 GREETING     Greeting · Tip · Spinner    ⏎ on / off
 #   🎨 LOOK         Theme · See-through · Bar   ⏎ / ← →
+#   📍 CURSOR       │ _ █ ●  · Size · Blink     ← →
 #   🎓 HELP         Tour · Shortcuts
 #
 # Every change is saved right away:
 #   profile + greeting  → ~/.config/kronikus/settings  (KRONIKUS_*=value, read by
 #                         the bash and fish prompts; a variable you set yourself
 #                         before sourcing the prompt still wins)
-#   see-through         → ~/.config/ghostty/kronikus.ghostty, Ghostty reloads
-#   bar top / bottom    → ~/.config/kronikus/tmux.conf, tmux changes right away
+#   see-through, cursor → ~/.config/ghostty/kronikus.ghostty, Ghostty reloads
+#                         (the ● dot is drawn by ~/.config/ghostty/shaders/kronikus-cursor.glsl)
+#   bar, cursor in tmux → ~/.config/kronikus/tmux.conf, tmux changes right away
 # Avatar and name show up in the tmux bar at once; the greeting in new terminals.
 #
 # Open it by clicking your avatar in the tmux bar, prefix + S, ▾ → ⚙ settings,
@@ -26,18 +28,28 @@ conf=${XDG_CONFIG_HOME:-$HOME/.config}
 file=$conf/kronikus/settings
 gfile=$conf/ghostty/kronikus.ghostty
 tfile=$conf/kronikus/tmux.conf
+shader=$conf/ghostty/shaders/kronikus-cursor.glsl
 here=${BASH_SOURCE%/*}
 b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m' y=$'\e[33m'
 
 declare -A val=(
     [KRONIKUS_AVATAR]=🥽 [KRONIKUS_NAME]=Kronikus [KRONIKUS_PICTURE]=$conf/kronikus/avatar.png
     [KRONIKUS_GREET]=1 [KRONIKUS_TIPS]=1 [KRONIKUS_ANIM]=1
+    [KRONIKUS_CURSOR]=bar [KRONIKUS_CURSOR_SIZE]=3 [KRONIKUS_CURSOR_BLINK]=1
 )
-keys=(KRONIKUS_AVATAR KRONIKUS_NAME KRONIKUS_PICTURE KRONIKUS_GREET KRONIKUS_TIPS KRONIKUS_ANIM)
+keys=(KRONIKUS_AVATAR KRONIKUS_NAME KRONIKUS_PICTURE KRONIKUS_GREET KRONIKUS_TIPS KRONIKUS_ANIM
+      KRONIKUS_CURSOR KRONIKUS_CURSOR_SIZE KRONIKUS_CURSOR_BLINK)
 avatars=(🥽 🦊 🐱 🐼 🦉 🐙 🐧 🐸 🚀 👾 🧙 🤖 😎 ⚡ 🌙 🍀 🔥 👻)
 opacities=(1 0.97 0.93 0.88 0.8)
+# Cursor shapes with their look in the menu. Sizes 1-4: line thickness in px for
+# bar / underline, dot width as a part of the cell for the dot (a block fills the cell).
+shapes=(bar underline block dot)
+declare -A glyph=([bar]=│ [underline]=_ [block]=█ [dot]=●)
+thick=(0 1 2 3 5) dots=(0 0.45 0.65 0.85 1.0)
+line_names=('' thin normal bold heavy) dot_names=('' small medium large huge)
 
-# Menu rows: section title, or "kind|label|key". Kinds: avatar text path toggle theme opacity bar tour help.
+# Menu rows: section title, or "kind|label|key".
+# Kinds: avatar text path toggle theme opacity bar shape size tour help.
 rows=(
     '👤 PROFILE'
     'avatar|Avatar|KRONIKUS_AVATAR'
@@ -51,6 +63,10 @@ rows=(
     'theme|Theme|'
     'opacity|See-through|'
     'bar|Bar|'
+    '📍 CURSOR'
+    'shape|Shape|KRONIKUS_CURSOR'
+    'size|Size|KRONIKUS_CURSOR_SIZE'
+    'toggle|Blink|KRONIKUS_CURSOR_BLINK'
     '🎓 HELP'
     'tour|Tour|'
     'help|Shortcuts|'
@@ -73,6 +89,8 @@ load() {
     done
     bar=top
     [[ -f $tfile ]] && grep -q 'status-position bottom' "$tfile" && bar=bottom
+    [[ " ${shapes[*]} " == *" ${val[KRONIKUS_CURSOR]} "* ]] || val[KRONIKUS_CURSOR]=bar
+    [[ ${val[KRONIKUS_CURSOR_SIZE]} == [1-4] ]] || val[KRONIKUS_CURSOR_SIZE]=3
     theme=
     for f in "$conf/ghostty/theme.ghostty" "$conf/ghostty/config.ghostty"; do
         [[ -f $f ]] || continue
@@ -92,21 +110,80 @@ save() {
     tmux set -g @k-avatar "${val[KRONIKUS_AVATAR]}" \; set -g @k-user "${val[KRONIKUS_NAME]}" 2>/dev/null
 }
 
-set_opacity() {
+# Ghostty part: see-through + cursor, then a reload (SIGUSR2) for every window.
+write_ghostty() {
+    local shape=${val[KRONIKUS_CURSOR]} size=${val[KRONIKUS_CURSOR_SIZE]} blink=false
+    (( val[KRONIKUS_CURSOR_BLINK] )) && blink=true
     mkdir -p "${gfile%/*}"
-    printf '# Written by ksettings\nbackground-opacity = %s\n' "$1" > "$gfile"
-    opacity=$1
+    {   echo '# Written by ksettings (⚙ settings), overrides config.ghostty'
+        echo "background-opacity = $opacity"
+        # Ghostty's shell integration would force a bar at the prompt.
+        echo 'shell-integration-features = no-cursor'
+        if [[ $shape == dot ]]; then
+            # Ghostty has no round cursor: hide its block and let the shader draw a dot.
+            write_shader
+            echo 'cursor-style = block'
+            echo 'cursor-style-blink = false'
+            echo 'cursor-opacity = 0'
+            echo 'cursor-text = cell-foreground'
+            echo "custom-shader = $shader"
+            echo "custom-shader-animation = $blink"
+        else
+            echo "cursor-style = $shape"
+            echo "cursor-style-blink = $blink"
+            echo "adjust-cursor-thickness = ${thick[size]}"
+        fi
+    } > "$gfile"
     pkill -USR2 -x ghostty 2>/dev/null
 }
 
-set_bar() {
-    mkdir -p "${tfile%/*}"
+# tmux part: bar position + cursor shape (tmux would otherwise reset the cursor to a block).
+write_tmux() {
     # The empty spacer line only looks right between a top bar and the terminal.
-    local lines=2
-    [[ $1 == bottom ]] && lines=on
-    printf '# Written by ksettings\nset -g status-position %s\nset -g status %s\n' "$1" "$lines" > "$tfile"
-    bar=$1
-    tmux set -g status-position "$1" \; set -g status "$lines" 2>/dev/null
+    local lines=2 style=${val[KRONIKUS_CURSOR]}
+    [[ $bar == bottom ]] && lines=on
+    [[ $style == dot ]] && style=block  # the dot is a hidden block underneath
+    (( val[KRONIKUS_CURSOR_BLINK] )) && [[ ${val[KRONIKUS_CURSOR]} != dot ]] && style=blinking-$style
+    mkdir -p "${tfile%/*}"
+    printf '# Written by ksettings\nset -g status-position %s\nset -g status %s\nset -g cursor-style %s\n' \
+        "$bar" "$lines" "$style" > "$tfile"
+    tmux set -g status-position "$bar" \; set -g status "$lines" \; set -g cursor-style "$style" 2>/dev/null
+}
+
+# The ● dot: a Ghostty custom shader (GLSL), with size and blink written in.
+write_shader() {
+    local blink=0
+    (( val[KRONIKUS_CURSOR_BLINK] )) && blink=1
+    mkdir -p "${shader%/*}"
+    cat > "$shader" <<EOF
+// Kronikus ● dot cursor, written by ksettings (⚙ settings → Cursor).
+// Ghostty's own cursor is a hidden block (cursor-opacity = 0); this draws a dot
+// in the middle of its cell, a ring when the window is not focused, and the bar
+// or underline itself when a program (like vim) asks for one.
+const float SIZE = ${dots[val[KRONIKUS_CURSOR_SIZE]]};  // dot width, part of the cell width
+const bool BLINK = $( ((blink)) && echo true || echo false );
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+    fragColor = texture(iChannel0, fragCoord / iResolution.xy);
+    if (iCursorVisible == 0) return;
+
+    vec4 cur = iCurrentCursor;  // xy = top-left corner (y goes up), zw = width, height
+    float a;
+    if (iCurrentCursorStyle == CURSORSTYLE_BAR || iCurrentCursorStyle == CURSORSTYLE_UNDERLINE) {
+        vec2 p = fragCoord - cur.xy;
+        a = step(0.0, p.x) * step(p.x, cur.z) * step(-cur.w, p.y) * step(p.y, 0.0);
+    } else {
+        vec2 center = cur.xy + vec2(0.5, -0.5) * cur.zw;
+        float r = 0.5 * SIZE * cur.z;
+        float d = length(fragCoord - center);
+        a = clamp(r - d + 0.5, 0.0, 1.0);                        // soft edge
+        if (iFocus == 0) a *= clamp(d - r + 2.0, 0.0, 1.0);      // ring
+    }
+    // Blink: on for 0.6 s, off for 0.4 s, starting over whenever the cursor moves.
+    if (BLINK && iFocus != 0 && mod(iTime - iTimeCursorChange, 1.0) > 0.6) a = 0.0;
+    fragColor.rgb = mix(fragColor.rgb, iCurrentCursorColor.rgb, a);
+}
+EOF
 }
 
 at() { printf '\e[%d;%dH' "$1" "$2"; }
@@ -132,19 +209,35 @@ describe() {
                  fi
                  HINT='← → less / more see-through' ;;
         bar)     REPLY=$bar HINT='← → top / bottom (tmux)' ;;
+        shape)   local s
+                 REPLY=
+                 for s in "${shapes[@]}"; do
+                     [[ $s == "${val[$key]}" ]] && REPLY+="$b$m${glyph[$s]}$r  " || REPLY+="$d${glyph[$s]}$r  "
+                 done
+                 REPLY+=" ${val[$key]}" HINT='← → bar │  underline _  block █  dot ●' ;;
+        size)    local n=${val[$key]} on=▮ off=▯ names=("${line_names[@]}")
+                 [[ ${val[KRONIKUS_CURSOR]} == dot ]] && on=● off=○ names=("${dot_names[@]}")
+                 if [[ ${val[KRONIKUS_CURSOR]} == block ]]; then
+                     REPLY="${d}fills the cell$r" HINT='a block is always one cell'
+                 else
+                     REPLY=$m && for (( s = 1; s <= 4; s++ )); do (( s <= n )) && REPLY+=$on || REPLY+=$off; done
+                     REPLY+="$r ${names[n]}" HINT='← → smaller / bigger'
+                     [[ ${val[KRONIKUS_CURSOR]} != dot ]] && REPLY+=" $d${thick[n]} px$r"
+                 fi ;;
         tour)    REPLY= HINT='⏎ take the hands-on tour' ;;
         help)    REPLY= HINT='⏎ every click and key, and tips' ;;
     esac
 }
 
 draw() {
-    local i row=4 rows_ cols
+    local i row=4 rows_ cols gap=1
     read -r rows_ cols < <(stty size </dev/tty)
-    printf '\e[H\e[2J'
+    (( rows_ < 34 )) && gap=0  # no blank line between sections when it would not fit
+    printf '\e[?25l\e[H\e[2J'
     at 2 3; printf '%s⚙ settings%s   %ssaved as you go%s' "$b$m" "$r" "$d" "$r"
     for i in "${!rows[@]}"; do
         if [[ ${rows[i]} != *'|'* ]]; then
-            (( i )) && (( row++ ))
+            (( i )) && (( row += gap ))
             at $(( row++ )) 3; printf '%s%s%s' "$b" "${rows[i]}" "$r"
             continue
         fi
@@ -163,11 +256,14 @@ draw() {
     at $(( row++ )) 5; printf '%s %s%s%s %sis back%s' "${val[KRONIKUS_AVATAR]}" "$b$m" "${val[KRONIKUS_NAME]}" "$r" "$d" "$r"
     at $(( row++ )) 5; printf '%s╭─%s %s %s%s%s %sin%s 📂 %s~/code/app%s' "$m" "$r" "${val[KRONIKUS_AVATAR]}" "$b$m" "${val[KRONIKUS_NAME]}" "$r" "$d" "$r" "$c" "$r"
     at $(( row++ )) 5; printf '%s╰─❯%s' "$m" "$r"
+    local prompt_row=$(( row - 1 ))
 
     at "$rows_" 3
     printf '%s↑↓%s %smove%s   %s⏎%s %schange%s   %s← →%s %spick%s   %sq%s %sdone%s' \
         "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r"
     printf '   %snew terminals pick up greeting changes%s' "$d" "$r"
+    # The real cursor, after the preview prompt: shows the cursor settings live.
+    at "$prompt_row" 9; printf '\e[?25h'
 }
 
 # Asks for a value on the bottom line, prefilled with $1. Result in REPLY.
@@ -176,7 +272,6 @@ ask() {
     read -r rows_ cols < <(stty size </dev/tty)
     at $(( rows_ - 1 )) 3; printf '\e[K\e[?25h%s%s:%s ' "$b" "$2" "$r"
     read -r -e -i "$1" REPLY
-    printf '\e[?25l'
 }
 
 change() {  # $1 = -1 / +1 for ← →, 0 for ⏎
@@ -195,13 +290,23 @@ change() {  # $1 = -1 / +1 for ← →, 0 for ⏎
         text)    (( $1 )) && return; ask "${val[$key]}" "$label"; [[ -n $REPLY ]] && { val[$key]=$REPLY; save; } ;;
         path)    (( $1 )) && return; ask "${val[$key]/#$HOME/\~}" 'picture (a small square PNG)'
                  [[ -n $REPLY ]] && { val[$key]=${REPLY/#\~/$HOME}; save; } ;;
-        toggle)  val[$key]=$(( ! val[$key] )); save ;;
+        toggle)  val[$key]=$(( ! val[$key] )); save
+                 [[ $key == KRONIKUS_CURSOR_* ]] && { write_ghostty; write_tmux; } ;;
+        shape)   n=${#shapes[@]} i=0
+                 for (( ; i < n; i++ )); do [[ ${shapes[i]} == "${val[$key]}" ]] && break; done
+                 (( $1 )) || set -- 1
+                 val[$key]=${shapes[(i + $1 + n) % n]}; save; write_ghostty; write_tmux ;;
+        size)    [[ ${val[KRONIKUS_CURSOR]} == block ]] && return
+                 if (( $1 )); then i=$(( val[$key] + $1 )); (( i < 1 )) && i=1; (( i > 4 )) && i=4
+                 else i=$(( val[$key] % 4 + 1 ))  # ⏎ goes round
+                 fi
+                 val[$key]=$i; save; write_ghostty; write_tmux ;;
         opacity)
             n=${#opacities[@]} i=0
             for (( ; i < n; i++ )); do [[ ${opacities[i]} == "$opacity" ]] && break; done
             (( i == n )) && i=2
-            (( $1 )) && set_opacity "${opacities[(i + $1 + n) % n]}" ;;
-        bar)     [[ $bar == top ]] && set_bar bottom || set_bar top ;;
+            (( $1 )) && { opacity=${opacities[(i + $1 + n) % n]}; write_ghostty; } ;;
+        bar)     [[ $bar == top ]] && bar=bottom || bar=top; write_tmux ;;
         theme)   (( $1 )) && return; "$here/ktheme"; load; printf '\e[?1049h\e[?25l' ;;
         help)    (( $1 )) && return; "$here/ktips"; printf '\e[?1049h\e[?25l' ;;
         tour)    (( $1 )) && return

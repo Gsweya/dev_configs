@@ -144,7 +144,7 @@ Prefer it at the bottom? Change `status-position top` to `bottom` in `~/.tmux.co
 
 | Click | Does |
 | --- | --- |
-| `🥽 Kronikus` | ⚙ settings: avatar, name, picture, greeting, tips, see-through, bar position (also `prefix + S`) |
+| `🥽 Kronikus` | ⚙ settings: avatar, name, picture, greeting, tips, see-through, bar position, cursor (also `prefix + S`) |
 | `👻 work` (session name) | opens `gterminal` to switch, reopen or start a session |
 | `✎` | renames the session (also `prefix + $`, or `r` in gterminal) |
 | a window (`1 🐚 bash`) | switches to it. Scroll the wheel over the bar to flip through windows. Right-click any tab for ✎ rename, ◀ ▶ move, ＋ new after, ✕ close |
@@ -233,6 +233,11 @@ Click your avatar in the bar, press `prefix + S`, pick ▾ → ⚙ settings or t
     See-through   93%
     Bar           top
 
+  📍 CURSOR
+    Shape         │  _  █  ●   bar
+    Size          ▮▮▮▯ bold 3 px
+    Blink         ● on
+
   🎓 HELP
     Tour
     Shortcuts
@@ -247,6 +252,10 @@ Click your avatar in the bar, press `prefix + S`, pick ▾ → ⚙ settings or t
 - Profile and greeting go to `~/.config/kronikus/settings` (`KRONIKUS_*=value` lines), which the bash and fish prompts read. Avatar and name change in the tmux bar at once; the greeting in new terminals
 - **See-through** sets Ghostty's `background-opacity` (100% = solid) in `~/.config/ghostty/kronikus.ghostty` and reloads Ghostty. Turn it up if windows behind Ghostty show through and clutter the bar
 - **Bar** puts the tmux bar on top or at the bottom (`~/.config/kronikus/tmux.conf`, loaded at the end of the tmux config)
+- **Cursor**: `←` `→` pick the shape: `│` bar, `_` underline, `█` block or `●` dot. **Size** sets how thick a bar / underline is (1, 2, 3 or 5 px) or how big the dot is; a block always fills its cell. **Blink** turns blinking on or off. You see the real cursor change after the preview prompt
+  - Saved in `~/.config/ghostty/kronikus.ghostty` (Ghostty reloads at once) and as tmux's `cursor-style` in `~/.config/kronikus/tmux.conf`, because tmux would otherwise put a block back after programs like vim
+  - Ghostty has no round cursor, so the **dot** is a small custom shader (`~/.config/ghostty/shaders/kronikus-cursor.glsl`, written by ksettings): Ghostty's block is made invisible and the shader draws a dot in its place, a ring when the window isn't focused. When a program asks for a bar or underline (vim's insert mode), the shader draws that instead
+  - It also sets `shell-integration-features = no-cursor`, otherwise Ghostty's shell integration turns the cursor back into a bar at every prompt
 - **Theme**, **Tour** and **Shortcuts** open ktheme, ktour and ktips
 
 ### 🎓 ktour: hands-on tour
