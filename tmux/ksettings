@@ -7,7 +7,7 @@
 #   ❯ Avatar        🥽                          ← → pick · ⏎ type your own
 #     Name          Kronikus                    ⏎ edit
 #     Picture       ~/.config/kronikus/avatar.png  ✓
-#   👋 GREETING     Greeting · Tip · Spinner    ⏎ on / off
+#   👋 GREETING     Greeting · Tip · Spinner · Ask tab name   ⏎ on / off
 #   🎨 LOOK         Theme · See-through · Bar   ⏎ / ← →
 #   📍 CURSOR       │ _ █ ●  · Size · Blink     ← →
 #   🎓 HELP         Tour · Shortcuts
@@ -34,10 +34,10 @@ b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m' y=$'\e[33m'
 
 declare -A val=(
     [KRONIKUS_AVATAR]=🥽 [KRONIKUS_NAME]=Kronikus [KRONIKUS_PICTURE]=$conf/kronikus/avatar.png
-    [KRONIKUS_GREET]=1 [KRONIKUS_TIPS]=1 [KRONIKUS_ANIM]=1
+    [KRONIKUS_GREET]=1 [KRONIKUS_TIPS]=1 [KRONIKUS_ANIM]=1 [KRONIKUS_ASK_TAB]=1
     [KRONIKUS_CURSOR]=bar [KRONIKUS_CURSOR_SIZE]=3 [KRONIKUS_CURSOR_BLINK]=1
 )
-keys=(KRONIKUS_AVATAR KRONIKUS_NAME KRONIKUS_PICTURE KRONIKUS_GREET KRONIKUS_TIPS KRONIKUS_ANIM
+keys=(KRONIKUS_AVATAR KRONIKUS_NAME KRONIKUS_PICTURE KRONIKUS_GREET KRONIKUS_TIPS KRONIKUS_ANIM KRONIKUS_ASK_TAB
       KRONIKUS_CURSOR KRONIKUS_CURSOR_SIZE KRONIKUS_CURSOR_BLINK)
 avatars=(🥽 🦊 🐱 🐼 🦉 🐙 🐧 🐸 🚀 👾 🧙 🤖 😎 ⚡ 🌙 🍀 🔥 👻)
 opacities=(1 0.97 0.93 0.88 0.8)
@@ -59,6 +59,7 @@ rows=(
     'toggle|Greeting|KRONIKUS_GREET'
     'toggle|Tip|KRONIKUS_TIPS'
     'toggle|Spinner|KRONIKUS_ANIM'
+    'toggle|Ask tab name|KRONIKUS_ASK_TAB'
     '🎨 LOOK'
     'theme|Theme|'
     'opacity|See-through|'
@@ -201,7 +202,8 @@ describe() {
                  [[ -f ${val[$key]} ]] && REPLY+=" $g✓$r" || REPLY+=" ${y}missing$r"
                  HINT='⏎ edit path' ;;
         toggle)  (( val[$key] )) && REPLY="$g● on$r" || REPLY="$d○ off$r"
-                 HINT='⏎ on / off' ;;
+                 HINT='⏎ on / off'
+                 [[ $key == KRONIKUS_ASK_TAB ]] && HINT='⏎ on / off · new tabs ask for a name' ;;
         theme)   REPLY=${theme:-Ghostty default}; REPLY=${REPLY//light:/☀️ }; REPLY=${REPLY//,dark:/  🌙 }
                  HINT='⏎ open the theme picker' ;;
         opacity) if [[ $opacity == 1* ]]; then REPLY='100% solid'
@@ -232,7 +234,7 @@ describe() {
 draw() {
     local i row=4 rows_ cols gap=1
     read -r rows_ cols < <(stty size </dev/tty)
-    (( rows_ < 34 )) && gap=0  # no blank line between sections when it would not fit
+    (( rows_ < 35 )) && gap=0  # no blank line between sections when it would not fit
     printf '\e[?25l\e[H\e[2J'
     at 2 3; printf '%s⚙ settings%s   %ssaved as you go%s' "$b$m" "$r" "$d" "$r"
     for i in "${!rows[@]}"; do

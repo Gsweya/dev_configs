@@ -15,6 +15,7 @@
 #   KRONIKUS_GREET   1 = show that greeting (default: 1)
 #   KRONIKUS_TIPS    1 = add a random tip to it, from ktips (default: 1)
 #                    the very first terminal asks "take the tour?" (ktour) instead
+#   KRONIKUS_ASK_TAB 1 = a new tmux tab asks for its name, ⏎ keeps the automatic one (default: 1)
 #   KRONIKUS_STARSHIP  starship config for the git part (default: ~/.config/kronikus/starship.toml)
 #                      if starship or this file is missing, a plain ⎇ branch is shown
 
@@ -35,6 +36,7 @@ KRONIKUS_ANIM_MIN=${KRONIKUS_ANIM_MIN:-2}
 KRONIKUS_PICTURE=${KRONIKUS_PICTURE:-$HOME/.config/kronikus/avatar.png}
 KRONIKUS_GREET=${KRONIKUS_GREET:-1}
 KRONIKUS_TIPS=${KRONIKUS_TIPS:-1}
+KRONIKUS_ASK_TAB=${KRONIKUS_ASK_TAB:-1}
 KRONIKUS_STARSHIP=${KRONIKUS_STARSHIP:-$HOME/.config/kronikus/starship.toml}
 
 __k_ready=
@@ -125,6 +127,24 @@ __k_precmd() {
     fi
     PS1+="\n\[\e[35m\]╰─\[\e[${arrow}m\]❯\[\e[0m\] "
     __k_ready=1
+    __k_ask_tab
+}
+
+# A new tmux tab asks for its name once, right before its first prompt.
+# ⏎ keeps the automatic name (the running program); splits and restored sessions don't ask.
+__k_asked=
+__k_ask_tab() {
+    [[ -z $__k_asked && $KRONIKUS_ASK_TAB == 1 && -n $TMUX && -t 0 ]] || return
+    __k_asked=1
+    local panes asked auto name
+    IFS='|' read -r panes asked auto < <(tmux display -p -t "$TMUX_PANE" '#{window_panes}|#{@k-asked}|#{?automatic-rename,,#{window_name}}' 2>/dev/null)
+    [[ $panes == 1 && -z $asked ]] || return
+    auto=${auto:-${0##*[-/]}}  # automatic names follow the program, here the shell
+    tmux set -w -t "$TMUX_PANE" @k-asked 1
+    read -r -e -p $'\001\e[35m\002✎\001\e[0m\002 name this tab \001\e[2m\002(⏎ keeps '"$auto"$')\001\e[0m\002: ' name || { echo; return; }
+    name=${name#"${name%%[![:space:]]*}"} name=${name%"${name##*[![:space:]]}"}
+    [[ $name == exit ]] && exit  # e.g. the tour says "type exit" in a fresh tab
+    [[ -n $name ]] && tmux rename-window -t "$TMUX_PANE" -- "$name"
 }
 
 # Tiny round picture + name (+ a tip), once per new terminal (kitty graphics protocol, 4×2 cells).

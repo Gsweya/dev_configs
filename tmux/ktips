@@ -23,6 +23,7 @@ tips=(
     'Window too see-through? ⚙ settings → See-through → 100% makes it solid'
     'Cursor as a bar │, underline _, block █ or dot ●, thin or thick: ⚙ settings → Cursor'
     'In gterminal, r renames a session, saved ones too'
+    'New tabs ask for a name, ⏎ keeps the automatic one. ⚙ settings → Ask tab name turns it off'
     'Click ❓ in the top bar (or Ctrl+b ?) for all shortcuts'
     'Click 🎨 in the top bar (or Ctrl+b T) to try other themes live'
     'Themes follow your desktop: light when it is light, dark when it is dark'

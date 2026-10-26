@@ -7,7 +7,7 @@
 # Source it from ~/.config/fish/config.fish:  source ~/.config/kronikus/prompt.fish
 # Same settings as the bash version (ksettings, or set them before sourcing):
 #   KRONIKUS_NAME, KRONIKUS_AVATAR, KRONIKUS_ANIM, KRONIKUS_ANIM_MIN,
-#   KRONIKUS_PICTURE, KRONIKUS_GREET, KRONIKUS_TIPS, KRONIKUS_STARSHIP
+#   KRONIKUS_PICTURE, KRONIKUS_GREET, KRONIKUS_TIPS, KRONIKUS_ASK_TAB, KRONIKUS_STARSHIP
 
 status is-interactive; or return
 
@@ -27,6 +27,7 @@ set -q KRONIKUS_ANIM_MIN; or set -g KRONIKUS_ANIM_MIN 2
 set -q KRONIKUS_PICTURE; or set -g KRONIKUS_PICTURE ~/.config/kronikus/avatar.png
 set -q KRONIKUS_GREET; or set -g KRONIKUS_GREET 1
 set -q KRONIKUS_TIPS; or set -g KRONIKUS_TIPS 1
+set -q KRONIKUS_ASK_TAB; or set -g KRONIKUS_ASK_TAB 1
 set -q KRONIKUS_STARSHIP; or set -g KRONIKUS_STARSHIP ~/.config/kronikus/starship.toml
 
 # Inside tmux: remember the session, so each command can save "folder + last command" for gterminal.
@@ -114,6 +115,22 @@ function fish_title
     set -l dir (path basename -- $PWD)
     test -z "$dir"; and set dir /
     echo "👻 $dir"
+end
+
+# A new tmux tab asks for its name once, right before its first prompt.
+# ⏎ keeps the automatic name (the running program); splits and restored sessions don't ask.
+function __k_ask_tab --on-event fish_prompt
+    functions -e __k_ask_tab
+    test "$KRONIKUS_ASK_TAB" = 1; and set -q TMUX; and isatty stdin; or return
+    set -l info (string split -m2 '|' -- (tmux display -p -t "$TMUX_PANE" '#{window_panes}|#{@k-asked}|#{?automatic-rename,,#{window_name}}' 2>/dev/null))
+    test "$info[1]" = 1; and test -z "$info[2]"; or return
+    test -n "$info[3]"; or set info[3] fish  # automatic names follow the program, here fish
+    tmux set -w -t "$TMUX_PANE" @k-asked 1
+    read -l -P (set_color magenta)'✎'(set_color normal)" name this tab "(set_color -d)"(⏎ keeps $info[3])"(set_color normal)': ' name
+    or return
+    set name (string trim -- $name)
+    test "$name" = exit; and exit  # e.g. the tour says "type exit" in a fresh tab
+    test -n "$name"; and tmux rename-window -t "$TMUX_PANE" -- "$name"
 end
 
 # Tiny round picture + name (+ a tip), once per new terminal (kitty graphics protocol, 4×2 cells).

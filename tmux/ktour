@@ -68,6 +68,7 @@ The icon on each tab tells what runs in it: 🐚 shell, 📝 editor, 🟩 node, 
 
 step 1 check_newwin "Click $(K ＋) in the top bar to open a new terminal.
 It opens in the same folder as this one, and you land in it right away.
+It asks for a name for its tab: type one, or press Enter to keep the automatic one.
 
 Then click the $(K '🎓') tab in the top bar to come back here.
 

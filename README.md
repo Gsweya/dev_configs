@@ -111,6 +111,7 @@ export KRONIKUS_ANIM=1            # 0 turns off the finish spinner
 export KRONIKUS_ANIM_MIN=2        # seconds before the spinner plays
 export KRONIKUS_GREET=1           # 0 turns off the picture greeting
 export KRONIKUS_TIPS=1            # 0 hides the tip under the greeting
+export KRONIKUS_ASK_TAB=1         # 0: new tmux tabs don't ask for a name
 export KRONIKUS_PICTURE=~/.config/kronikus/avatar.png
 export KRONIKUS_STARSHIP=~/.config/kronikus/starship.toml  # starship config for the git part
 ```
@@ -149,7 +150,7 @@ Prefer it at the bottom? Change `status-position top` to `bottom` in `~/.tmux.co
 | `✎` | renames the session (also `prefix + $`, or `r` in gterminal) |
 | a window (`1 🐚 bash`) | switches to it. Scroll the wheel over the bar to flip through windows. Right-click any tab for ✎ rename, ◀ ▶ move, ＋ new after, ✕ close |
 | `◀` / `▶` | previous / next terminal (wraps around) |
-| `＋` | new terminal in the current folder |
+| `＋` | new terminal in the current folder. It asks for a tab name first: type one, or `⏎` to keep the automatic one (the running program) |
 | `▾` | menu: 🐚 bash, 🐟 fish, ↔ split side, ↕ split down, 👻 sessions, 🎨 theme, ⚙ settings, ✎ rename session, 🎓 tour, ❓ help |
 | `🎨` | theme picker (also `prefix + T`) |
 | `❓` | help & tips (also `prefix + ?`) |
@@ -227,6 +228,7 @@ Click your avatar in the bar, press `prefix + S`, pick ▾ → ⚙ settings or t
     Greeting      ● on
     Tip           ● on
     Spinner       ● on
+    Ask tab name  ● on
 
   🎨 LOOK
     Theme         ☀️ Neon Day  🌙 Neon Night
@@ -249,6 +251,7 @@ Click your avatar in the bar, press `prefix + S`, pick ▾ → ⚙ settings or t
 
 - Every change is **saved right away**, and the preview shows the greeting and prompt as you go
 - Avatar: `←` `→` flip through a few emoji, `⏎` types any emoji you like. Name and picture: `⏎` to edit
+- **Ask tab name**: every new tab (＋, ▾, `prefix + c`) asks `✎ name this tab (⏎ keeps bash):` before its first prompt. A name you type sticks; `⏎` or `Ctrl+C` keeps the automatic name. Splits, tabs you already named and sessions gterminal restores don't ask
 - Profile and greeting go to `~/.config/kronikus/settings` (`KRONIKUS_*=value` lines), which the bash and fish prompts read. Avatar and name change in the tmux bar at once; the greeting in new terminals
 - **See-through** sets Ghostty's `background-opacity` (100% = solid) in `~/.config/ghostty/kronikus.ghostty` and reloads Ghostty. Turn it up if windows behind Ghostty show through and clutter the bar
 - **Bar** puts the tmux bar on top or at the bottom (`~/.config/kronikus/tmux.conf`, loaded at the end of the tmux config)

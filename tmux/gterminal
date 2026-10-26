@@ -203,7 +203,8 @@ open() {
         new) new_session; return ;;
         saved)
             [[ -d $dir ]] || dir=$HOME
-            id=$(tmux new-session -d -P -F '#{session_id}' -s "$name" -c "$dir") || return
+            # @k-asked: its shell doesn't ask for a tab name (the last command gets typed there).
+            id=$(tmux new-session -d -P -F '#{session_id}' -s "$name" -c "$dir" \; set -w -t "=$name:" @k-asked 1) || return
             # Type the last command (not run it) once the prompt is up, i.e. the cursor has moved.
             [[ -n $cmd ]] && setsid -f sh -c '
                 i=0
