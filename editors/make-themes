@@ -1,0 +1,378 @@
+#!/usr/bin/env python3
+"""🧩 make-themes — turns the Ghostty themes into Zed and VS Code themes, same names and colors.
+
+Every file in ghostty/themes/ becomes one editor theme, so run this again after those change:
+
+    editors/zed/Neon.json, Solid.json, Monkeytype.json    Zed theme families
+    editors/kronikus-themes.vsix                          a VS Code extension with all of them
+
+Ghostty gives 16 terminal colors and a few more. An editor needs roles, so:
+
+    editor text      foreground
+    keywords         palette 5, the accent of the whole setup
+    strings          palette 2
+    numbers          palette 3
+    functions, tags  palette 4
+    types            palette 6
+    comments         palette 8, the quiet color
+    operators        palette 7
+    errors           palette 1, and nothing else is red, so red always means trouble
+
+A terminal can show its accent at 3:1 because it's only used for marks, but code is read all day:
+syntax colors are lifted to 4.5:1 if they're fainter (same hue, the UI keeps the exact accent),
+and the made ones turn out of the way if that brings two together.
+A theme with an accent as pale as its text gets bold keywords instead.
+
+The screens follow the look of the tmux bar: flat, one background, the accent only on what's
+active, the quiet color on the rest. Integrated terminals use the 16 colors unchanged.
+"""
+import importlib.machinery, io, json, math, os, re, sys, zipfile
+
+sys.dont_write_bytecode = True
+HERE = os.path.dirname(os.path.abspath(__file__))
+THEMES = os.path.join(HERE, '..', 'ghostty', 'themes')
+ZED = os.path.join(HERE, 'zed')
+VSIX = os.path.join(HERE, 'kronikus-themes.vsix')
+VERSION = '1.0.0'  # VS Code only updates with --force on the same version
+load = lambda name: importlib.machinery.SourceFileLoader(name, os.path.join(HERE, '..', 'ghostty', name)).load_module()
+tune, mt = load('tune-themes'), load('monkeytype-themes')
+lum, contrast, mix, distance, lch, from_lch, lift = tune.lum, tune.contrast, tune.mix, tune.distance, tune.lch, tune.from_lch, mt.lift
+
+FAMILIES = {'Neon': 'Neon ', 'Solid': 'Solid ', 'Monkeytype': 'MT '}  # family → name prefix
+AUTHORS = {'Neon': 'Kronikus', 'Solid': 'Kronikus, tuned from the original themes',
+           'Monkeytype': 'Monkeytype (GPL-3.0), converted by Kronikus'}
+CLEAR = '#00000000'
+
+def tint(base, color, amount, *needs):
+    """base moved towards color, as far as every (text, contrast) in needs stays readable on it."""
+    steps = (mix(base, color, amount * (1 - i / 20)) for i in range(20))
+    return next((c for c in steps if all(contrast(text, c) >= r for text, r in needs)), base)
+
+def roles(path):
+    """The Ghostty theme as named editor colors."""
+    t = tune.read(path)
+    bg, fg, p = t['background'], t['foreground'], t['palette']
+    dark, quiet, accent = lum(fg) > lum(bg), p[8], p[5]
+    # On a mid-tone background 4.5:1 can be out of reach or only near white: stay colored.
+    target = min(4.5, .75 * contrast('#ffffff' if dark else '#000000', bg))
+    code = lambda c: c if contrast(c, bg) >= target else lift(c, bg, target, dark)
+    keep = {'keyword', 'red'}  # the theme's own colors: the others make way for them, and each other
+    def made(i):  # a pure white accent leaves these grey in the palette: give them back their hue
+        L, C, _ = lch(p[i])
+        return p[i] if C >= .03 else from_lch(min(L, .8), .08, math.radians(mt.HUES[i]))
+    syn = {'keyword': code(p[5]), 'red': code(p[1])} | {k: code(made(i)) for k, i in dict(green=2, yellow=3, blue=4, cyan=6).items()}
+    for _ in range(60):
+        d, a, b = min((distance(syn[a], syn[b]), a, b) for a in syn for b in syn if a < b and not {a, b} <= keep)
+        if d >= mt.APART:
+            break
+        for k, other in ((a, b), (b, a)):
+            if k not in keep:
+                L, C, H = lch(syn[k])
+                syn[k] = code(from_lch(L, C, H + math.copysign(math.radians(5), math.remainder(H - lch(syn[other])[2], math.tau))))
+    # Surfaces for chips and picked rows, which text sits on.
+    chip = tint(bg, p[0], 1, (fg, 4.5), (quiet, 3))
+    pick = tint(chip, accent, .3, (fg, 4.2))
+    if contrast(pick, chip) < 1.12:  # an accent as pale as the text can't mark a row: away from the text then
+        pick = mix(chip, '#000000' if dark else '#ffffff', .25)
+    return dict(
+        dark=dark, bold=distance(accent, fg) < mt.APART, bg=bg, fg=fg, accent=accent, quiet=quiet, dim=p[7],
+        chip=chip, pick=pick, line=mix(bg, quiet, .25), hover=fg + '14', sel=t['selection-background'],
+        caret=t['cursor-color'], caret_text=t['cursor-text'], palette=p, pink=code(p[13]), special=code(p[14]),
+        on_accent=max((bg, fg, '#000000', '#ffffff'), key=lambda c: contrast(c, accent)), **syn)
+
+# ── Syntax: role → color, then the same roles for each editor ───────
+def syntax(r):
+    return dict(keyword=r['keyword'], string=r['green'], number=r['yellow'], function=r['blue'], type=r['cyan'],
+                comment=r['quiet'], operator=r['dim'], punctuation=r['dim'], tag=r['blue'], attribute=r['yellow'],
+                variable=r['fg'], special=r['special'], error=r['red'])
+
+ZED_SYNTAX = {
+    'attribute': 'attribute', 'boolean': 'number', 'comment': 'comment', 'comment.doc': 'comment',
+    'constant': 'number', 'constructor': 'type', 'embedded': 'variable', 'emphasis': 'keyword',
+    'emphasis.strong': 'number', 'enum': 'type', 'function': 'function', 'hint': 'comment', 'keyword': 'keyword',
+    'label': 'function', 'link_text': 'function', 'link_uri': 'string', 'number': 'number', 'operator': 'operator',
+    'predictive': 'comment', 'preproc': 'keyword', 'primary': 'variable', 'property': 'variable',
+    'punctuation': 'punctuation', 'punctuation.bracket': 'punctuation', 'punctuation.delimiter': 'punctuation',
+    'punctuation.list_marker': 'keyword', 'punctuation.special': 'keyword', 'string': 'string',
+    'string.escape': 'special', 'string.regex': 'special', 'string.special': 'special',
+    'string.special.symbol': 'number', 'tag': 'tag', 'text.literal': 'string', 'title': 'keyword', 'type': 'type',
+    'type.interface': 'type', 'type.super': 'type', 'variable': 'variable', 'variable.member': 'variable',
+    'variable.parameter': 'variable', 'variable.special': 'keyword', 'variant': 'type',
+}
+ZED_STYLE = {'comment': {'font_style': 'italic'}, 'comment.doc': {'font_style': 'italic'}, 'emphasis': {'font_style': 'italic'},
+             'emphasis.strong': {'font_weight': 700}, 'title': {'font_weight': 700}}
+
+VSCODE_SCOPES = [  # order matters: the most specific scope wins, then the last one
+    ('variable, variable.other, variable.parameter, variable.other.property, support.variable, meta.object-literal.key', 'variable', ''),
+    ('keyword, storage, storage.type, storage.modifier, keyword.control, keyword.other, variable.language, meta.decorator, punctuation.decorator, entity.name.decorator, meta.preprocessor, punctuation.definition.directive', 'keyword', ''),
+    ('keyword.operator, punctuation, meta.brace, meta.bracket, punctuation.separator, punctuation.terminator, punctuation.accessor', 'operator', ''),
+    ('keyword.operator.new, keyword.operator.expression, keyword.operator.logical.python, keyword.operator.wordlike, keyword.operator.sizeof, keyword.operator.instanceof, keyword.operator.typeof', 'keyword', ''),
+    ('string, string.quoted, string.template, punctuation.definition.string, markup.inline.raw, markup.fenced_code, markup.raw', 'string', ''),
+    ('constant.character.escape, string.regexp, constant.other.placeholder, constant.character.format, punctuation.definition.template-expression, punctuation.section.embedded', 'special', ''),
+    ('constant, constant.numeric, constant.language, constant.character, keyword.other.unit, variable.other.constant, variable.other.enummember, support.constant', 'number', ''),
+    ('entity.name.function, support.function, meta.function-call, entity.name.function.method, markup.underline.link, string.other.link, entity.name.label', 'function', ''),
+    ('entity.name.type, entity.name.class, entity.name.namespace, entity.name.module, entity.other.inherited-class, support.type, support.class, storage.type.primitive, storage.type.built-in', 'type', ''),
+    ('entity.name.tag, punctuation.definition.tag, support.tag', 'tag', ''),
+    ('entity.other.attribute-name', 'attribute', ''),
+    ('markup.heading, entity.name.section', 'keyword', 'bold'),
+    ('markup.bold', 'number', 'bold'),
+    ('markup.italic', 'keyword', 'italic'),
+    ('markup.quote', 'comment', 'italic'),
+    ('markup.list punctuation.definition.list.begin, beginning.punctuation.definition.list', 'keyword', ''),
+    ('markup.inserted', 'string', ''),
+    ('markup.changed', 'number', ''),
+    ('comment, punctuation.definition.comment', 'comment', 'italic'),
+    ('markup.deleted, invalid, invalid.illegal, invalid.deprecated', 'error', ''),
+]
+
+# ── Zed ──────────────────────────────────────────────
+def zed_theme(name, r):
+    bg, fg, accent, quiet, dim, chip, pick, line, hover = (r[k] for k in 'bg fg accent quiet dim chip pick line hover'.split())
+    key, red, green, yellow, blue, cyan = (r[k] for k in 'keyword red green yellow blue cyan'.split())
+    sel, p = r['sel'], r['palette']
+    style = {
+        'accents': [key, blue, cyan, green, yellow, r['pink']],
+        'background': bg, 'surface.background': bg, 'elevated_surface.background': chip,
+        'border': line, 'border.variant': line, 'border.focused': accent, 'border.selected': accent,
+        'border.transparent': CLEAR, 'border.disabled': line, 'drop_target.background': accent + '33',
+        'element.background': chip, 'element.hover': hover, 'element.active': accent + '33',
+        'element.selected': pick, 'element.disabled': chip,
+        'ghost_element.background': CLEAR, 'ghost_element.hover': hover, 'ghost_element.active': accent + '33',
+        'ghost_element.selected': pick, 'ghost_element.disabled': CLEAR,
+        'text': fg, 'text.muted': quiet, 'text.placeholder': quiet, 'text.disabled': quiet + 'aa', 'text.accent': key,
+        'icon': dim, 'icon.muted': quiet, 'icon.placeholder': quiet, 'icon.disabled': quiet + 'aa', 'icon.accent': key,
+        'status_bar.background': bg, 'title_bar.background': bg, 'title_bar.inactive_background': bg,
+        'toolbar.background': bg, 'tab_bar.background': chip, 'tab.active_background': bg, 'tab.inactive_background': chip,
+        'panel.background': bg, 'panel.focused_border': accent, 'panel.indent_guide': quiet + '33',
+        'panel.indent_guide_active': quiet + '88', 'panel.indent_guide_hover': quiet + '88',
+        'panel.overlay_background': chip, 'panel.overlay_hover': pick,
+        'pane.focused_border': accent, 'pane_group.border': line, 'link_text.hover': blue,
+        'search.match_background': yellow + '55',
+        'scrollbar.thumb.background': quiet + '33', 'scrollbar.thumb.hover_background': quiet + '55',
+        'scrollbar.thumb.active_background': quiet + '77', 'scrollbar.thumb.border': CLEAR,
+        'scrollbar.track.background': CLEAR, 'scrollbar.track.border': CLEAR,
+        'minimap.thumb.background': quiet + '33', 'minimap.thumb.hover_background': quiet + '55',
+        'minimap.thumb.active_background': quiet + '77', 'minimap.thumb.border': CLEAR,
+        'editor.background': bg, 'editor.foreground': fg, 'editor.gutter.background': bg,
+        'editor.subheader.background': chip, 'editor.active_line.background': fg + '0a',
+        'editor.highlighted_line.background': fg + '14', 'editor.line_number': quiet, 'editor.active_line_number': accent,
+        'editor.invisible': quiet + '55', 'editor.wrap_guide': line, 'editor.active_wrap_guide': quiet,
+        'editor.indent_guide': quiet + '33', 'editor.indent_guide_active': quiet + '88',
+        'editor.document_highlight.read_background': sel + '44', 'editor.document_highlight.write_background': sel + '66',
+        'editor.document_highlight.bracket_background': accent + '33', 'editor.code_lens.foreground': quiet,
+        'editor.diff_hunk.added.background': green + '26', 'editor.diff_hunk.added.hollow_background': green + '14',
+        'editor.diff_hunk.added.hollow_border': green + '88', 'editor.diff_hunk.deleted.background': red + '26',
+        'editor.diff_hunk.deleted.hollow_background': red + '14', 'editor.diff_hunk.deleted.hollow_border': red + '88',
+        'version_control.added': green, 'version_control.deleted': red, 'version_control.modified': yellow,
+        'version_control.renamed': cyan, 'version_control.conflict': key, 'version_control.ignored': quiet,
+        'version_control.word_added': green + '44', 'version_control.word_deleted': red + '44',
+        'version_control.conflict_marker.ours': green + '26', 'version_control.conflict_marker.theirs': blue + '26',
+        'vim.normal.background': accent, 'vim.insert.background': green, 'vim.replace.background': red,
+        'vim.visual.background': yellow, 'vim.visual_line.background': yellow, 'vim.visual_block.background': yellow,
+        'vim.yank.background': yellow + '55', 'vim.helix_normal.background': accent, 'vim.helix_select.background': yellow,
+        'vim.helix_jump_label.foreground': accent, 'debugger.accent': red,
+        'terminal.background': bg, 'terminal.foreground': fg, 'terminal.bright_foreground': p[15],
+        'terminal.dim_foreground': dim, 'terminal.ansi.background': bg,
+        'players': [{'cursor': r['caret'], 'background': accent, 'selection': sel + '99'}]
+                 + [{'cursor': c, 'background': c, 'selection': c + '33'} for c in (blue, green, yellow, cyan, r['pink'], red)],
+    }
+    for status, color in dict(conflict=yellow, created=green, deleted=red, error=red, hidden=quiet, hint=quiet, ignored=quiet,
+                              info=blue, modified=yellow, predictive=quiet, renamed=cyan, success=green, unreachable=quiet,
+                              warning=yellow).items():
+        style |= {status: color, f'{status}.background': color + '1a', f'{status}.border': color + '55'}
+    names = 'black red green yellow blue magenta cyan white'.split()
+    for i, n in enumerate(names):
+        style[f'terminal.ansi.{n}'] = p[i]
+        style[f'terminal.ansi.bright_{n}'] = p[i + 8]
+        style[f'terminal.ansi.dim_{n}'] = mix(p[i], bg, .3)
+    colors = syntax(r)
+    style['syntax'] = {k: {'color': colors[role], **ZED_STYLE.get(k, {}), **({'font_weight': 700} if r['bold'] and role == 'keyword' else {})}
+                       for k, role in ZED_SYNTAX.items()}
+    return {'name': name, 'appearance': 'dark' if r['dark'] else 'light', 'style': style}
+
+# ── VS Code ──────────────────────────────────────────
+def vscode_theme(name, r):
+    bg, fg, accent, quiet, dim, chip, pick, line, hover = (r[k] for k in 'bg fg accent quiet dim chip pick line hover'.split())
+    key, red, green, yellow, blue, cyan = (r[k] for k in 'keyword red green yellow blue cyan'.split())
+    sel, on, p = r['sel'], r['on_accent'], r['palette']
+    c = {
+        'foreground': fg, 'descriptionForeground': quiet, 'disabledForeground': quiet + 'aa', 'errorForeground': red,
+        'icon.foreground': dim, 'focusBorder': accent, 'selection.background': sel + '99', 'widget.border': line,
+        'widget.shadow': '#00000033', 'sash.hoverBorder': accent, 'progressBar.background': accent,
+        'textLink.foreground': key, 'textLink.activeForeground': blue, 'textPreformat.foreground': green,
+        'textPreformat.background': chip, 'textCodeBlock.background': chip, 'textBlockQuote.background': chip,
+        'textBlockQuote.border': accent, 'textSeparator.foreground': line, 'toolbar.hoverBackground': hover,
+        'badge.background': accent, 'badge.foreground': on, 'button.background': accent, 'button.foreground': on,
+        'button.hoverBackground': mix(accent, fg, .15), 'button.secondaryBackground': chip,
+        'button.secondaryForeground': fg, 'button.secondaryHoverBackground': pick,
+        'input.background': chip, 'input.foreground': fg, 'input.border': line, 'input.placeholderForeground': quiet,
+        'inputOption.activeBackground': accent + '33', 'inputOption.activeBorder': accent, 'inputOption.activeForeground': fg,
+        'inputValidation.errorBackground': chip, 'inputValidation.errorBorder': red,
+        'inputValidation.warningBackground': chip, 'inputValidation.warningBorder': yellow,
+        'inputValidation.infoBackground': chip, 'inputValidation.infoBorder': blue,
+        'dropdown.background': chip, 'dropdown.foreground': fg, 'dropdown.border': line, 'dropdown.listBackground': chip,
+        'checkbox.background': chip, 'checkbox.foreground': fg, 'checkbox.border': line,
+        'keybindingLabel.background': chip, 'keybindingLabel.foreground': fg, 'keybindingLabel.border': line,
+        'keybindingLabel.bottomBorder': line, 'settings.headerForeground': fg, 'settings.modifiedItemIndicator': accent,
+        'list.activeSelectionBackground': pick, 'list.activeSelectionForeground': fg, 'list.focusBackground': pick,
+        'list.focusForeground': fg, 'list.inactiveSelectionBackground': chip, 'list.inactiveSelectionForeground': fg,
+        'list.hoverBackground': hover, 'list.hoverForeground': fg, 'list.highlightForeground': key,
+        'list.focusHighlightForeground': key, 'list.dropBackground': accent + '33', 'list.errorForeground': red,
+        'list.warningForeground': yellow, 'list.invalidItemForeground': red, 'list.deemphasizedForeground': quiet,
+        'tree.indentGuidesStroke': line,
+        'activityBar.background': bg, 'activityBar.foreground': accent, 'activityBar.inactiveForeground': quiet,
+        'activityBar.border': line, 'activityBar.activeBorder': accent, 'activityBarBadge.background': accent,
+        'activityBarBadge.foreground': on,
+        'sideBar.background': bg, 'sideBar.foreground': fg, 'sideBar.border': line, 'sideBarTitle.foreground': quiet,
+        'sideBarSectionHeader.background': bg, 'sideBarSectionHeader.foreground': quiet, 'sideBarSectionHeader.border': line,
+        'titleBar.activeBackground': bg, 'titleBar.activeForeground': fg, 'titleBar.inactiveBackground': bg,
+        'titleBar.inactiveForeground': quiet, 'titleBar.border': line,
+        'commandCenter.background': chip, 'commandCenter.foreground': quiet, 'commandCenter.activeBackground': hover,
+        'commandCenter.activeForeground': fg, 'commandCenter.border': line, 'commandCenter.inactiveForeground': quiet,
+        'commandCenter.inactiveBorder': line,
+        'menubar.selectionBackground': hover, 'menubar.selectionForeground': fg, 'menu.background': chip,
+        'menu.foreground': fg, 'menu.selectionBackground': pick, 'menu.selectionForeground': fg,
+        'menu.separatorBackground': line, 'menu.border': line,
+        'statusBar.background': bg, 'statusBar.foreground': quiet, 'statusBar.border': line,
+        'statusBar.noFolderBackground': bg, 'statusBar.noFolderForeground': quiet, 'statusBar.debuggingBackground': accent,
+        'statusBar.debuggingForeground': on, 'statusBarItem.hoverBackground': hover, 'statusBarItem.hoverForeground': fg,
+        'statusBarItem.remoteBackground': accent, 'statusBarItem.remoteForeground': on,
+        'statusBarItem.prominentBackground': chip, 'statusBarItem.prominentForeground': fg,
+        'statusBarItem.errorBackground': red, 'statusBarItem.errorForeground': bg,
+        'statusBarItem.warningBackground': yellow, 'statusBarItem.warningForeground': bg,
+        'editorGroup.border': line, 'editorGroup.dropBackground': accent + '22', 'editorGroupHeader.tabsBackground': chip,
+        'editorGroupHeader.tabsBorder': line, 'editorGroupHeader.noTabsBackground': bg,
+        'tab.activeBackground': bg, 'tab.activeForeground': fg, 'tab.activeBorderTop': accent, 'tab.activeBorder': bg,
+        'tab.inactiveBackground': chip, 'tab.inactiveForeground': quiet, 'tab.border': line, 'tab.hoverBackground': bg,
+        'tab.hoverForeground': fg, 'tab.unfocusedActiveBackground': bg, 'tab.unfocusedActiveForeground': dim,
+        'tab.unfocusedActiveBorderTop': quiet, 'tab.unfocusedInactiveForeground': quiet,
+        'tab.unfocusedHoverBackground': bg, 'tab.lastPinnedBorder': line, 'tab.dragAndDropBorder': accent,
+        'breadcrumb.foreground': quiet, 'breadcrumb.focusForeground': fg, 'breadcrumb.activeSelectionForeground': accent,
+        'breadcrumbPicker.background': chip,
+        'panel.background': bg, 'panel.border': line, 'panel.dropBorder': accent, 'panelTitle.activeForeground': fg,
+        'panelTitle.activeBorder': accent, 'panelTitle.inactiveForeground': quiet, 'panelSection.border': line,
+        'panelSectionHeader.background': bg, 'panelSectionHeader.foreground': quiet,
+        'quickInput.background': chip, 'quickInput.foreground': fg, 'quickInputTitle.background': chip,
+        'quickInputList.focusBackground': pick, 'quickInputList.focusForeground': fg,
+        'pickerGroup.foreground': key, 'pickerGroup.border': line,
+        'notifications.background': chip, 'notifications.foreground': fg, 'notifications.border': line,
+        'notificationCenterHeader.background': chip, 'notificationCenterHeader.foreground': fg,
+        'notificationCenter.border': line, 'notificationToast.border': line, 'notificationLink.foreground': key,
+        'notificationsErrorIcon.foreground': red, 'notificationsWarningIcon.foreground': yellow,
+        'notificationsInfoIcon.foreground': blue, 'banner.background': chip, 'banner.foreground': fg,
+        'banner.iconForeground': key, 'debugToolBar.background': chip, 'debugToolBar.border': line,
+        'scrollbar.shadow': CLEAR, 'scrollbarSlider.background': quiet + '33', 'scrollbarSlider.hoverBackground': quiet + '55',
+        'scrollbarSlider.activeBackground': quiet + '77', 'minimap.background': bg, 'minimap.selectionHighlight': sel + '99',
+        'minimap.findMatchHighlight': yellow + '88', 'minimap.errorHighlight': red, 'minimap.warningHighlight': yellow,
+        'editor.background': bg, 'editor.foreground': fg, 'editorCursor.foreground': r['caret'],
+        'editorCursor.background': r['caret_text'], 'editor.selectionBackground': sel + '99',
+        'editor.inactiveSelectionBackground': sel + '55', 'editor.selectionHighlightBackground': sel + '44',
+        'editor.wordHighlightBackground': sel + '44', 'editor.wordHighlightStrongBackground': sel + '66',
+        'editor.findMatchBackground': yellow + '66', 'editor.findMatchHighlightBackground': yellow + '33',
+        'editor.findRangeHighlightBackground': hover, 'editor.hoverHighlightBackground': sel + '44',
+        'editor.rangeHighlightBackground': hover, 'editor.lineHighlightBackground': fg + '0a',
+        'editor.lineHighlightBorder': CLEAR, 'editor.foldBackground': fg + '0a',
+        'editorLineNumber.foreground': quiet, 'editorLineNumber.activeForeground': accent, 'editorRuler.foreground': line,
+        'editorWhitespace.foreground': quiet + '55', 'editorIndentGuide.background1': quiet + '33',
+        'editorIndentGuide.activeBackground1': quiet + '88', 'editorCodeLens.foreground': quiet,
+        'editorInlayHint.foreground': quiet, 'editorInlayHint.background': CLEAR, 'editorGhostText.foreground': quiet,
+        'editorLink.activeForeground': blue, 'editorBracketMatch.background': accent + '33',
+        'editorBracketMatch.border': accent + '88', 'editorBracketHighlight.unexpectedBracket.foreground': red,
+        'editorGutter.background': bg, 'editorGutter.addedBackground': green, 'editorGutter.modifiedBackground': yellow,
+        'editorGutter.deletedBackground': red, 'editorError.foreground': red, 'editorWarning.foreground': yellow,
+        'editorInfo.foreground': blue, 'editorHint.foreground': quiet, 'problemsErrorIcon.foreground': red,
+        'problemsWarningIcon.foreground': yellow, 'problemsInfoIcon.foreground': blue,
+        'editorOverviewRuler.border': CLEAR, 'editorOverviewRuler.errorForeground': red,
+        'editorOverviewRuler.warningForeground': yellow, 'editorOverviewRuler.infoForeground': blue,
+        'editorOverviewRuler.addedForeground': green, 'editorOverviewRuler.modifiedForeground': yellow,
+        'editorOverviewRuler.deletedForeground': red, 'editorOverviewRuler.findMatchForeground': yellow,
+        'editorWidget.background': chip, 'editorWidget.foreground': fg, 'editorWidget.border': line,
+        'editorHoverWidget.background': chip, 'editorHoverWidget.foreground': fg, 'editorHoverWidget.border': line,
+        'editorHoverWidget.statusBarBackground': chip, 'editorSuggestWidget.background': chip,
+        'editorSuggestWidget.foreground': fg, 'editorSuggestWidget.border': line,
+        'editorSuggestWidget.selectedBackground': pick, 'editorSuggestWidget.selectedForeground': fg,
+        'editorSuggestWidget.highlightForeground': key, 'editorSuggestWidget.focusHighlightForeground': key,
+        'peekView.border': accent, 'peekViewTitle.background': chip, 'peekViewTitleLabel.foreground': fg,
+        'peekViewTitleDescription.foreground': quiet, 'peekViewEditor.background': bg, 'peekViewEditorGutter.background': bg,
+        'peekViewEditor.matchHighlightBackground': yellow + '55', 'peekViewResult.background': chip,
+        'peekViewResult.fileForeground': fg, 'peekViewResult.lineForeground': dim,
+        'peekViewResult.matchHighlightBackground': yellow + '55', 'peekViewResult.selectionBackground': pick,
+        'peekViewResult.selectionForeground': fg,
+        'diffEditor.insertedTextBackground': green + '26', 'diffEditor.removedTextBackground': red + '26',
+        'diffEditor.insertedLineBackground': green + '14', 'diffEditor.removedLineBackground': red + '14',
+        'diffEditor.border': line, 'merge.currentHeaderBackground': green + '44', 'merge.currentContentBackground': green + '1a',
+        'merge.incomingHeaderBackground': blue + '44', 'merge.incomingContentBackground': blue + '1a',
+        'gitDecoration.addedResourceForeground': green, 'gitDecoration.untrackedResourceForeground': green,
+        'gitDecoration.modifiedResourceForeground': yellow, 'gitDecoration.deletedResourceForeground': red,
+        'gitDecoration.renamedResourceForeground': cyan, 'gitDecoration.conflictingResourceForeground': key,
+        'gitDecoration.ignoredResourceForeground': quiet, 'gitDecoration.stageModifiedResourceForeground': yellow,
+        'gitDecoration.stageDeletedResourceForeground': red, 'gitDecoration.submoduleResourceForeground': cyan,
+        'charts.foreground': fg, 'charts.lines': line, 'charts.red': red, 'charts.green': green, 'charts.yellow': yellow,
+        'charts.blue': blue, 'charts.purple': key, 'charts.orange': cyan,
+        'terminal.background': bg, 'terminal.foreground': fg, 'terminal.selectionBackground': r['sel'] + '99',
+        'terminalCursor.foreground': r['caret'], 'terminalCursor.background': r['caret_text'],
+        'terminal.border': line, 'terminal.tab.activeBorder': accent,
+    }
+    for i, color in enumerate((key, blue, cyan, green, yellow, r['pink'])):
+        c[f'editorBracketHighlight.foreground{i + 1}'] = color
+    for i, n in enumerate('Black Red Green Yellow Blue Magenta Cyan White'.split()):
+        c[f'terminal.ansi{n}'] = p[i]
+        c[f'terminal.ansiBright{n}'] = p[i + 8]
+    colors = syntax(r)
+    tokens = []
+    for scope, role, font in VSCODE_SCOPES:
+        settings = {'foreground': colors[role]}
+        font = font or ('bold' if r['bold'] and role == 'keyword' else '')
+        if font:
+            settings['fontStyle'] = font
+        tokens.append({'scope': [s.strip() for s in scope.split(',')], 'settings': settings})
+    return {'$schema': 'vscode://schemas/color-theme', 'name': name, 'type': 'dark' if r['dark'] else 'light',
+            'semanticHighlighting': True, 'colors': c, 'tokenColors': tokens}
+
+def pack(files):
+    """A .vsix is a zip with a manifest. The dates are fixed so the same themes give the same file."""
+    package = json.loads(files['extension/package.json'])
+    identity = f'Id="{package["name"]}" Version="{package["version"]}" Publisher="{package["publisher"]}"'
+    files = {
+        '[Content_Types].xml': '<?xml version="1.0" encoding="utf-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+            '<Default Extension=".json" ContentType="application/json"/><Default Extension=".vsixmanifest" ContentType="text/xml"/></Types>',
+        'extension.vsixmanifest': '<?xml version="1.0" encoding="utf-8"?><PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">'
+            f'<Metadata><Identity Language="en-US" {identity}/><DisplayName>{package["displayName"]}</DisplayName>'
+            f'<Description xml:space="preserve">{package["description"]}</Description><Categories>Themes</Categories>'
+            f'<Properties><Property Id="Microsoft.VisualStudio.Code.Engine" Value="{package["engines"]["vscode"]}"/></Properties></Metadata>'
+            '<Installation><InstallationTarget Id="Microsoft.VisualStudio.Code"/></Installation><Dependencies/>'
+            '<Assets><Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true"/></Assets></PackageManifest>',
+        **files,
+    }
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
+        for path, text in files.items():
+            z.writestr(zipfile.ZipInfo(path, (1980, 1, 1, 0, 0, 0)), text, zipfile.ZIP_DEFLATED)
+    return out.getvalue()
+
+def main():
+    names = sorted(os.listdir(THEMES))
+    os.makedirs(ZED, exist_ok=True)
+    contributes, files = [], {}
+    for family, prefix in FAMILIES.items():
+        themes = []
+        for name in (n for n in names if n.startswith(prefix)):
+            r = roles(os.path.join(THEMES, name))
+            themes.append(zed_theme(name, r))
+            path = 'themes/' + re.sub(r'[^a-z0-9]+', '-', name.lower()) + '.json'
+            files['extension/' + path] = json.dumps(vscode_theme(name, r), indent=2, ensure_ascii=False)
+            contributes.append({'label': name, 'uiTheme': 'vs-dark' if r['dark'] else 'vs', 'path': './' + path})
+        with open(os.path.join(ZED, family + '.json'), 'w') as f:
+            json.dump({'$schema': 'https://zed.dev/schema/themes/v0.2.0.json', 'name': family, 'author': AUTHORS[family],
+                       'themes': themes}, f, indent=2, ensure_ascii=False)
+            f.write('\n')
+    files['extension/package.json'] = json.dumps({
+        'name': 'kronikus-themes', 'displayName': 'Kronikus Themes', 'publisher': 'kronikus', 'version': VERSION,
+        'description': 'Neon, Solid and Monkeytype themes, the same as in Ghostty. Monkeytype colors are GPL-3.0.',
+        'engines': {'vscode': '^1.70.0'}, 'categories': ['Themes'], 'contributes': {'themes': contributes}}, indent=2, ensure_ascii=False)
+    with open(VSIX, 'wb') as f:
+        f.write(pack(files))
+    print(len(contributes), 'themes')
+
+if __name__ == '__main__':
+    main()

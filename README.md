@@ -7,6 +7,7 @@ Personal configs for the dev tools I use, mainly terminals.
 | `ghostty/` | [Ghostty](https://ghostty.org) terminal config with 👻 Neon themes: 🌙 Night (dark) and ☀️ Day (light), following the desktop, all 187 [Monkeytype](https://monkeytype.com) themes, and readable "Solid" versions of 10 popular themes |
 | `shell/` | 🥽 Kronikus prompt for bash and fish: avatar, name, folder, git (with starship icons), command timing |
 | `tmux/` | 👻 tmux config (clickable tab bar on top, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker), `ktour` (hands-on tour) and `ksettings` (⚙ settings) |
+| `editors/` | 🧩 all the Ghostty themes for [Zed](https://zed.dev) and VS Code, with the same names and colors |
 
 **New here?** Install everything (the sections below), open a new terminal and press `⏎` when it asks
 *"First time here?"*. That starts 🎓 `ktour`, a 5-minute hands-on tour. You can run `ktour` again any time.
@@ -60,6 +61,45 @@ For comparison, plain TokyoNight has its comments at 1.9:1 and Rose Pine Dawn it
 `minimum-contrast` stays at a low 1.5 on purpose. Ghostty doesn't lift a color under the limit, it jumps to pure white or black, so a higher value turns grey comments into the loudest text on screen. `faint-opacity = 0.75` keeps dim text readable.
 
 📋 **Select = copy.** Anything you select with the mouse goes straight to the clipboard (`copy-on-select = clipboard`), so you can paste it anywhere with `Ctrl+V` / `Ctrl+Shift+V`.
+
+## 🧩 Zed + VS Code themes
+
+Every Ghostty theme also works in Zed and VS Code under the same name, all 208: Neon, Solid and `MT serika dark` and friends.
+
+```sh
+mkdir -p ~/.config/zed/themes
+cp editors/zed/*.json ~/.config/zed/themes/
+code --install-extension editors/kronikus-themes.vsix --force
+```
+
+The Flatpak build of Zed keeps its config elsewhere: copy to `~/.var/app/dev.zed.Zed/config/zed/themes/` for that one.
+
+Pick a theme with `Ctrl+K` `Ctrl+T` in either editor. Zed loads new themes on its own, VS Code after `Developer: Reload Window`.
+
+🌗 **Light & dark.** To follow the desktop like Ghostty does:
+
+```jsonc
+// Zed: settings.json
+"theme": { "mode": "system", "light": "Neon Day", "dark": "Neon Night" }
+
+// VS Code: settings.json
+"window.autoDetectColorScheme": true,
+"workbench.preferredLightColorTheme": "Neon Day",
+"workbench.preferredDarkColorTheme": "Neon Night"
+```
+
+`editors/make-themes` writes both from `ghostty/themes/`, so run it after those change. The colors go like this:
+
+| In the editor | Ghostty color |
+| --- | --- |
+| Keywords | palette 5, the accent |
+| Strings, numbers | palette 2, 3 |
+| Functions and tags, types | palette 4, 6 |
+| Comments, line numbers, anything inactive | palette 8, the quiet color |
+| Errors and deleted lines | palette 1. Nothing else is red, so red always means trouble |
+| Integrated terminal | the 16 colors, unchanged |
+
+Code is read all day, so a syntax color fainter than 4.5:1 is lifted to it, with the same hue. The accent stays exact on the screens around the code, where it only marks what's active, as in the tmux bar. If lifting brings two colors together they're turned apart, and a theme whose accent is as pale as its text gets bold keywords. A few Monkeytype themes have a mid-tone background, where 4.5:1 would wash every color out to near white: those stay colored at 3.4-4.4:1.
 
 ## 🥽 Kronikus prompt (bash + fish)
 
