@@ -1,0 +1,26 @@
+# MT mashu — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2b2b2c
+foreground = #f1e2e4
+selection-background = #554f67
+selection-foreground = #f1e2e4
+cursor-color = #76689a
+cursor-text = #2b2b2c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#433b3d
+palette = 1=#d44729
+palette = 2=#97b091
+palette = 3=#c2a486
+palette = 4=#a5a6cc
+palette = 5=#8577aa
+palette = 6=#7eb2c0
+palette = 7=#e8cbce
+palette = 8=#d8a0a6
+palette = 9=#da664e
+palette = 10=#a9baa2
+palette = 11=#cbb099
+palette = 12=#b4b2d1
+palette = 13=#9b8cb6
+palette = 14=#95bcc7
+palette = 15=#f1e2e4

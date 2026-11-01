@@ -1,0 +1,26 @@
+# MT suisei — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #3b4a62
+foreground = #dbdeeb
+selection-background = #5c7489
+selection-foreground = #dbdeeb
+cursor-color = #bef0ff
+cursor-text = #3b4a62
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#313e55
+palette = 1=#fe7a75
+palette = 2=#e8e8c5
+palette = 3=#ffe0d4
+palette = 4=#dfe4fe
+palette = 5=#bef0ff
+palette = 6=#c8f1de
+palette = 7=#e7c9b9
+palette = 8=#fda35b
+palette = 9=#f78e8d
+palette = 10=#edeed5
+palette = 11=#ffe9e2
+palette = 12=#e7ebff
+palette = 13=#d7f4ff
+palette = 14=#d4f5e9
+palette = 15=#dbdeeb

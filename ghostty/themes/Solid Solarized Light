@@ -1,0 +1,26 @@
+# Solid Solarized Light — iTerm2 Solarized Light with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #fdf6e3
+foreground = #394e56
+selection-background = #8eb6ca
+selection-foreground = #000000
+cursor-color = #a54e77
+cursor-text = #fdf6e3
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ebe7d6
+palette = 1=#ad5043
+palette = 2=#60740f
+palette = 3=#8b6708
+palette = 4=#1571af
+palette = 5=#a54e77
+palette = 6=#027972
+palette = 7=#5c6a70
+palette = 8=#556c73
+palette = 9=#935047
+palette = 10=#566b1e
+palette = 11=#776017
+palette = 12=#1b6799
+palette = 13=#8d4e70
+palette = 14=#0b6f6b
+palette = 15=#d8d8ca

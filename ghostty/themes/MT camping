@@ -1,0 +1,26 @@
+# MT camping — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #faf1e4
+foreground = #3c403b
+selection-background = #aabc9a
+selection-foreground = #3c403b
+cursor-color = #618c56
+cursor-text = #faf1e4
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e7dccb
+palette = 1=#ad4f4e
+palette = 2=#4c7253
+palette = 3=#79693d
+palette = 4=#546a90
+palette = 5=#618c56
+palette = 6=#337279
+palette = 7=#504f48
+palette = 8=#756c60
+palette = 9=#964c4a
+palette = 10=#49684e
+palette = 11=#6d613d
+palette = 12=#4f627f
+palette = 13=#5a7d51
+palette = 14=#35686d
+palette = 15=#3c403b

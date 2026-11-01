@@ -1,0 +1,26 @@
+# MT froyo — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #e1dacb
+foreground = #424343
+selection-background = #a6a39c
+selection-foreground = #424343
+cursor-color = #7b7d7d
+cursor-text = #e1dacb
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d3cdc1
+palette = 1=#b85146
+palette = 2=#4c6147
+palette = 3=#71553e
+palette = 4=#5c5675
+palette = 5=#6f7171
+palette = 6=#37616c
+palette = 7=#534c36
+palette = 8=#725e1d
+palette = 9=#a04e45
+palette = 10=#495a45
+palette = 11=#68513f
+palette = 12=#56516a
+palette = 13=#666868
+palette = 14=#395b64
+palette = 15=#424343

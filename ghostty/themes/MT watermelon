@@ -1,0 +1,26 @@
+# MT watermelon — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1f4437
+foreground = #cdc6bc
+selection-background = #845856
+selection-foreground = #cdc6bc
+cursor-color = #d6686f
+cursor-text = #1f4437
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#244d3f
+palette = 1=#fc5e5c
+palette = 2=#90d09c
+palette = 3=#dbc077
+palette = 4=#a0c4fe
+palette = 5=#d6686f
+palette = 6=#69d0db
+palette = 7=#afc0b1
+palette = 8=#77b49d
+palette = 9=#f77672
+palette = 10=#a2d5a8
+palette = 11=#dfc78b
+palette = 12=#afcaf8
+palette = 13=#d47b7e
+palette = 14=#83d5dc
+palette = 15=#cdc6bc

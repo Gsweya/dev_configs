@@ -1,0 +1,26 @@
+# MT norse — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #242425
+foreground = #ccc2b1
+selection-background = #385058
+selection-foreground = #ccc2b1
+cursor-color = #2b5f6d
+cursor-text = #242425
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#303333
+palette = 1=#b75e5a
+palette = 2=#96a88b
+palette = 3=#bd9b85
+palette = 4=#a69dbf
+palette = 5=#4d808f
+palette = 6=#7eaab5
+palette = 7=#b2b0a6
+palette = 8=#828e91
+palette = 9=#bb726b
+palette = 10=#a1ad93
+palette = 11=#c0a38e
+palette = 12=#aea4bc
+palette = 13=#668d96
+palette = 14=#8eafb4
+palette = 15=#ccc2b1

@@ -1,0 +1,26 @@
+# MT honey — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #f2aa00
+foreground = #302c0e
+selection-background = #a78202
+selection-foreground = #302c0e
+cursor-color = #795200
+cursor-text = #f2aa00
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e19e00
+palette = 1=#b50617
+palette = 2=#254d2f
+palette = 3=#534313
+palette = 4=#304569
+palette = 5=#5f5b04
+palette = 6=#004c53
+palette = 7=#433309
+palette = 8=#674000
+palette = 9=#9a0e15
+palette = 10=#274628
+palette = 11=#4c3e12
+palette = 12=#304057
+palette = 13=#565206
+palette = 14=#0a4645
+palette = 15=#302c0e

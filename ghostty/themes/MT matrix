@@ -1,0 +1,26 @@
+# MT matrix — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #000000
+foreground = #d1ffcd
+selection-background = #064500
+selection-foreground = #d1ffcd
+cursor-color = #15ff00
+cursor-text = #000000
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#032000
+palette = 1=#da3333
+palette = 2=#67a775
+palette = 3=#b1964b
+palette = 4=#829ac2
+palette = 5=#15ff00
+palette = 6=#36a8b4
+palette = 7=#99d595
+palette = 8=#31862d
+palette = 9=#d85c52
+palette = 10=#7cb987
+palette = 11=#b7ab65
+palette = 12=#92aec4
+palette = 13=#3bff29
+palette = 14=#55b9b9
+palette = 15=#d1ffcd

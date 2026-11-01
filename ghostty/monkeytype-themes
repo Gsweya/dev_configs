@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+"""⌨ monkeytype-themes — turns Monkeytype's themes into Ghostty themes ("MT serika dark").
+
+Colors come from Monkeytype (https://github.com/monkeytypegame/monkeytype, GPL-3.0).
+A Monkeytype theme has roles, not the 16 colors a terminal needs, so:
+
+    background, text, caret, subAlt   exact          (subAlt is palette 0, the bar's surface)
+    main                              exact          palette 5, the accent of the whole setup
+    error                             exact          palette 1
+    sub                               exact, or lifted to 4.5:1 if fainter than that
+                                                     (palette 8: comments and quiet text)
+    green, yellow, blue, cyan         made here, with the lightness of main, so `ls` and git
+                                      diffs keep their meaning and still look like the theme
+
+text, main and error are only touched when they would be unreadable (below 4.5:1, 3:1, 3:1).
+A few themes put light text on a mid-tone background, which no white can make readable: those
+get dark text.
+Effects a theme does in CSS, like an animated gradient, have no place in a terminal.
+
+    ghostty/monkeytype-themes              downloads the list and writes ghostty/themes/MT *
+    ghostty/monkeytype-themes themes.ts    uses a copy you already have
+"""
+import importlib.machinery, math, os, re, subprocess, sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(HERE, 'themes')
+URL = 'repos/monkeytypegame/monkeytype/contents/frontend/src/ts/constants/themes.ts'
+tune = importlib.machinery.SourceFileLoader('tune', os.path.join(HERE, 'tune-themes')).load_module()
+lum, contrast, lch, from_lch, mix, distance = tune.lum, tune.contrast, tune.lch, tune.from_lch, tune.mix, tune.distance
+
+HUES = {2: 150, 3: 90, 4: 260, 6: 205}  # green, yellow, blue, cyan (OKLCH degrees)
+CALM = (6, 7.5), (4.8, 6)  # contrast of the made colors on dark / light themes: clear, not glowing
+APART = .06  # how far apart two keyword colors stay
+
+def parse(source):
+    """Only reads names and #hex colors out of the file, nothing in it gets run."""
+    themes = {}
+    for name, body in re.findall(r'^  "?([a-z0-9_]+)"?: \{\n(.*?)^  \},', source, re.M | re.S):
+        colors = dict(re.findall(r'^\s+(\w+): "(#[0-9a-fA-F]{3,8})",$', body, re.M))
+        if {'bg', 'main', 'caret', 'sub', 'subAlt', 'text', 'error'} <= colors.keys():
+            themes[name] = {k: full(v) for k, v in colors.items()}
+    return themes
+
+def full(c):
+    c = c.lstrip('#')
+    if len(c) in (3, 4):
+        c = ''.join(x * 2 for x in c[:3])
+    return '#' + c[:6].lower()
+
+def lift(color, bg, target, up):
+    """Same hue and chroma, lightness moved away from the background until contrast >= target."""
+    L, C, H = lch(color)
+    for i in range(201):
+        c = from_lch(min(1, L + i / 200) if up else max(0, L - i / 200), C, H)
+        if contrast(c, bg) >= target:
+            return c
+    return '#ffffff' if up else '#000000'
+
+def settle(color, bg, up):
+    """Readable first, then back towards the background if it stands out too much."""
+    low, high = CALM[0] if up else CALM[1]
+    # On a mid-tone background the top of the range is out of reach: stay colored, not white.
+    low = min(low, .85 * contrast('#ffffff' if up else '#000000', bg))
+    c = lift(color, bg, low, up)
+    L, C, H = lch(c)
+    for i in range(1, 121):
+        if contrast(c, bg) <= high:
+            break
+        c = from_lch(L - i / 200 if up else L + i / 200, C, H)
+    return c
+
+def build(t):
+    bg, text = t['bg'], t['text']
+    up = lum(text) > lum(bg)  # light text: a dark theme, so colors move up to stand out
+    # Light text on a mid-tone background can't get readable however white it gets: use dark text.
+    if up and contrast('#ffffff', bg) < 5:
+        up = False
+    fg = text if contrast(text, bg) >= 4.5 else lift(text, bg, 7, up)
+    caret = t['caret'] if contrast(t['caret'], bg) >= 1.5 else lift(t['caret'], bg, 2, up)
+    accent = t['main'] if contrast(t['main'], bg) >= 3 else lift(t['main'], bg, 3.5, up)
+    red = t['error'] if contrast(t['error'], bg) >= 3 else lift(t['error'], bg, 3.5, up)
+    quiet = t['sub'] if contrast(t['sub'], bg) >= 4.5 else lift(t['sub'], bg, 4.5, up)
+    surface = t['subAlt'] if contrast(t['subAlt'], bg) >= 1.08 else mix(bg, quiet, .14)
+
+    L, C, _ = lch(accent)
+    C = min(max(C * .7, .05), .1)
+    made = {i: settle(from_lch(L, C, math.radians(h)), bg, up) for i, h in HUES.items()}
+    # main and error are fixed, the made ones turn out of their way (and each other's).
+    for _ in range(60):
+        colors = {1: red, 5: accent, **made}
+        d, i, j = min((distance(colors[i], colors[j]), i, j) for i in colors for j in colors if i < j)
+        if d >= APART or (i in (1, 5) and j in (1, 5)):
+            break
+        for k, other in ((i, j), (j, i)):
+            if k in made:
+                a, b = lch(colors[k]), lch(colors[other])
+                turn = math.copysign(math.radians(5), math.remainder(a[2] - b[2], math.tau))
+                made[k] = settle(from_lch(a[0], a[1], a[2] + turn), bg, up)
+
+    p = {0: surface, 1: red, 5: accent, **made, 7: mix(fg, quiet, .35), 8: quiet, 15: fg}
+    for i in range(1, 7):
+        p[i + 8] = lift(mix(p[i], fg, .2), bg, min(contrast(p[i], bg) + .4, 12), up)
+
+    sel = bg
+    for i in range(1, 100):
+        sel = mix(bg, accent, i / 100)
+        if contrast(sel, bg) >= 1.8:
+            break
+    on_sel = max((fg, bg), key=lambda c: contrast(c, sel))
+    return {'background': bg, 'foreground': fg, 'selection-background': sel, 'selection-foreground': on_sel,
+            'cursor-color': caret, 'cursor-text': bg, 'palette': p}
+
+def main():
+    if len(sys.argv) > 1:
+        source = open(sys.argv[1], encoding='utf-8').read()
+    else:
+        source = subprocess.run(['gh', 'api', '-H', 'Accept: application/vnd.github.raw', URL],
+                                check=True, capture_output=True, text=True).stdout
+    themes = parse(source)
+    for old in os.listdir(OUT):
+        if old.startswith('MT '):
+            os.remove(os.path.join(OUT, old))
+    for name, t in themes.items():
+        tune.write('MT ' + name.replace('_', ' '), 'from Monkeytype (GPL-3.0)', build(t), 'ghostty/monkeytype-themes')
+    print(len(themes), 'themes')
+
+if __name__ == '__main__':
+    main()

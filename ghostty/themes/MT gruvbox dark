@@ -1,0 +1,26 @@
+# MT gruvbox dark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #282828
+foreground = #ebdbb2
+selection-background = #624d26
+selection-foreground = #ebdbb2
+cursor-color = #fabd2f
+cursor-text = #282828
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#212121
+palette = 1=#fb4934
+palette = 2=#77b885
+palette = 3=#b5a759
+palette = 4=#81a7e5
+palette = 5=#d79921
+palette = 6=#4ab8c4
+palette = 7=#cec0a2
+palette = 8=#988d85
+palette = 9=#f8664d
+palette = 10=#8ebf8e
+palette = 11=#c0b16b
+palette = 12=#96b1db
+palette = 13=#dba63e
+palette = 14=#6abfc0
+palette = 15=#ebdbb2

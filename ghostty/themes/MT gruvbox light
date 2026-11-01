@@ -1,0 +1,26 @@
+# MT gruvbox light — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fbf1c7
+foreground = #3c3836
+selection-background = #a5bc8e
+selection-foreground = #3c3836
+cursor-color = #689d6a
+cursor-text = #fbf1c7
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#daceae
+palette = 1=#cc241d
+palette = 2=#4c7253
+palette = 3=#78683a
+palette = 4=#536a90
+palette = 5=#568b59
+palette = 6=#317279
+palette = 7=#514a42
+palette = 8=#796b57
+palette = 9=#af2822
+palette = 10=#49664d
+palette = 11=#6c5e39
+palette = 12=#4e607e
+palette = 13=#517a52
+palette = 14=#33666c
+palette = 15=#3c3836

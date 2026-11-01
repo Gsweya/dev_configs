@@ -1,0 +1,26 @@
+# MT oblivion — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #313231
+foreground = #f7f5f1
+selection-background = #5a5854
+selection-foreground = #f7f5f1
+cursor-color = #a5a096
+cursor-text = #313231
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#3a3b3b
+palette = 1=#dd452e
+palette = 2=#a2ba9b
+palette = 3=#ccad94
+palette = 4=#b4afd1
+palette = 5=#a5a096
+palette = 6=#8cb9c4
+palette = 7=#d5d5d3
+palette = 8=#959a9b
+palette = 9=#e26855
+palette = 10=#b3c6ac
+palette = 11=#d5bba7
+palette = 12=#c1bdd7
+palette = 13=#b5b1a8
+palette = 14=#a1c5cd
+palette = 15=#f7f5f1

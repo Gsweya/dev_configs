@@ -1,0 +1,26 @@
+# MT cafe — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ceb18d
+foreground = #14120f
+selection-background = #968167
+selection-foreground = #14120f
+cursor-color = #14120f
+cursor-text = #ceb18d
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#bba180
+palette = 1=#b1001d
+palette = 2=#32381b
+palette = 3=#48312c
+palette = 4=#3f304c
+palette = 5=#14120f
+palette = 6=#263b42
+palette = 7=#272522
+palette = 8=#494746
+palette = 9=#92041a
+palette = 10=#2c3019
+palette = 11=#3e2b26
+palette = 12=#362a40
+palette = 13=#0d0c09
+palette = 14=#223338
+palette = 15=#14120f

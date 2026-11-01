@@ -1,0 +1,26 @@
+# MT metaverse — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #232323
+foreground = #e8e8e8
+selection-background = #8c262d
+selection-foreground = #e8e8e8
+cursor-color = #d82934
+cursor-text = #232323
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#313131
+palette = 1=#da3333
+palette = 2=#6fb07d
+palette = 3=#b99e53
+palette = 4=#7ca1df
+palette = 5=#d82934
+palette = 6=#45afba
+palette = 7=#c7c7c7
+palette = 8=#8a8a8a
+palette = 9=#dd5757
+palette = 10=#87bb92
+palette = 11=#c2ad71
+palette = 12=#92afe1
+palette = 13=#db4f58
+palette = 14=#66bac3
+palette = 15=#e8e8e8

@@ -1,0 +1,26 @@
+# MT purpleish — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1e1e32
+foreground = #a3a3cc
+selection-background = #513b87
+selection-foreground = #a3a3cc
+cursor-color = #7a52cc
+cursor-text = #1e1e32
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2c2c46
+palette = 1=#ff6666
+palette = 2=#6cad7a
+palette = 3=#b79c51
+palette = 4=#7a9fdd
+palette = 5=#7a52cc
+palette = 6=#4bacb6
+palette = 7=#9797c8
+palette = 8=#8081c1
+palette = 9=#f67a81
+palette = 10=#7cb08f
+palette = 11=#b8a26f
+palette = 12=#87a5df
+palette = 13=#8262cc
+palette = 14=#62afbf
+palette = 15=#a3a3cc

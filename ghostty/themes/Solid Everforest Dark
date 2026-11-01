@@ -1,0 +1,26 @@
+# Solid Everforest Dark — Everforest Dark Hard with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #1e2326
+foreground = #d0c6b2
+selection-background = #3f565d
+selection-foreground = #ffffff
+cursor-color = #d599b9
+cursor-text = #1e2326
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#394137
+palette = 1=#e48683
+palette = 2=#babb75
+palette = 3=#e8b185
+palette = 4=#7eb9c9
+palette = 5=#d599b9
+palette = 6=#7ec199
+palette = 7=#c8c2b4
+palette = 8=#8c9686
+palette = 9=#ec9f97
+palette = 10=#bfbd82
+palette = 11=#e2b58e
+palette = 12=#90bcc4
+palette = 13=#d7a6ba
+palette = 14=#90c29e
+palette = 15=#e6e1d6

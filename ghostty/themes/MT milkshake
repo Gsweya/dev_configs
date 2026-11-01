@@ -1,0 +1,26 @@
+# MT milkshake — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ffffff
+foreground = #212b43
+selection-background = #bcbfc7
+selection-foreground = #212b43
+cursor-color = #212b43
+cursor-text = #ffffff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ddeff3
+palette = 1=#c07180
+palette = 2=#546a4e
+palette = 3=#795f47
+palette = 4=#626080
+palette = 5=#212b43
+palette = 6=#3f6b74
+palette = 7=#19495f
+palette = 8=#0a8194
+palette = 9=#a06374
+palette = 10=#4a5d4c
+palette = 11=#675546
+palette = 12=#555574
+palette = 13=#212b43
+palette = 14=#395e6a
+palette = 15=#212b43

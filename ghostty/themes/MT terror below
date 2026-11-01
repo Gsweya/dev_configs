@@ -1,0 +1,26 @@
+# MT terror below — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0b1e1a
+foreground = #dceae5
+selection-background = #294d42
+selection-foreground = #dceae5
+cursor-color = #66ac92
+cursor-text = #0b1e1a
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#132e29
+palette = 1=#bf616a
+palette = 2=#95a079
+palette = 3=#b8937a
+palette = 4=#9698be
+palette = 5=#66ac92
+palette = 6=#70a4b2
+palette = 7=#a8cac3
+palette = 8=#469085
+palette = 9=#c57c83
+palette = 10=#a3af8f
+palette = 11=#bfa48f
+palette = 12=#a4a8c6
+palette = 13=#7eb8a3
+palette = 14=#86b2bc
+palette = 15=#dceae5

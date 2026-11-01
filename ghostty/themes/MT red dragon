@@ -1,0 +1,26 @@
+# MT red dragon — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1a0b0c
+foreground = #9b9e9f
+selection-background = #781e1c
+selection-foreground = #9b9e9f
+cursor-color = #ff3a32
+cursor-text = #1a0b0c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#362110
+palette = 1=#ab4c4a
+palette = 2=#61a26f
+palette = 3=#aa8f44
+palette = 4=#6d93cf
+palette = 5=#ff3a32
+palette = 6=#2ea2ad
+palette = 7=#b4a075
+palette = 8=#e2a528
+palette = 9=#a85c5b
+palette = 10=#72a67d
+palette = 11=#ac975b
+palette = 12=#7a9aca
+palette = 13=#f65851
+palette = 14=#49a6af
+palette = 15=#9b9e9f

@@ -1,0 +1,26 @@
+# MT blueberry light — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #dae0f5
+foreground = #31495e
+selection-background = #9da9be
+selection-foreground = #31495e
+cursor-color = #df4576
+cursor-text = #dae0f5
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#c1c7df
+palette = 1=#df4576
+palette = 2=#605f40
+palette = 3=#785547
+palette = 4=#695470
+palette = 5=#506477
+palette = 6=#3d665c
+palette = 7=#3e5369
+palette = 8=#55657d
+palette = 9=#bc4671
+palette = 10=#565a45
+palette = 11=#69524b
+palette = 12=#5d516b
+palette = 13=#495e71
+palette = 14=#3a5f5b
+palette = 15=#31495e

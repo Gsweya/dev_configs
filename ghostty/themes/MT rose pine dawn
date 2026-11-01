@@ -1,0 +1,26 @@
+# MT rose pine dawn — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fffaf3
+foreground = #286983
+selection-background = #a4c3c6
+selection-foreground = #286983
+cursor-color = #ea9d34
+cursor-text = #fffaf3
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#f0e9df
+palette = 1=#b4637a
+palette = 2=#5e7458
+palette = 3=#84684f
+palette = 4=#6c6a8a
+palette = 5=#56949f
+palette = 6=#49757f
+palette = 7=#48688e
+palette = 8=#8367a3
+palette = 9=#98647c
+palette = 10=#506f5e
+palette = 11=#6f6556
+palette = 12=#5b6786
+palette = 13=#4d8b99
+palette = 14=#3e6f7c
+palette = 15=#286983

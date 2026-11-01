@@ -1,0 +1,26 @@
+# MT sonokai — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2c2e34
+foreground = #e2e2e3
+selection-background = #4b5a45
+selection-foreground = #e2e2e3
+cursor-color = #f38c71
+cursor-text = #2c2e34
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#232429
+palette = 1=#fc5d7c
+palette = 2=#8acfa2
+palette = 3=#d6bc76
+palette = 4=#9bbffb
+palette = 5=#9ed072
+palette = 6=#6bced9
+palette = 7=#e4d8b7
+palette = 8=#e7c664
+palette = 9=#f77891
+palette = 10=#9cd3af
+palette = 11=#d8c48c
+palette = 12=#a9c6f6
+palette = 13=#acd489
+palette = 14=#83d2db
+palette = 15=#e2e2e3

@@ -1,0 +1,26 @@
+# MT botanical — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #7b9c98
+foreground = #000102
+selection-background = #5b6e6d
+selection-foreground = #000102
+cursor-color = #abc6c4
+cursor-text = #7b9c98
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#72908d
+palette = 1=#593524
+palette = 2=#1d2e15
+palette = 3=#3c230f
+palette = 4=#2c2340
+palette = 5=#3b4042
+palette = 6=#012e37
+palette = 7=#0d1212
+palette = 8=#24312f
+palette = 9=#472b1d
+palette = 10=#172511
+palette = 11=#301c0c
+palette = 12=#231c34
+palette = 13=#2f3335
+palette = 14=#01252c
+palette = 15=#000102

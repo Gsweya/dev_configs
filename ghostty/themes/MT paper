@@ -1,0 +1,26 @@
+# MT paper — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #eeeeee
+foreground = #444444
+selection-background = #b2b2b2
+selection-foreground = #444444
+cursor-color = #444444
+cursor-text = #eeeeee
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#dddddd
+palette = 1=#d70000
+palette = 2=#4d5f43
+palette = 3=#70543d
+palette = 4=#5d5574
+palette = 5=#444444
+palette = 6=#38616a
+palette = 7=#525252
+palette = 8=#6b6b6b
+palette = 9=#ba0e0e
+palette = 10=#4b5a43
+palette = 11=#67513e
+palette = 12=#575169
+palette = 13=#414141
+palette = 14=#3a5b62
+palette = 15=#444444

@@ -1,0 +1,26 @@
+# MT bliss — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #262727
+foreground = #ffffff
+selection-background = #544f4c
+selection-foreground = #ffffff
+cursor-color = #f0d3c9
+cursor-text = #262727
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#343231
+palette = 1=#ce514f
+palette = 2=#a6bda0
+palette = 3=#cfb097
+palette = 4=#b6b2d5
+palette = 5=#f0d3c9
+palette = 6=#91bdc9
+palette = 7=#dbd6d5
+palette = 8=#988a88
+palette = 9=#d87472
+palette = 10=#b8cab3
+palette = 11=#d9c0ac
+palette = 12=#c5c1dd
+palette = 13=#f3dcd4
+palette = 14=#a7cad4
+palette = 15=#ffffff

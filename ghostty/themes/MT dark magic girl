@@ -1,0 +1,26 @@
+# MT dark magic girl — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #091f2c
+foreground = #a288d9
+selection-background = #464556
+selection-foreground = #a288d9
+cursor-color = #a288d9
+cursor-text = #091f2c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1c3b43
+palette = 1=#e45c96
+palette = 2=#92b493
+palette = 3=#c0a880
+palette = 4=#9dacd4
+palette = 5=#f5b1cc
+palette = 6=#7ab4be
+palette = 7=#9daad7
+palette = 8=#93e8d3
+palette = 9=#de6ba9
+palette = 10=#a0b6ac
+palette = 11=#c5ad9d
+palette = 12=#a9b0e1
+palette = 13=#f3b7de
+palette = 14=#8db6ce
+palette = 15=#a288d9

@@ -1,0 +1,26 @@
+# MT chaos theory — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #141221
+foreground = #dde5ed
+selection-background = #5f325b
+selection-foreground = #dde5ed
+cursor-color = #dde5ed
+cursor-text = #141221
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1e1d2f
+palette = 1=#fd77d7
+palette = 2=#71b27f
+palette = 3=#bda257
+palette = 4=#7fa6e3
+palette = 5=#fd77d7
+palette = 6=#43b2be
+palette = 7=#b9c1d0
+palette = 8=#757d99
+palette = 9=#f78ddb
+palette = 10=#87bc95
+palette = 11=#c3af75
+palette = 12=#92b3e5
+palette = 13=#f78ddb
+palette = 14=#62bcc7
+palette = 15=#dde5ed

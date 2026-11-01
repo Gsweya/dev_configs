@@ -1,0 +1,26 @@
+# MT lil dragon — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ebe1ef
+foreground = #212b43
+selection-background = #bb9fe3
+selection-foreground = #212b43
+cursor-color = #212b43
+cursor-text = #ebe1ef
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#dac7e2
+palette = 1=#b3578b
+palette = 2=#2d6d3e
+palette = 3=#795e04
+palette = 4=#3f629b
+palette = 5=#8a5bd6
+palette = 6=#066b74
+palette = 7=#3d3d5a
+palette = 8=#725e86
+palette = 9=#964e7d
+palette = 10=#2b603f
+palette = 11=#675411
+palette = 12=#395789
+palette = 13=#7551b9
+palette = 14=#0b5e6a
+palette = 15=#212b43

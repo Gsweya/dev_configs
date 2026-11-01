@@ -1,0 +1,26 @@
+# MT mexican — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #f8ad34
+foreground = #2f2f2f
+selection-background = #d66a5d
+selection-foreground = #2f2f2f
+cursor-color = #eeeeee
+cursor-text = #f8ad34
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#f9b951
+palette = 1=#bb0017
+palette = 2=#0c5325
+palette = 3=#584500
+palette = 4=#25467c
+palette = 5=#b12189
+palette = 6=#005057
+palette = 7=#303030
+palette = 8=#333333
+palette = 9=#9f091c
+palette = 10=#134c27
+palette = 11=#4f4007
+palette = 12=#27416d
+palette = 13=#972477
+palette = 14=#09494f
+palette = 15=#2f2f2f

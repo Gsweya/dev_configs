@@ -1,0 +1,26 @@
+# MT repose light — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #efead0
+foreground = #333538
+selection-background = #b3b0a0
+selection-foreground = #333538
+cursor-color = #5f605e
+cursor-text = #efead0
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#dbd6c4
+palette = 1=#c43c53
+palette = 2=#3e686c
+palette = 3=#6d5e3e
+palette = 4=#685673
+palette = 5=#5f605e
+palette = 6=#4c607c
+palette = 7=#464746
+palette = 8=#6a6960
+palette = 9=#a73b4e
+palette = 10=#3c5e62
+palette = 11=#61563d
+palette = 12=#5d4f67
+palette = 13=#565756
+palette = 14=#47576e
+palette = 15=#333538

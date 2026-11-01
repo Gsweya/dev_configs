@@ -1,0 +1,26 @@
+# MT vesper light — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ffffff
+foreground = #000000
+selection-background = #f0b585
+selection-foreground = #000000
+cursor-color = #067a6e
+cursor-text = #ffffff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ececec
+palette = 1=#ed2839
+palette = 2=#3e7f4f
+palette = 3=#886f1e
+palette = 4=#4e71ab
+palette = 5=#df6401
+palette = 6=#057e87
+palette = 7=#292929
+palette = 8=#767676
+palette = 9=#be202e
+palette = 10=#32663f
+palette = 11=#6d5918
+palette = 12=#3e5a89
+palette = 13=#b25001
+palette = 14=#04656c
+palette = 15=#000000

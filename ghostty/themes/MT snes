@@ -1,0 +1,26 @@
+# MT snes — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #bfbec2
+foreground = #2e2e2e
+selection-background = #9187ae
+selection-foreground = #2e2e2e
+cursor-color = #523793
+cursor-text = #bfbec2
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#b5b0c2
+palette = 1=#ae2c3e
+palette = 2=#15552a
+palette = 3=#5b4700
+palette = 4=#29497d
+palette = 5=#553d94
+palette = 6=#005259
+palette = 7=#3c354c
+palette = 8=#574184
+palette = 9=#942c3b
+palette = 10=#1a4d2b
+palette = 11=#524209
+palette = 12=#2a446d
+palette = 13=#4d3a80
+palette = 14=#094b50
+palette = 15=#2e2e2e

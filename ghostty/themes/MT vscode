@@ -1,0 +1,26 @@
+# MT vscode — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1e1e1e
+foreground = #d4d4d4
+selection-background = #0f4b73
+selection-foreground = #d4d4d4
+cursor-color = #569cd6
+cursor-text = #1e1e1e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2c2c2c
+palette = 1=#f44747
+palette = 2=#6aab77
+palette = 3=#b4994e
+palette = 4=#779dda
+palette = 5=#007acc
+palette = 6=#3faab6
+palette = 7=#b8b8b8
+palette = 8=#858585
+palette = 9=#ee6363
+palette = 10=#7fb38a
+palette = 11=#baa569
+palette = 12=#8aa8d9
+palette = 13=#2a8cce
+palette = 14=#5db2bc
+palette = 15=#d4d4d4

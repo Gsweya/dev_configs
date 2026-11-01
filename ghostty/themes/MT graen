@@ -1,0 +1,26 @@
+# MT graen — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #303c36
+foreground = #d8c8b3
+selection-background = #5f6054
+selection-foreground = #d8c8b3
+cursor-color = #a04e54
+cursor-text = #303c36
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#36453c
+palette = 1=#cc767b
+palette = 2=#abc3a4
+palette = 3=#d5b69c
+palette = 4=#bcb8db
+palette = 5=#a59682
+palette = 6=#97c4cf
+palette = 7=#c4bcad
+palette = 8=#9ea5a1
+palette = 9=#ce8686
+palette = 10=#b9c9ac
+palette = 11=#d9bda4
+palette = 12=#c7c0d8
+palette = 13=#afa08c
+palette = 14=#a9cace
+palette = 15=#d8c8b3

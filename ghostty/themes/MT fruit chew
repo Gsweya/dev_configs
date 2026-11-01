@@ -1,0 +1,26 @@
+# MT fruit chew — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #d6d3d6
+foreground = #282528
+selection-background = #ae97af
+selection-foreground = #282528
+cursor-color = #b92221
+cursor-text = #d6d3d6
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#cabfca
+palette = 1=#bd2621
+palette = 2=#1d542d
+palette = 3=#5b4914
+palette = 4=#2d4a79
+palette = 5=#5c1e5f
+palette = 6=#145258
+palette = 7=#3f353f
+palette = 8=#6a546b
+palette = 9=#9f2622
+palette = 10=#1f4b2c
+palette = 11=#514218
+palette = 12=#2c4369
+palette = 13=#521f54
+palette = 14=#18494e
+palette = 15=#282528

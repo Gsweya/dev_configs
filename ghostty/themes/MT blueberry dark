@@ -1,0 +1,26 @@
+# MT blueberry dark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #212b42
+foreground = #91b4d5
+selection-background = #41536d
+selection-foreground = #91b4d5
+cursor-color = #962f7e
+cursor-text = #212b42
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1b2334
+palette = 1=#df4576
+palette = 2=#aac2a3
+palette = 3=#d4b79c
+palette = 4=#bcb8dc
+palette = 5=#add7ff
+palette = 6=#96c4cf
+palette = 7=#86a9cd
+palette = 8=#7395be
+palette = 9=#d4608e
+palette = 10=#adc7b5
+palette = 11=#d1c0b0
+palette = 12=#bbbfe3
+palette = 13=#b5dbff
+palette = 14=#9dc9d8
+palette = 15=#91b4d5

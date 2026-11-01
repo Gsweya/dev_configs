@@ -1,0 +1,26 @@
+# MT tiramisu — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #cfc6b9
+foreground = #522d22
+selection-background = #a79076
+selection-foreground = #522d22
+cursor-color = #7d5448
+cursor-text = #cfc6b9
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d0bca7
+palette = 1=#b23c00
+palette = 2=#3f543a
+palette = 3=#63492f
+palette = 4=#4f4b6a
+palette = 5=#815c35
+palette = 6=#2a5560
+palette = 7=#5d3823
+palette = 8=#704b24
+palette = 9=#9f3907
+palette = 10=#434c35
+palette = 11=#5f422b
+palette = 12=#50455c
+palette = 13=#785331
+palette = 14=#324d54
+palette = 15=#522d22

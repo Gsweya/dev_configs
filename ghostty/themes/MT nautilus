@@ -1,0 +1,26 @@
+# MT nautilus — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #132237
+foreground = #1cbaac
+selection-background = #4f4c31
+selection-foreground = #1cbaac
+cursor-color = #ebb723
+cursor-text = #132237
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#0e1a29
+palette = 1=#da3333
+palette = 2=#7fc08c
+palette = 3=#c9af63
+palette = 4=#8db3ef
+palette = 5=#ebb723
+palette = 6=#54c0cc
+palette = 7=#30abae
+palette = 8=#558fb2
+palette = 9=#c55d59
+palette = 10=#73c79a
+palette = 11=#b1bc7d
+palette = 12=#7fbeec
+palette = 13=#d0c74f
+palette = 14=#52c7ce
+palette = 15=#1cbaac

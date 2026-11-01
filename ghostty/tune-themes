@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+"""🎨 tune-themes — makes the "Solid" themes for the ktheme picker.
+
+Many terminal themes look fine in a screenshot and fail in daily use: comments
+at 1.9:1, a selection you can hardly see, one keyword color glowing next to a
+dim one. Each Solid theme keeps its original background and hues and only fixes
+how light and how saturated each color is (in OKLCH, so the hue doesn't drift):
+
+    plain text       9-13:1 on dark, 8-13:1 on light (readable, no white glare)
+    keyword colors   6-8.5:1 on dark, 4.8-7:1 on light, all about equally loud
+    bright versions  a step above them, never louder than the plain text
+    comments, dim    4.6:1 and nearly grey, quiet but readable
+    selection        a solid block, 2:1 against the background, text on it 6:1+
+
+    ghostty/tune-themes           rewrites ghostty/themes/Solid * and Neon *
+    ghostty/tune-themes --check   prints the numbers for every picker theme
+
+Why not Ghostty's minimum-contrast? It doesn't lift a color: anything under the
+limit jumps to pure white or black, so a grey comment ends up the loudest text.
+"""
+import math, os, re, sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(HERE, 'themes')
+MIN_DISTANCE = .075  # how far apart two keyword colors stay (OKLab)
+SOURCES = ['/usr/share/ghostty/themes', os.path.expanduser('~/.config/ghostty/themes')]
+
+# Output name → Ghostty theme it comes from. Neon is ours: its source is below.
+THEMES = {
+    'Solid Catppuccin Latte': 'Catppuccin Latte', 'Solid Catppuccin Mocha': 'Catppuccin Mocha',
+    'Solid Rose Pine Dawn': 'Rose Pine Dawn', 'Solid Rose Pine': 'Rose Pine',
+    'Solid TokyoNight Day': 'TokyoNight Day', 'Solid TokyoNight': 'TokyoNight',
+    'Solid Gruvbox Light': 'Gruvbox Light', 'Solid Gruvbox Dark': 'Gruvbox Dark',
+    'Solid Nord Light': 'Nord Light', 'Solid Nord': 'Nord',
+    'Solid Everforest Light': 'Everforest Light Med', 'Solid Everforest Dark': 'Everforest Dark Hard',
+    'Solid Kanagawa Lotus': 'Kanagawa Lotus', 'Solid Kanagawa Wave': 'Kanagawa Wave',
+    'Solid GitHub Light': 'GitHub Light Default', 'Solid GitHub Dark': 'GitHub Dark Default',
+    'Solid Solarized Light': 'iTerm2 Solarized Light', 'Solid Solarized Dark': 'iTerm2 Solarized Dark',
+    'Solid Dracula': 'Dracula',
+}
+NEON = {
+    'Neon Night': ('rose + mint + violet on deep navy (dark)', '#1a1b26', '#e6dfef',
+        '#ff6b8b #7ee8c0 #ffd28a #8ab4ff #c79bff #7fe3f0'),
+    'Neon Day': ('the same rose + mint + violet on a light lavender background', '#faf7ff', '#2b2540',
+        '#c92a62 #0a7d5f #94600a #3566d6 #8a48d4 #08778a'),
+}
+
+# ── Color math ───────────────────────────────────────
+def to_rgb(h):
+    h = h.lstrip('#')
+    return [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+def to_hex(c):
+    return '#%02x%02x%02x' % tuple(round(max(0, min(1, x)) * 255) for x in c)
+def lin(x):
+    return x / 12.92 if x <= .04045 else ((x + .055) / 1.055) ** 2.4
+def gam(x):
+    return 12.92 * x if x <= .0031308 else 1.055 * max(x, 0) ** (1 / 2.4) - .055
+def lum(h):
+    r, g, b = map(lin, to_rgb(h))
+    return .2126 * r + .7152 * g + .0722 * b
+def contrast(a, b):
+    a, b = lum(a), lum(b)
+    return (max(a, b) + .05) / (min(a, b) + .05)
+def lch(h):
+    r, g, b = map(lin, to_rgb(h))
+    l = (.4122214708 * r + .5363325363 * g + .0514459929 * b) ** (1 / 3)
+    m = (.2119034982 * r + .6806995451 * g + .1073969566 * b) ** (1 / 3)
+    s = (.0883024619 * r + .2817188376 * g + .6299787005 * b) ** (1 / 3)
+    L, A, B = .2104542553 * l + .7936177850 * m - .0040720468 * s, 1.9779984951 * l - 2.4285922050 * m + .4505937099 * s, .0259040371 * l + .7827717662 * m - .8086757660 * s
+    return L, math.hypot(A, B), math.atan2(B, A)
+def from_lch(L, C, H):
+    while True:  # lower the chroma until the color exists in sRGB
+        A, B = C * math.cos(H), C * math.sin(H)
+        l, m, s = (L + .3963377774 * A + .2158037573 * B) ** 3, (L - .1055613458 * A - .0638541728 * B) ** 3, (L - .0894841775 * A - 1.2914855480 * B) ** 3
+        rgb = 4.0767416621 * l - 3.3077115913 * m + .2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - .3413193965 * s, -.0041960863 * l - .7034186147 * m + 1.7076147010 * s
+        if C < .001 or all(-.001 <= x <= 1.001 for x in rgb):
+            return to_hex([gam(x) for x in rgb])
+        C *= .97
+def fit(color, bg, low, high, max_chroma=None):
+    """Same hue, chroma capped, lightness moved until the contrast is within low..high."""
+    L, C, H = lch(color)
+    if max_chroma is not None:
+        C = min(C, max_chroma)
+    best, gap = from_lch(L, C, H), 99
+    for i in range(0, 201):
+        c = from_lch(i / 200, C, H)
+        r = contrast(c, bg)
+        d = 0 if low <= r <= high else min(abs(r - low), abs(r - high))
+        d += abs(i / 200 - L) / 50  # within the range, stay as close as possible to the original
+        # On a dark background only look lighter than it, on a light one darker.
+        if (lum(c) > lum(bg)) == (lum(bg) < .3) and d < gap:
+            best, gap = c, d
+    return best
+def mix(a, b, t):
+    return to_hex([x * (1 - t) + y * t for x, y in zip(to_rgb(a), to_rgb(b))])
+def distance(a, b):
+    a, b = lch(a), lch(b)
+    return math.dist((a[0], a[1] * math.cos(a[2]), a[1] * math.sin(a[2])), (b[0], b[1] * math.cos(b[2]), b[1] * math.sin(b[2])))
+def spread(colors, bg, band, cap):
+    """Even lightness pulls similar hues together (green / cyan, blue / cyan), so turn the closest two apart."""
+    colors = list(colors)
+    for _ in range(80):
+        d, i, j = min((distance(colors[i], colors[j]), i, j) for i in range(6) for j in range(i + 1, 6))
+        if d >= MIN_DISTANCE:
+            break
+        a, b = lch(colors[i]), lch(colors[j])
+        turn = math.copysign(math.radians(3), math.remainder(b[2] - a[2], math.tau))
+        colors[i] = fit(from_lch(a[0], a[1], a[2] - turn), bg, *band, cap)
+        colors[j] = fit(from_lch(b[0], b[1], b[2] + turn), bg, *band, cap)
+    return colors
+
+# ── A theme file ─────────────────────────────────────
+def read(path):
+    t = {'palette': {}}
+    for line in open(path):
+        m = re.match(r'\s*palette\s*=\s*(\d+)\s*=\s*#?(\w+)', line)
+        if m:
+            t['palette'][int(m[1])] = '#' + m[2]
+            continue
+        m = re.match(r'\s*([\w-]+)\s*=\s*#?(\w+)\s*$', line)
+        if m:
+            t[m[1]] = '#' + m[2]
+    return t
+
+def tune(bg, fg, ansi, black=None, comment=None):
+    dark = lum(bg) < .3
+    cap, base, bright, text = (.115, (6, 8.5), (7.5, 10.5), (9, 13)) if dark else (.125, (4.8, 7), (5.5, 8), (8, 13))
+    fg = fit(fg, bg, *text, .03)
+    keywords = spread([fit(c, bg, *base, cap) for c in ansi], bg, base, cap)
+    p = {i + 1: c for i, c in enumerate(keywords)}
+    p.update({i + 9: fit(mix(c, fg, .22), bg, *bright, cap) for i, c in enumerate(keywords)})
+    grey = comment or mix(bg, fg, .5)
+    p[8] = fit(grey, bg, 4.6, 5.2, .03)
+    # A surface just off the background: the tmux bar's chips sit on it, on light themes too.
+    p[0] = fit(black or bg, bg, 1.25, 1.5, .03) if dark else mix(bg, fg, .09)
+    p[7] = fit(fg, bg, 7.5, 9, .02) if dark else fit(fg, bg, 4.6, 5.2, .02)
+    p[15] = fit(fg, bg, 12, 15, .015) if dark else mix(bg, p[8], .22)
+    # Selection: a block tinted with the theme's blue, which the plain text stays readable on.
+    sel = bg
+    for i in range(1, 100):
+        sel = mix(bg, p[4], i / 100)
+        if contrast(sel, bg) >= 2:
+            break
+    on_sel = next((c for c in (fg, p[15] if dark else p[0]) if contrast(c, sel) >= 6), '#ffffff' if dark else '#000000')
+    return {'background': bg, 'foreground': fg, 'selection-background': sel,
+            'selection-foreground': on_sel,
+            'cursor-color': p[5], 'cursor-text': bg, 'palette': p}
+
+def write(name, about, t, tool='ghostty/tune-themes'):
+    with open(os.path.join(OUT, name), 'w') as f:
+        f.write(f'# {name} — {about}\n# Made by {tool}, change it there.\n')
+        for k in ('background', 'foreground', 'selection-background', 'selection-foreground', 'cursor-color', 'cursor-text'):
+            f.write(f'{k} = {t[k]}\n')
+        f.write('\n# 🌈 ANSI palette (0-7 normal, 8-15 bright)\n')
+        for i in range(16):
+            f.write(f"palette = {i}={t['palette'][i]}\n")
+
+def check():
+    print(f"{'theme':24}{'text':>6}{'dim':>6}{'comment':>9}{'keywords':>13}{'bright':>13}{'selection':>11}{'text on it':>12}{'closest hues':>14}")
+    bad = 0
+    for name in sorted(os.listdir(OUT)):
+        if name.startswith('MT '):  # Monkeytype's colors, kept as they are
+            continue
+        t = read(os.path.join(OUT, name)); bg, p = t['background'], t['palette']
+        r = [contrast(p[i], bg) for i in range(1, 7)]; b = [contrast(p[i], bg) for i in range(9, 15)]
+        pairs = []
+        for i in range(1, 7):
+            for j in range(i + 1, 7):
+                pairs.append((distance(p[i], p[j]), ' rgybmc'[i] + ' rgybmc'[j]))
+        near = min(pairs)
+        dim = contrast(mix(bg, t['foreground'], .75), bg)
+        sel, stext = contrast(t['selection-background'], bg), contrast(t['selection-foreground'], t['selection-background'])
+        fine = contrast(t['foreground'], bg) >= 7 and p and min(r) >= 4.5 and min(b) >= 4.5 and contrast(p[8], bg) >= 4.5 and sel >= 1.8 and stext >= 6 and near[0] >= .06
+        bad += not fine
+        print(f"{name:24}{contrast(t['foreground'], bg):6.1f}{dim:6.1f}{contrast(p[8], bg):9.1f}{min(r):7.1f}-{max(r):<5.1f}{min(b):7.1f}-{max(b):<5.1f}{sel:11.1f}{stext:12.1f}{near[1]:>10} {near[0]:.2f}{'' if fine else '  ✗'}")
+    print('✗ =', bad)
+    return bad
+
+if __name__ == '__main__':
+    if '--check' in sys.argv:
+        sys.exit(1 if check() else 0)
+    for name, (about, bg, fg, ansi) in NEON.items():
+        write(name, about, tune(bg, fg, ansi.split()))
+    for name, source in THEMES.items():
+        path = next(os.path.join(d, source) for d in SOURCES if os.path.exists(os.path.join(d, source)))
+        t = read(path)
+        p = t['palette']
+        write(name, f"{source} with even, readable colors", tune(t['background'], t['foreground'], [p[i] for i in range(1, 7)], p.get(0), p.get(8)))
+    check()

@@ -1,0 +1,26 @@
+# MT husqy — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #000000
+foreground = #ebd7ff
+selection-background = #453059
+selection-foreground = #ebd7ff
+cursor-color = #c58aff
+cursor-text = #000000
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#150923
+palette = 1=#da3333
+palette = 2=#67a775
+palette = 3=#b3974c
+palette = 4=#769bd8
+palette = 5=#c58aff
+palette = 6=#36a7b3
+palette = 7=#cea2fe
+palette = 8=#9940fd
+palette = 9=#dd545c
+palette = 10=#81b191
+palette = 11=#bea470
+palette = 12=#8da7e0
+palette = 13=#cd99ff
+palette = 14=#5ab1c2
+palette = 15=#ebd7ff

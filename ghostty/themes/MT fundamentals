@@ -1,0 +1,26 @@
+# MT fundamentals — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #727474
+foreground = #000000
+selection-background = #405044
+selection-foreground = #000000
+cursor-color = #004d60
+cursor-text = #727474
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#666868
+palette = 1=#2a1242
+palette = 2=#001b14
+palette = 3=#201500
+palette = 4=#1f0d28
+palette = 5=#032509
+palette = 6=#0e1825
+palette = 7=#000000
+palette = 8=#000000
+palette = 9=#1d0930
+palette = 10=#000c07
+palette = 11=#100700
+palette = 12=#0e0214
+palette = 13=#001904
+palette = 14=#040a15
+palette = 15=#000000

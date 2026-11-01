@@ -1,0 +1,26 @@
+# MT copper — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #442f29
+foreground = #e7e0de
+selection-background = #7e4e40
+selection-foreground = #e7e0de
+cursor-color = #c25c42
+cursor-text = #442f29
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#50362e
+palette = 1=#e05f57
+palette = 2=#92bf9a
+palette = 3=#c6b381
+palette = 4=#9bb6e2
+palette = 5=#b46a55
+palette = 6=#7bc1c9
+palette = 7=#c2d3d0
+palette = 8=#7ebab5
+palette = 9=#e17972
+palette = 10=#a3c6a8
+palette = 11=#cdbc94
+palette = 12=#aabee1
+palette = 13=#be8270
+palette = 14=#91c7cd
+palette = 15=#e7e0de

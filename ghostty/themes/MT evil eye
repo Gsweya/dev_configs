@@ -1,0 +1,26 @@
+# MT evil eye — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0084c2
+foreground = #000000
+selection-background = #6fb6d4
+selection-foreground = #000000
+cursor-color = #f7f2ea
+cursor-text = #0084c2
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#0c79be
+palette = 1=#590013
+palette = 2=#101800
+palette = 3=#241201
+palette = 4=#1d151c
+palette = 5=#f7f2ea
+palette = 6=#001a1c
+palette = 7=#000610
+palette = 8=#00122d
+palette = 9=#47000f
+palette = 10=#060b00
+palette = 11=#150700
+palette = 12=#0f0a0e
+palette = 13=#1e1b16
+palette = 14=#000d0e
+palette = 15=#000000

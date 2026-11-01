@@ -1,0 +1,26 @@
+# MT creamsicle — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ff9869
+foreground = #282825
+selection-background = #aa765e
+selection-foreground = #282825
+cursor-color = #fcfcf8
+cursor-text = #ff9869
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#fe8954
+palette = 1=#6a0dad
+palette = 2=#35452b
+palette = 3=#553926
+palette = 4=#423a57
+palette = 5=#555552
+palette = 6=#1b4652
+palette = 7=#452818
+palette = 8=#7c2900
+palette = 9=#5d1292
+palette = 10=#323f2a
+palette = 11=#4b3525
+palette = 12=#3c354c
+palette = 13=#4c4c49
+palette = 14=#1e4049
+palette = 15=#282825

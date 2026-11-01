@@ -1,0 +1,26 @@
+# MT aurora — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #011926
+foreground = #ffffff
+selection-background = #014d3c
+selection-foreground = #ffffff
+cursor-color = #00e980
+cursor-text = #011926
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#000c13
+palette = 1=#b94da1
+palette = 2=#73b482
+palette = 3=#c0a45a
+palette = 4=#87a8e0
+palette = 5=#00e980
+palette = 6=#47b5c1
+palette = 7=#c2d5da
+palette = 8=#518896
+palette = 9=#c771b4
+palette = 10=#8fc39b
+palette = 11=#cdb67b
+palette = 12=#9fb9e6
+palette = 13=#33ed99
+palette = 14=#6cc4cd
+palette = 15=#ffffff

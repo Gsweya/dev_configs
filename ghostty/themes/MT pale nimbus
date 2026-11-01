@@ -1,0 +1,26 @@
+# MT pale nimbus — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #433e4c
+foreground = #feffdb
+selection-background = #566c68
+selection-foreground = #feffdb
+cursor-color = #9efffd
+cursor-text = #433e4c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#694f5e
+palette = 1=#ff5c5c
+palette = 2=#b2e8b2
+palette = 3=#f2d893
+palette = 4=#ccdbf4
+palette = 5=#94ffc2
+palette = 6=#94e9f3
+palette = 7=#fee2c7
+palette = 8=#ffaca3
+palette = 9=#ff7d75
+palette = 10=#c1edba
+palette = 11=#f4e0a1
+palette = 12=#d6e2ef
+palette = 13=#b9ffd0
+palette = 14=#a9edee
+palette = 15=#feffdb

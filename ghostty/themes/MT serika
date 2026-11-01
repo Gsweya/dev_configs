@@ -1,0 +1,26 @@
+# MT serika — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #e1e1e3
+foreground = #323437
+selection-background = #b7a972
+selection-foreground = #323437
+cursor-color = #c09c10
+cursor-text = #e1e1e3
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d1d3d8
+palette = 1=#da3333
+palette = 2=#3a6a45
+palette = 3=#725e25
+palette = 4=#445f8c
+palette = 5=#8d7102
+palette = 6=#096a73
+palette = 7=#424448
+palette = 8=#606368
+palette = 9=#b83334
+palette = 10=#385f42
+palette = 11=#655629
+palette = 12=#40567b
+palette = 13=#7b650d
+palette = 14=#115f67
+palette = 15=#323437

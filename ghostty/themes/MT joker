@@ -1,0 +1,26 @@
+# MT joker — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1a0e25
+foreground = #e9e2f5
+selection-background = #3c4623
+selection-foreground = #e9e2f5
+cursor-color = #99de1e
+cursor-text = #1a0e25
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2b1c3b
+palette = 1=#e32b2b
+palette = 2=#72b380
+palette = 3=#bca256
+palette = 4=#85a6db
+palette = 5=#99de1e
+palette = 6=#44b3bf
+palette = 7=#cabae2
+palette = 8=#906fc0
+palette = 9=#e45053
+palette = 10=#8abc97
+palette = 11=#c5af76
+palette = 12=#99b2e0
+palette = 13=#a9df49
+palette = 14=#65bcca
+palette = 15=#e9e2f5

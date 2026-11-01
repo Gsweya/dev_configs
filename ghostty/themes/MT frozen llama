@@ -1,0 +1,26 @@
+# MT frozen llama — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #9bf2ea
+foreground = #484848
+selection-background = #89aecf
+selection-foreground = #484848
+cursor-color = #a1a1a1
+cursor-text = #9bf2ea
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#7fe7dd
+palette = 1=#e42629
+palette = 2=#2b6d3e
+palette = 3=#745b04
+palette = 4=#3c5e96
+palette = 5=#6d44a6
+palette = 6=#076b74
+palette = 7=#584b6e
+palette = 8=#7750b6
+palette = 9=#c52d2f
+palette = 10=#30653f
+palette = 11=#6b5712
+palette = 12=#3d5984
+palette = 13=#654491
+palette = 14=#14646b
+palette = 15=#484848

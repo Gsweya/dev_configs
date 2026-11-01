@@ -1,0 +1,26 @@
+# MT earthsong — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #292521
+foreground = #e6c7a8
+selection-background = #395436
+selection-foreground = #e6c7a8
+cursor-color = #1298ba
+cursor-text = #292521
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1d1b18
+palette = 1=#b95f64
+palette = 2=#7aaf84
+palette = 3=#b7a164
+palette = 4=#86a5d9
+palette = 5=#509452
+palette = 6=#5bb1ba
+palette = 7=#ebbe7d
+palette = 8=#f5ae2d
+palette = 9=#c27472
+palette = 10=#90b48b
+palette = 11=#c0a972
+palette = 12=#99accf
+palette = 13=#6e9e63
+palette = 14=#77b5b6
+palette = 15=#e6c7a8

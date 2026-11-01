@@ -1,0 +1,26 @@
+# MT lilac mist — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fffbfe
+foreground = #5c2954
+selection-background = #e2afce
+selection-foreground = #5c2954
+cursor-color = #e099d6
+cursor-text = #fffbfe
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ecdcee
+palette = 1=#e45753
+palette = 2=#3d7d4e
+palette = 3=#876d1c
+palette = 4=#4c70aa
+palette = 5=#b94189
+palette = 6=#007c86
+palette = 7=#753b66
+palette = 8=#a35c88
+palette = 9=#c94e53
+palette = 10=#436c4f
+palette = 11=#7e5f27
+palette = 12=#4f6299
+palette = 13=#a63c7e
+palette = 14=#126b7c
+palette = 15=#5c2954

@@ -1,0 +1,26 @@
+# MT shadow — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #000000
+foreground = #eeeeee
+selection-background = #393939
+selection-foreground = #eeeeee
+cursor-color = #eeeeee
+cursor-text = #000000
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#171717
+palette = 1=#ffffff
+palette = 2=#8b9e81
+palette = 3=#ad9479
+palette = 4=#9798a7
+palette = 5=#eeeeee
+palette = 6=#73a2a3
+palette = 7=#c4c4c4
+palette = 8=#757575
+palette = 9=#fcfcfc
+palette = 10=#9fae97
+palette = 11=#baa690
+palette = 12=#a8a9b5
+palette = 13=#eeeeee
+palette = 14=#8cb1b2
+palette = 15=#eeeeee

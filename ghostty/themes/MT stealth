@@ -1,0 +1,26 @@
+# MT stealth — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #010203
+foreground = #91989c
+selection-background = #363a3d
+selection-foreground = #91989c
+cursor-color = #e25303
+cursor-text = #010203
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#121212
+palette = 1=#e25303
+palette = 2=#7d9073
+palette = 3=#a3846c
+palette = 4=#9086a9
+palette = 5=#5f666a
+palette = 6=#67939d
+palette = 7=#858c92
+palette = 8=#6e777e
+palette = 9=#d9672a
+palette = 10=#84957e
+palette = 11=#a28b79
+palette = 12=#938da9
+palette = 13=#697074
+palette = 14=#7297a0
+palette = 15=#91989c

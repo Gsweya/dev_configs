@@ -1,25 +1,26 @@
-# ☀️ Neon Day — the same rose + mint + violet, deepened for a light lavender background
+# Neon Day — the same rose + mint + violet on a light lavender background
+# Made by ghostty/tune-themes, change it there.
 background = #faf7ff
-foreground = #2b2540
-selection-background = #e4d6fa
-selection-foreground = #2b2540
-cursor-color = #e0447c
+foreground = #2e2b3c
+selection-background = #a1b2db
+selection-foreground = #2e2b3c
+cursor-color = #7f5eae
 cursor-text = #faf7ff
 
 # 🌈 ANSI palette (0-7 normal, 8-15 bright)
-palette = 0=#4a4560
-palette = 1=#c92a62
+palette = 0=#e8e5ed
+palette = 1=#ac4e66
 palette = 2=#0a7d5f
-palette = 3=#94600a
-palette = 4=#3566d6
-palette = 5=#8a48d4
-palette = 6=#08778a
-palette = 7=#b9b1ca
-palette = 8=#7a7290
-palette = 9=#d63d74
-palette = 10=#11906f
-palette = 11=#a86f12
-palette = 12=#4472d9
-palette = 13=#9555db
-palette = 14=#0c879b
-palette = 15=#ddd5ea
+palette = 3=#95610b
+palette = 4=#486cb7
+palette = 5=#7f5eae
+palette = 6=#09778a
+palette = 7=#6a6875
+palette = 8=#726f7c
+palette = 9=#90465d
+palette = 10=#136c58
+palette = 11=#7f5617
+palette = 12=#425e9c
+palette = 13=#6e5496
+palette = 14=#106578
+palette = 15=#dcd9e2

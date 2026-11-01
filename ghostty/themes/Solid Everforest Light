@@ -1,0 +1,26 @@
+# Solid Everforest Light — Everforest Light Med with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #efebd4
+foreground = #39464d
+selection-background = #90aba8
+selection-foreground = #000000
+cursor-color = #8a5372
+cursor-text = #efebd4
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#dfdcc8
+palette = 1=#a54747
+palette = 2=#686720
+palette = 3=#8b5930
+palette = 4=#316c7d
+palette = 5=#8a5372
+palette = 6=#2e714e
+palette = 7=#55636a
+palette = 8=#626b5c
+palette = 9=#8d4748
+palette = 10=#5e602a
+palette = 11=#795536
+palette = 12=#326371
+palette = 13=#78506a
+palette = 14=#2e664c
+palette = 15=#d0cfba

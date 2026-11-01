@@ -1,0 +1,26 @@
+# MT soaring skies — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fff9f2
+foreground = #1d1e1e
+selection-background = #88c6d5
+selection-foreground = #1d1e1e
+cursor-color = #1e107a
+cursor-text = #fff9f2
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e5ddd4
+palette = 1=#fb5745
+palette = 2=#497954
+palette = 3=#806c33
+palette = 4=#536f9d
+palette = 5=#0c90b6
+palette = 6=#247a82
+palette = 7=#1d193e
+palette = 8=#1e107a
+palette = 9=#cf4c3d
+palette = 10=#406749
+palette = 11=#6c5c2f
+palette = 12=#485f84
+palette = 13=#0f7998
+palette = 14=#23686e
+palette = 15=#1d1e1e

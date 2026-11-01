@@ -1,0 +1,26 @@
+# MT bingsu — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #b8a7aa
+foreground = #242023
+selection-background = #8f767e
+selection-foreground = #242023
+cursor-color = #ebe6ea
+cursor-text = #b8a7aa
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ab989e
+palette = 1=#921341
+palette = 2=#2f4026
+palette = 3=#4f3520
+palette = 4=#3d3654
+palette = 5=#674753
+palette = 6=#16404c
+palette = 7=#31282c
+palette = 8=#48373d
+palette = 9=#7c163b
+palette = 10=#2c3924
+palette = 11=#463121
+palette = 12=#373149
+palette = 13=#5a3f49
+palette = 14=#193a44
+palette = 15=#242023

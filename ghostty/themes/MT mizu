@@ -1,0 +1,26 @@
+# MT mizu — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #afcbdd
+foreground = #1a2633
+selection-background = #89959c
+selection-foreground = #1a2633
+cursor-color = #fcfbf6
+cursor-text = #afcbdd
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#9fc1d4
+palette = 1=#a14651
+palette = 2=#435339
+palette = 3=#644834
+palette = 4=#524968
+palette = 5=#656460
+palette = 6=#2d555e
+palette = 7=#253746
+palette = 8=#39576a
+palette = 9=#86404b
+palette = 10=#3b4a38
+palette = 11=#554134
+palette = 12=#47425d
+palette = 13=#565857
+palette = 14=#294c55
+palette = 15=#1a2633

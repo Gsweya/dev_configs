@@ -1,0 +1,26 @@
+# MT miami — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #f35588
+foreground = #000000
+selection-background = #944d6b
+selection-foreground = #000000
+cursor-color = #a3f7bf
+cursor-text = #f35588
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#db4979
+palette = 1=#3f3a00
+palette = 2=#19270d
+palette = 3=#351c0a
+palette = 4=#241c38
+palette = 5=#00403d
+palette = 6=#02272f
+palette = 7=#1e000c
+palette = 8=#570023
+palette = 9=#322e00
+palette = 10=#141f0a
+palette = 11=#2a1608
+palette = 12=#1c152c
+palette = 13=#003331
+palette = 14=#021f26
+palette = 15=#000000

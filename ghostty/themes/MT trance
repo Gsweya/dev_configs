@@ -1,0 +1,26 @@
+# MT trance — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #00021b
+foreground = #ffffff
+selection-background = #720a48
+selection-foreground = #ffffff
+cursor-color = #e51376
+cursor-text = #00021b
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#18214c
+palette = 1=#02d3b0
+palette = 2=#599967
+palette = 3=#a3893e
+palette = 4=#688dc9
+palette = 5=#e51376
+palette = 6=#2099a5
+palette = 7=#c9cfe0
+palette = 8=#6476a6
+palette = 9=#35dcc0
+palette = 10=#7aad85
+palette = 11=#b5a165
+palette = 12=#86a4d4
+palette = 13=#ea4291
+palette = 14=#4dadb7
+palette = 15=#ffffff

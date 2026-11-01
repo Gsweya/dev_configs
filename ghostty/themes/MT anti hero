@@ -1,0 +1,26 @@
+# MT anti hero — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #00002e
+foreground = #f1deef
+selection-background = #4a3253
+selection-foreground = #f1deef
+cursor-color = #ffffff
+cursor-text = #00002e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#060548
+palette = 1=#8fecff
+palette = 2=#7da684
+palette = 3=#ad9c6c
+palette = 4=#859fc8
+palette = 5=#ffadad
+palette = 6=#65a6ae
+palette = 7=#f6a6cc
+palette = 8=#ff3d8b
+palette = 9=#a3e9fc
+palette = 10=#94b199
+palette = 11=#bba986
+palette = 12=#9bacd0
+palette = 13=#fcb7ba
+palette = 14=#81b1bb
+palette = 15=#f1deef

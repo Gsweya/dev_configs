@@ -1,0 +1,26 @@
+# MT modern ink — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ffffff
+foreground = #000000
+selection-background = #ffab99
+selection-foreground = #000000
+cursor-color = #ff0000
+cursor-text = #ffffff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ececec
+palette = 1=#d70000
+palette = 2=#3f7e4e
+palette = 3=#876e1e
+palette = 4=#4f72ad
+palette = 5=#ff360d
+palette = 6=#057d88
+palette = 7=#292929
+palette = 8=#767676
+palette = 9=#ac0000
+palette = 10=#32653e
+palette = 11=#6c5818
+palette = 12=#3f5b8a
+palette = 13=#cc2b0a
+palette = 14=#04646d
+palette = 15=#000000

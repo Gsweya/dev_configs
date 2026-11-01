@@ -1,0 +1,26 @@
+# MT bento — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2d394d
+foreground = #fffaf8
+selection-background = #7d5266
+selection-foreground = #fffaf8
+cursor-color = #ff7a90
+cursor-text = #2d394d
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#263041
+palette = 1=#fd4c50
+palette = 2=#87ca95
+palette = 3=#d3b86d
+palette = 4=#95bcfb
+palette = 5=#ff7a90
+palette = 6=#5ecad6
+palette = 7=#d1dde5
+palette = 8=#7ba8c1
+palette = 9=#fd6f72
+palette = 10=#9fd4a9
+palette = 11=#dcc589
+palette = 12=#aac8fa
+palette = 13=#ff94a5
+palette = 14=#7ed4dd
+palette = 15=#fffaf8

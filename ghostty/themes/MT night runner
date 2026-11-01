@@ -1,0 +1,26 @@
+# MT night runner — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #212121
+foreground = #e8e8e8
+selection-background = #4d4d1b
+selection-foreground = #e8e8e8
+cursor-color = #feff04
+cursor-text = #212121
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1a1a1a
+palette = 1=#da3333
+palette = 2=#acb28c
+palette = 3=#c4ac94
+palette = 4=#b4adb0
+palette = 5=#feff04
+palette = 6=#9ab6ae
+palette = 7=#c8c2e1
+palette = 8=#8c7cd3
+palette = 9=#dd5757
+palette = 10=#b8bd9e
+palette = 11=#cbb8a5
+palette = 12=#beb9bb
+palette = 13=#fafa32
+palette = 14=#aac0ba
+palette = 15=#e8e8e8

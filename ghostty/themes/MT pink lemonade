@@ -1,0 +1,26 @@
+# MT pink lemonade — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #f6d992
+foreground = #444441
+selection-background = #cf996f
+selection-foreground = #444441
+cursor-color = #9b9b98
+cursor-text = #f6d992
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#f6cc93
+palette = 1=#cb3f3e
+palette = 2=#396543
+palette = 3=#6c5b27
+palette = 4=#435c86
+palette = 5=#a95b4e
+palette = 6=#14656d
+palette = 7=#5e483c
+palette = 8=#8d5034
+palette = 9=#b0403f
+palette = 10=#3b5e43
+palette = 11=#64562c
+palette = 12=#435778
+palette = 13=#95564b
+palette = 14=#1e5e64
+palette = 15=#444441

@@ -1,0 +1,26 @@
+# MT godspeed — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #eae4cf
+foreground = #646669
+selection-background = #a0adac
+selection-foreground = #646669
+cursor-color = #be9f3f
+cursor-text = #eae4cf
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ded9c9
+palette = 1=#ca4754
+palette = 2=#52674d
+palette = 3=#785a47
+palette = 4=#615b7a
+palette = 5=#5b7b8b
+palette = 6=#3c6673
+palette = 7=#666662
+palette = 8=#6a6656
+palette = 9=#b44b57
+palette = 10=#4f604c
+palette = 11=#6e5649
+palette = 12=#5b5670
+palette = 13=#57717e
+palette = 14=#3d5f6a
+palette = 15=#646669

@@ -1,0 +1,26 @@
+# MT miami nights — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #18181a
+foreground = #ffffff
+selection-background = #66334b
+selection-foreground = #ffffff
+cursor-color = #e4609b
+cursor-text = #18181a
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#0f0f10
+palette = 1=#fff591
+palette = 2=#66a774
+palette = 3=#af9549
+palette = 4=#7298d5
+palette = 5=#e4609b
+palette = 6=#35a7b3
+palette = 7=#bfe7e9
+palette = 8=#47bac0
+palette = 9=#fff7a7
+palette = 10=#85b990
+palette = 11=#bfaa6d
+palette = 12=#8eaddd
+palette = 13=#e980af
+palette = 14=#5db9c2
+palette = 15=#ffffff

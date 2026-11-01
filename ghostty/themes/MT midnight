@@ -1,0 +1,26 @@
+# MT midnight — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0b0e13
+foreground = #9fadc6
+selection-background = #333e55
+selection-foreground = #9fadc6
+cursor-color = #60759f
+cursor-text = #0b0e13
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#141a24
+palette = 1=#c27070
+palette = 2=#829578
+palette = 3=#aa8b72
+palette = 4=#948cae
+palette = 5=#60759f
+palette = 6=#6b97a1
+palette = 7=#8d9cb6
+palette = 8=#6c7b97
+palette = 9=#bb7c81
+palette = 10=#889a88
+palette = 11=#a89283
+palette = 12=#9693b3
+palette = 13=#6d80a7
+palette = 14=#759ba8
+palette = 15=#9fadc6

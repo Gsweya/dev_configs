@@ -1,0 +1,26 @@
+# Solid Solarized Dark — iTerm2 Solarized Dark with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #002b36
+foreground = #bbcdcf
+selection-background = #245b78
+selection-foreground = #ffffff
+cursor-color = #e18ab0
+cursor-text = #002b36
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#253a41
+palette = 1=#e98d7d
+palette = 2=#98ae58
+palette = 3=#ca9f4a
+palette = 4=#62ace8
+palette = 5=#e18ab0
+palette = 6=#45b6ad
+palette = 7=#b9cbcd
+palette = 8=#7a9399
+palette = 9=#eca79a
+palette = 10=#abc07c
+palette = 11=#d3b573
+palette = 12=#81bfee
+palette = 13=#e7a6c4
+palette = 14=#6bc7c0
+palette = 15=#dbe9eb

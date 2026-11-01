@@ -1,0 +1,26 @@
+# MT fledgling — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #3b363f
+foreground = #e6d5d3
+selection-background = #884c5a
+selection-foreground = #e6d5d3
+cursor-color = #656565
+cursor-text = #3b363f
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#332e38
+palette = 1=#fe4a57
+palette = 2=#87c894
+palette = 3=#d3b76c
+palette = 4=#95bcfb
+palette = 5=#fc6e83
+palette = 6=#5ecad6
+palette = 7=#debdc3
+palette = 8=#ce90a4
+palette = 9=#f96670
+palette = 10=#9ccda3
+palette = 11=#d7bd81
+palette = 12=#a7c3f5
+palette = 13=#f88393
+palette = 14=#7bced7
+palette = 15=#e6d5d3

@@ -1,0 +1,26 @@
+# MT trackday — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #464d66
+foreground = #cfcfcf
+selection-background = #9a686c
+selection-foreground = #cfcfcf
+cursor-color = #6b7daa
+cursor-text = #464d66
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#3d4359
+palette = 1=#fd8680
+palette = 2=#a8ebb5
+palette = 3=#f6da8e
+palette = 4=#c7dcfe
+palette = 5=#fd8774
+palette = 6=#80ebf7
+palette = 7=#becae0
+palette = 8=#9dc1ff
+palette = 9=#f99a95
+palette = 10=#baefc4
+palette = 11=#f8e2a5
+palette = 12=#d3e3ff
+palette = 13=#f99a8b
+palette = 14=#9bf1fb
+palette = 15=#cfcfcf

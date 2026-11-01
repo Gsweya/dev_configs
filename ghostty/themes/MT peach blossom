@@ -1,0 +1,26 @@
+# MT peach blossom — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #292929
+foreground = #fecea8
+selection-background = #4b544a
+selection-foreground = #fecea8
+cursor-color = #616161
+cursor-text = #292929
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2a363b
+palette = 1=#ff6961
+palette = 2=#8ab8bc
+palette = 3=#baad8a
+palette = 4=#baa5c5
+palette = 5=#99b898
+palette = 6=#99afce
+palette = 7=#d8b8a0
+palette = 8=#909090
+palette = 9=#ff7d6f
+palette = 10=#a1bcb8
+palette = 11=#c8b490
+palette = 12=#c8adbf
+palette = 13=#adbc9b
+palette = 14=#adb5c6
+palette = 15=#fecea8

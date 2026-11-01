@@ -1,0 +1,26 @@
+# MT drowning — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #191826
+foreground = #9393a7
+selection-background = #32446e
+selection-foreground = #9393a7
+cursor-color = #4f85e8
+cursor-text = #191826
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#242738
+palette = 1=#be555f
+palette = 2=#71a47b
+palette = 3=#ab965a
+palette = 4=#7b9acc
+palette = 5=#4a6fb5
+palette = 6=#51a4ae
+palette = 7=#858ea8
+palette = 8=#6b84a9
+palette = 9=#ba6571
+palette = 10=#7ea78a
+palette = 11=#ae9d70
+palette = 12=#869fcb
+palette = 13=#5a77b4
+palette = 14=#66a9b5
+palette = 15=#9393a7

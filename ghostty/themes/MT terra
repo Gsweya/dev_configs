@@ -1,0 +1,26 @@
+# MT terra — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0c100e
+foreground = #f0edd1
+selection-background = #304424
+selection-foreground = #f0edd1
+cursor-color = #89c559
+cursor-text = #0c100e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#0f1d18
+palette = 1=#d3ca78
+palette = 2=#6eb07d
+palette = 3=#b99e53
+palette = 4=#7ca2df
+palette = 5=#89c559
+palette = 6=#40b0bc
+palette = 7=#c0c9a2
+palette = 8=#66854c
+palette = 9=#d9d18a
+palette = 10=#88bc8e
+palette = 11=#c4ae6c
+palette = 12=#93b1dc
+palette = 13=#9ecd71
+palette = 14=#63bcc0
+palette = 15=#f0edd1

@@ -1,0 +1,26 @@
+# MT diner — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #537997
+foreground = #000000
+selection-background = #405153
+selection-foreground = #000000
+cursor-color = #812920
+cursor-text = #537997
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#4d6f8b
+palette = 1=#4b0000
+palette = 2=#071b05
+palette = 3=#270e06
+palette = 4=#1f0c28
+palette = 5=#282000
+palette = 6=#041923
+palette = 7=#000007
+palette = 8=#000015
+palette = 9=#350000
+palette = 10=#010d00
+palette = 11=#140301
+palette = 12=#0d0213
+palette = 13=#1b1500
+palette = 14=#000b13
+palette = 15=#000000

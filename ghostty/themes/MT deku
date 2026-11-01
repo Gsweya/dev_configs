@@ -1,0 +1,26 @@
+# MT deku — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #058b8c
+foreground = #000000
+selection-background = #215d5f
+selection-foreground = #000000
+cursor-color = #9a1618
+cursor-text = #058b8c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#0e7d7e
+palette = 1=#5a0003
+palette = 2=#001c04
+palette = 3=#1f1500
+palette = 4=#00153d
+palette = 5=#5a0003
+palette = 6=#001a1e
+palette = 7=#000808
+palette = 8=#001618
+palette = 9=#480002
+palette = 10=#000f00
+palette = 11=#110900
+palette = 12=#000828
+palette = 13=#480002
+palette = 14=#000d10
+palette = 15=#000000

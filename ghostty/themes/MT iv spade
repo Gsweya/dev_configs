@@ -1,0 +1,26 @@
+# MT iv spade — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0c0c0c
+foreground = #d3c2c3
+selection-background = #483d2d
+selection-foreground = #d3c2c3
+cursor-color = #bebebe
+cursor-text = #0c0c0c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1c1c1c
+palette = 1=#9d7b7d
+palette = 2=#7da699
+palette = 3=#97a27f
+palette = 4=#a097b9
+palette = 5=#b7976a
+palette = 6=#7fa1b8
+palette = 7=#b4a9aa
+palette = 8=#7b7b7b
+palette = 9=#a8898b
+palette = 10=#8eaca1
+palette = 11=#a3a88d
+palette = 12=#aaa0bb
+palette = 13=#bda07c
+palette = 14=#90a8ba
+palette = 15=#d3c2c3

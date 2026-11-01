@@ -1,0 +1,26 @@
+# MT dualshot — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #737373
+foreground = #000000
+selection-background = #4c4c4c
+selection-foreground = #000000
+cursor-color = #212222
+cursor-text = #737373
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#646464
+palette = 1=#450004
+palette = 2=#0c1901
+palette = 3=#260e05
+palette = 4=#1d0e29
+palette = 5=#212222
+palette = 6=#021921
+palette = 7=#000000
+palette = 8=#000000
+palette = 9=#2f0001
+palette = 10=#030900
+palette = 11=#120300
+palette = 12=#0b0214
+palette = 13=#151616
+palette = 14=#000a10
+palette = 15=#000000

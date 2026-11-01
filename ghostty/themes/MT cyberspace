@@ -1,0 +1,26 @@
+# MT cyberspace — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #181c18
+foreground = #c2fbe1
+selection-background = #115035
+selection-foreground = #c2fbe1
+cursor-color = #00ce7c
+cursor-text = #181c18
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2a2932
+palette = 1=#ff5f5f
+palette = 2=#76b884
+palette = 3=#c3a85d
+palette = 4=#85acea
+palette = 5=#00ce7c
+palette = 6=#4ab8c4
+palette = 7=#b2cddc
+palette = 8=#9578d3
+palette = 9=#f37e79
+palette = 10=#85c597
+palette = 11=#c3b977
+palette = 12=#91bce8
+palette = 13=#27d790
+palette = 14=#62c5ca
+palette = 15=#c2fbe1

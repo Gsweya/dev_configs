@@ -1,0 +1,26 @@
+# MT sewing tin — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #241963
+foreground = #ffffff
+selection-background = #5a486b
+selection-foreground = #ffffff
+cursor-color = #fbdb8c
+cursor-text = #241963
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2a277a
+palette = 1=#c6915e
+palette = 2=#93c19c
+palette = 3=#c8b581
+palette = 4=#9eb7e1
+palette = 5=#f2ce83
+palette = 6=#7cc2ca
+palette = 7=#c7d5fc
+palette = 8=#5e88f6
+palette = 9=#d1a77e
+palette = 10=#a9cdb0
+palette = 11=#d3c49a
+palette = 12=#b1c5e7
+palette = 13=#f5d89c
+palette = 14=#96ced5
+palette = 15=#ffffff

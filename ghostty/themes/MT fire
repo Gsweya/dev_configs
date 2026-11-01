@@ -1,0 +1,26 @@
+# MT fire — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0f0000
+foreground = #ffffff
+selection-background = #731613
+selection-foreground = #ffffff
+cursor-color = #b31313
+cursor-text = #0f0000
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#200a0a
+palette = 1=#4459d5
+palette = 2=#599968
+palette = 3=#a3893d
+palette = 4=#678cc9
+palette = 5=#c12722
+palette = 6=#3998a1
+palette = 7=#decac9
+palette = 8=#a16866
+palette = 9=#697add
+palette = 10=#7aad86
+palette = 11=#b5a164
+palette = 12=#85a3d4
+palette = 13=#cd524e
+palette = 14=#61adb4
+palette = 15=#ffffff

@@ -1,0 +1,26 @@
+# MT solarized osaka — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #00141a
+foreground = #eee8d5
+selection-background = #334710
+selection-foreground = #eee8d5
+cursor-color = #b58900
+cursor-text = #00141a
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#00222b
+palette = 1=#dc322f
+palette = 2=#60a16e
+palette = 3=#aa9044
+palette = 4=#6d93cf
+palette = 5=#859900
+palette = 6=#2ca1ac
+palette = 7=#a9cfc0
+palette = 8=#2aa198
+palette = 9=#e05650
+palette = 10=#7caf83
+palette = 11=#b8a261
+palette = 12=#87a4d0
+palette = 13=#9aa92b
+palette = 14=#53afb4
+palette = 15=#eee8d5

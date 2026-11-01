@@ -1,0 +1,26 @@
+# MT 9009 — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #eeebe2
+foreground = #080909
+selection-background = #b2b0aa
+selection-foreground = #080909
+cursor-color = #7fa480
+cursor-text = #eeebe2
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d3cfc1
+palette = 1=#af685e
+palette = 2=#4f5d43
+palette = 3=#69554e
+palette = 4=#605272
+palette = 5=#080909
+palette = 6=#4a5c63
+palette = 7=#2c2b24
+palette = 8=#6e6955
+palette = 9=#8e554d
+palette = 10=#414c37
+palette = 11=#564640
+palette = 12=#4e435d
+palette = 13=#080909
+palette = 14=#3d4b51
+palette = 15=#080909

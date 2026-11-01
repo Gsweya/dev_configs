@@ -1,0 +1,26 @@
+# MT onedark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2f343f
+foreground = #98c379
+selection-background = #405d79
+selection-foreground = #98c379
+cursor-color = #61afef
+cursor-text = #2f343f
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#262b34
+palette = 1=#e06c75
+palette = 2=#8ac195
+palette = 3=#cab374
+palette = 4=#95b6eb
+palette = 5=#61afef
+palette = 6=#6ac1cb
+palette = 7=#b5d2a4
+palette = 8=#eceff4
+palette = 9=#d7827a
+palette = 10=#93c795
+palette = 11=#c8be7d
+palette = 12=#9cbfdb
+palette = 13=#71b8dc
+palette = 14=#7bc9c3
+palette = 15=#98c379

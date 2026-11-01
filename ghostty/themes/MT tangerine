@@ -1,0 +1,26 @@
+# MT tangerine — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ffede0
+foreground = #3d1705
+selection-background = #f1a279
+selection-foreground = #3d1705
+cursor-color = #5d8500
+cursor-text = #ffede0
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#fdd3bf
+palette = 1=#618b09
+palette = 2=#357646
+palette = 3=#7f6611
+palette = 4=#4669a2
+palette = 5=#e14a01
+palette = 6=#06747d
+palette = 7=#662b0b
+palette = 8=#b24f16
+palette = 9=#5a7408
+palette = 10=#376339
+palette = 11=#72560f
+palette = 12=#445983
+palette = 13=#c04002
+palette = 14=#116165
+palette = 15=#3d1705

@@ -1,0 +1,26 @@
+# MT wavez — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1c292f
+foreground = #e9efe6
+selection-background = #315832
+selection-foreground = #e9efe6
+cursor-color = #6bde3b
+cursor-text = #1c292f
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1b3238
+palette = 1=#ca4754
+palette = 2=#84c691
+palette = 3=#d0b469
+palette = 4=#92b8f5
+palette = 5=#6bde3b
+palette = 6=#5ac6d2
+palette = 7=#b7d1d0
+palette = 8=#5b98a6
+palette = 9=#d06971
+palette = 10=#98cea2
+palette = 11=#d5c082
+palette = 12=#a3c3f2
+palette = 13=#84e15d
+palette = 14=#77ced6
+palette = 15=#e9efe6

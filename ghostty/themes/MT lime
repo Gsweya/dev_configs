@@ -1,0 +1,26 @@
+# MT lime — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #7c878e
+foreground = #000000
+selection-background = #52614b
+selection-foreground = #000000
+cursor-color = #93c247
+cursor-text = #7c878e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#737d82
+palette = 1=#660c00
+palette = 2=#0e1b00
+palette = 3=#261103
+palette = 4=#1a102e
+palette = 5=#233600
+palette = 6=#011b21
+palette = 7=#090b0c
+palette = 8=#191f23
+palette = 9=#520a00
+palette = 10=#061000
+palette = 11=#170800
+palette = 12=#0f071e
+palette = 13=#1c2b00
+palette = 14=#001014
+palette = 15=#000000

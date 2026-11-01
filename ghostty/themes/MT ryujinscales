@@ -1,0 +1,26 @@
+# MT ryujinscales — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #081426
+foreground = #ffe4bc
+selection-background = #5c3837
+selection-foreground = #ffe4bc
+cursor-color = #ef6d49
+cursor-text = #081426
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2b2c35
+palette = 1=#ca4754
+palette = 2=#71b27e
+palette = 3=#b89d52
+palette = 4=#7ba1de
+palette = 5=#f17754
+palette = 6=#43b2bd
+palette = 7=#ffd6ad
+palette = 8=#ffbc90
+palette = 9=#d56669
+palette = 10=#8dbc8a
+palette = 11=#c6ab67
+palette = 12=#95aed7
+palette = 13=#f48d69
+palette = 14=#69bcbd
+palette = 15=#ffe4bc

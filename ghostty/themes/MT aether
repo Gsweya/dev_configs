@@ -1,0 +1,26 @@
+# MT aether — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #101820
+foreground = #eedaea
+selection-background = #41434c
+selection-foreground = #eedaea
+cursor-color = #eedaea
+cursor-text = #101820
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#292136
+palette = 1=#ff5253
+palette = 2=#9aac8f
+palette = 3=#c19f8a
+palette = 4=#aba0bf
+palette = 5=#eedaea
+palette = 6=#82aeb9
+palette = 7=#e3b3e5
+palette = 8=#cf6bdd
+palette = 9=#fc6d71
+palette = 10=#abb5a1
+palette = 11=#caab9d
+palette = 12=#b8acc8
+palette = 13=#eedaea
+palette = 14=#98b7c3
+palette = 15=#eedaea

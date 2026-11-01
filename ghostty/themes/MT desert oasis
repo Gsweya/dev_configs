@@ -1,0 +1,26 @@
+# MT desert oasis — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fff2d5
+foreground = #332800
+selection-background = #d0b467
+selection-foreground = #332800
+cursor-color = #3a87fe
+cursor-text = #fff2d5
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#eddebc
+palette = 1=#4f9008
+palette = 2=#41764e
+palette = 3=#7e6728
+palette = 4=#4c6a9d
+palette = 5=#a47a02
+palette = 6=#0a7680
+palette = 7=#213c59
+palette = 8=#0061fe
+palette = 9=#497b06
+palette = 10=#3e663e
+palette = 11=#6f5a20
+palette = 12=#475d7e
+palette = 13=#8d6a02
+palette = 14=#126666
+palette = 15=#332800

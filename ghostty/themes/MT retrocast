@@ -1,0 +1,26 @@
+# MT retrocast — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #07737a
+foreground = #ffffff
+selection-background = #3ea0a5
+selection-foreground = #ffffff
+cursor-color = #88dbdf
+cursor-text = #07737a
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#26858b
+palette = 1=#febdb9
+palette = 2=#d7f5d1
+palette = 3=#ffebd5
+palette = 4=#efedfe
+palette = 5=#88dbdf
+palette = 6=#c2f7fc
+palette = 7=#fef8bf
+palette = 8=#fdea49
+palette = 9=#ffccc9
+palette = 10=#e6fee1
+palette = 11=#fff7ee
+palette = 12=#f9f8ff
+palette = 13=#a2e4e7
+palette = 14=#e1fcff
+palette = 15=#ffffff

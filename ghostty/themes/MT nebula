@@ -1,0 +1,26 @@
+# MT nebula — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #212135
+foreground = #abaeae
+selection-background = #793063
+selection-foreground = #abaeae
+cursor-color = #78c729
+cursor-text = #212135
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#191928
+palette = 1=#ca4754
+palette = 2=#6eaf7c
+palette = 3=#ba9f54
+palette = 4=#7ca1df
+palette = 5=#be3c88
+palette = 6=#45aeb9
+palette = 7=#78b0b2
+palette = 8=#19b3b8
+palette = 9=#c65e67
+palette = 10=#7fb48b
+palette = 11=#bca76b
+palette = 12=#88a7d8
+palette = 13=#ba5390
+palette = 14=#5eb3bc
+palette = 15=#abaeae

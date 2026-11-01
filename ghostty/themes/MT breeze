@@ -1,0 +1,26 @@
+# MT breeze — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #e8d5c4
+foreground = #1b4c5e
+selection-background = #af9bb6
+selection-foreground = #1b4c5e
+cursor-color = #7d67a9
+cursor-text = #e8d5c4
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#f6e6da
+palette = 1=#7d67a9
+palette = 2=#386242
+palette = 3=#695827
+palette = 4=#425b82
+palette = 5=#7d67a9
+palette = 6=#14626a
+palette = 7=#12556b
+palette = 8=#006783
+palette = 9=#69629a
+palette = 10=#2f5b45
+palette = 11=#585531
+palette = 12=#375578
+palette = 13=#69629a
+palette = 14=#115b65
+palette = 15=#1b4c5e

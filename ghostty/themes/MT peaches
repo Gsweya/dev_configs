@@ -1,0 +1,26 @@
+# MT peaches — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #e0d7c1
+foreground = #5f4c41
+selection-background = #c8957d
+selection-foreground = #5f4c41
+cursor-color = #dd7a5f
+cursor-text = #e0d7c1
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e2caaf
+palette = 1=#cb3836
+palette = 2=#2b653a
+palette = 3=#6d560b
+palette = 4=#3c5a8d
+palette = 5=#b15339
+palette = 6=#03646c
+palette = 7=#6b4e3c
+palette = 8=#825332
+palette = 9=#b53c38
+palette = 10=#325d38
+palette = 11=#665010
+palette = 12=#40547b
+palette = 13=#9f513a
+palette = 14=#135e62
+palette = 15=#5f4c41

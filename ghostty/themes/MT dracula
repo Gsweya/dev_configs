@@ -1,0 +1,26 @@
+# MT dracula — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #282a36
+foreground = #f8f8f2
+selection-background = #584c74
+selection-foreground = #f8f8f2
+cursor-color = #bd93f9
+cursor-text = #282a36
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#20222c
+palette = 1=#ff5555
+palette = 2=#7cbd8a
+palette = 3=#c4a95e
+palette = 4=#86aceb
+palette = 5=#bd93f9
+palette = 6=#50bec9
+palette = 7=#ced4e2
+palette = 8=#7f90c4
+palette = 9=#fe7674
+palette = 10=#95c99f
+palette = 11=#ceb97c
+palette = 12=#9dbbec
+palette = 13=#c9a7f8
+palette = 14=#72cad1
+palette = 15=#f8f8f2

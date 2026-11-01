@@ -1,0 +1,26 @@
+# MT comfy — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #4a5b6e
+foreground = #f5efee
+selection-background = #83818b
+selection-foreground = #f5efee
+cursor-color = #9ec1cc
+cursor-text = #4a5b6e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#425366
+palette = 1=#ff9ca7
+palette = 2=#d8f5d8
+palette = 3=#feecda
+palette = 4=#f4edfe
+palette = 5=#f8cdc6
+palette = 6=#cdf5fd
+palette = 7=#dee6e9
+palette = 8=#b2d6e1
+palette = 9=#fdadb5
+palette = 10=#e5fbe3
+palette = 11=#fff7ee
+palette = 12=#fbf7ff
+palette = 13=#fcd9d3
+palette = 14=#e4fbff
+palette = 15=#f5efee

@@ -1,0 +1,26 @@
+# MT iv clover — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #a0a0a0
+foreground = #3b2d3b
+selection-background = #7c7071
+selection-foreground = #3b2d3b
+cursor-color = #6b6b6b
+cursor-text = #a0a0a0
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#bebebe
+palette = 1=#5e3f41
+palette = 2=#1f3924
+palette = 3=#3c3111
+palette = 4=#23324c
+palette = 5=#573e40
+palette = 6=#08393e
+palette = 7=#393039
+palette = 8=#353535
+palette = 9=#54383d
+palette = 10=#1f3123
+palette = 11=#362a13
+palette = 12=#222b42
+palette = 13=#4e383c
+palette = 14=#0c3238
+palette = 15=#3b2d3b

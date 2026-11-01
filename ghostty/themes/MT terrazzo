@@ -1,0 +1,26 @@
+# MT terrazzo — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #f1e5da
+foreground = #023e3b
+selection-background = #d8a085
+selection-foreground = #023e3b
+cursor-color = #e0794e
+cursor-text = #f1e5da
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e3d3c6
+palette = 1=#a01034
+palette = 2=#317041
+palette = 3=#79600b
+palette = 4=#41629b
+palette = 5=#c05c30
+palette = 6=#076e77
+palette = 7=#1a4e4d
+palette = 8=#486d6e
+palette = 9=#801935
+palette = 10=#286640
+palette = 11=#615915
+palette = 12=#345b88
+palette = 13=#9a5632
+palette = 14=#06646b
+palette = 15=#023e3b

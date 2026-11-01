@@ -1,0 +1,26 @@
+# MT blue dolphin — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #003950
+foreground = #82eaff
+selection-background = #405e7b
+selection-foreground = #82eaff
+cursor-color = #00bcd4
+cursor-text = #003950
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#014961
+palette = 1=#ffbde6
+palette = 2=#add2b3
+palette = 3=#d6c89f
+palette = 4=#b8cae5
+palette = 5=#ffcefb
+palette = 6=#9dd3d9
+palette = 7=#54e8ff
+palette = 8=#00e4ff
+palette = 9=#edccf2
+palette = 10=#a6d9c4
+palette = 11=#c8d2b5
+palette = 12=#b0d3ed
+palette = 13=#ebdcfe
+palette = 14=#9adae3
+palette = 15=#82eaff

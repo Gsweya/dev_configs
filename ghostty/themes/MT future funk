@@ -1,0 +1,26 @@
+# MT future funk — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2e1a47
+foreground = #f7f2ea
+selection-background = #564568
+selection-foreground = #f7f2ea
+cursor-color = #f7f2ea
+cursor-text = #2e1a47
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#432a61
+palette = 1=#f04e98
+palette = 2=#aeb693
+palette = 3=#cbad96
+palette = 4=#b9b2b9
+palette = 5=#f7f2ea
+palette = 6=#96bab9
+palette = 7=#e4cff1
+palette = 8=#c18fff
+palette = 9=#f16fa8
+palette = 10=#bdc2a4
+palette = 11=#d4bba7
+palette = 12=#c5bfc3
+palette = 13=#f7f2ea
+palette = 14=#a9c5c3
+palette = 15=#f7f2ea

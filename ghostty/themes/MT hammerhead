@@ -1,0 +1,26 @@
+# MT hammerhead — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #030613
+foreground = #e2f1f5
+selection-background = #1a4245
+selection-foreground = #e2f1f5
+cursor-color = #4fcdb9
+cursor-text = #030613
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#0a1928
+palette = 1=#e32b2b
+palette = 2=#76a980
+palette = 3=#b09a61
+palette = 4=#809ed0
+palette = 5=#4fcdb9
+palette = 6=#58a9b3
+palette = 7=#b4c8d3
+palette = 8=#5e7b95
+palette = 9=#e35353
+palette = 10=#8cb797
+palette = 11=#baab7f
+palette = 12=#94afd7
+palette = 13=#6cd4c5
+palette = 14=#74b7c0
+palette = 15=#e2f1f5

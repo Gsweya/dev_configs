@@ -1,0 +1,26 @@
+# Solid Nord Light — Nord Light with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #e5e9f0
+foreground = #3d4453
+selection-background = #9ea5bc
+selection-foreground = #000000
+cursor-color = #815869
+cursor-text = #e5e9f0
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d6dae2
+palette = 1=#a24746
+palette = 2=#5a6939
+palette = 3=#875a23
+palette = 4=#586187
+palette = 5=#815869
+palette = 6=#326d6b
+palette = 7=#5b606c
+palette = 8=#586172
+palette = 9=#8b4548
+palette = 10=#53603e
+palette = 11=#76542d
+palette = 12=#515a7b
+palette = 13=#715363
+palette = 14=#326264
+palette = 15=#c6cbd4

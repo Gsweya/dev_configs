@@ -1,0 +1,26 @@
+# Solid GitHub Light — GitHub Light Default with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #ffffff
+foreground = #2e3237
+selection-background = #a1b9dc
+selection-foreground = #2e3237
+cursor-color = #7a63b5
+cursor-text = #ffffff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#eceded
+palette = 1=#af504c
+palette = 2=#18682d
+palette = 3=#75532b
+palette = 4=#3c6eb6
+palette = 5=#7a63b5
+palette = 6=#1a7b82
+palette = 7=#696e73
+palette = 8=#656e79
+palette = 9=#924846
+palette = 10=#1e5d30
+palette = 11=#654c2e
+palette = 12=#39619a
+palette = 13=#695899
+palette = 14=#1e6b72
+palette = 15=#dddfe2

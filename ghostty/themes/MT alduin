@@ -1,0 +1,26 @@
+# MT alduin — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1c1c1c
+foreground = #f5f3ed
+selection-background = #49473e
+selection-foreground = #f5f3ed
+cursor-color = #e3e3e3
+cursor-text = #1c1c1c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#242424
+palette = 1=#af5f5f
+palette = 2=#9ab194
+palette = 3=#c3a48b
+palette = 4=#aca7ca
+palette = 5=#dfd7af
+palette = 6=#85b1bd
+palette = 7=#ceccc9
+palette = 8=#858585
+palette = 9=#bd7d7b
+palette = 10=#acbea6
+palette = 11=#cdb49f
+palette = 12=#bbb6d1
+palette = 13=#e3ddbb
+palette = 14=#9bbec7
+palette = 15=#f5f3ed

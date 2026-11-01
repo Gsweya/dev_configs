@@ -1,0 +1,26 @@
+# Solid Nord — Nord with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #2e3440
+foreground = #d8dee9
+selection-background = #586177
+selection-foreground = #fafcff
+cursor-color = #d5a9bf
+cursor-text = #2e3440
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#3d4454
+palette = 1=#fa9b95
+palette = 2=#b0bb85
+palette = 3=#ebcb8b
+palette = 4=#a6b5de
+palette = 5=#d5a9bf
+palette = 6=#89c3bf
+palette = 7=#d5dbe6
+palette = 8=#959fb2
+palette = 9=#ffb7b4
+palette = 10=#c4cfa6
+palette = 11=#e8d0a1
+palette = 12=#bdcaec
+palette = 13=#e2c1d4
+palette = 14=#a3d2d1
+palette = 15=#fafcff

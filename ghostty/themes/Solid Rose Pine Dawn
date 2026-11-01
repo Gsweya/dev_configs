@@ -1,0 +1,26 @@
+# Solid Rose Pine Dawn — Rose Pine Dawn with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #faf4ed
+foreground = #4b495b
+selection-background = #98b4af
+selection-foreground = #000000
+cursor-color = #766391
+cursor-text = #faf4ed
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#eae5e0
+palette = 1=#9d5275
+palette = 2=#3f638c
+palette = 3=#926206
+palette = 4=#377571
+palette = 5=#766391
+palette = 6=#a35645
+palette = 7=#676673
+palette = 8=#706c7d
+palette = 9=#8b506f
+palette = 10=#435e82
+palette = 11=#805c17
+palette = 12=#3a6a6b
+palette = 13=#6a5a82
+palette = 14=#8e5148
+palette = 15=#dcd6d4

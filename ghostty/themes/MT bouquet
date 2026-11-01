@@ -1,0 +1,26 @@
+# MT bouquet — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #173f35
+foreground = #e9e0d2
+selection-background = #5d5f57
+selection-foreground = #e9e0d2
+cursor-color = #eaa09c
+cursor-text = #173f35
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1f4e43
+palette = 1=#ef6042
+palette = 2=#a0c3a1
+palette = 3=#ceb98e
+palette = 4=#acbbe4
+palette = 5=#eaa09c
+palette = 6=#8ac6cd
+palette = 7=#b9cfbf
+palette = 8=#61af9b
+palette = 9=#ee7a5f
+palette = 10=#afc9ab
+palette = 11=#d3c19c
+palette = 12=#b8c2e0
+palette = 13=#eaada7
+palette = 14=#9dcbce
+palette = 15=#e9e0d2

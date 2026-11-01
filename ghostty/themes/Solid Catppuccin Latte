@@ -1,0 +1,26 @@
+# Solid Catppuccin Latte — Catppuccin Latte with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #eff1f5
+foreground = #444658
+selection-background = #98acd3
+selection-foreground = #000000
+cursor-color = #9a4d86
+cursor-text = #eff1f5
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e0e2e7
+palette = 1=#aa4b4f
+palette = 2=#39772d
+palette = 3=#985c00
+palette = 4=#4168b2
+palette = 5=#9a4d86
+palette = 6=#00757b
+palette = 7=#626470
+palette = 8=#686b78
+palette = 9=#934950
+palette = 10=#3a6b35
+palette = 11=#855612
+palette = 12=#405f9b
+palette = 13=#874b7c
+palette = 14=#0d6a72
+palette = 15=#d1d4da

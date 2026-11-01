@@ -1,0 +1,26 @@
+# MT slambook — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fffdde
+foreground = #13005a
+selection-background = #c0beae
+selection-foreground = #13005a
+cursor-color = #367e18
+cursor-text = #fffdde
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#c6dce4
+palette = 1=#f900bf
+palette = 2=#5a654c
+palette = 3=#705f59
+palette = 4=#655d7d
+palette = 5=#03001c
+palette = 6=#54656b
+palette = 7=#122b75
+palette = 8=#107ca7
+palette = 9=#cb00ab
+palette = 10=#4c514f
+palette = 11=#5d4c59
+palette = 12=#554a76
+palette = 13=#060028
+palette = 14=#475168
+palette = 15=#13005a

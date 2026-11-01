@@ -1,0 +1,26 @@
+# MT voc — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #190618
+foreground = #eeeae4
+selection-background = #4d393e
+selection-foreground = #eeeae4
+cursor-color = #e0caac
+cursor-text = #190618
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2c0c28
+palette = 1=#af3735
+palette = 2=#91a487
+palette = 3=#b99883
+palette = 4=#a39abc
+palette = 5=#e0caac
+palette = 6=#7ba6b3
+palette = 7=#d2bdc9
+palette = 8=#9d6997
+palette = 9=#bc5b58
+palette = 10=#a4b29a
+palette = 11=#c4a896
+palette = 12=#b2aac4
+palette = 13=#e3d0b7
+palette = 14=#92b4bd
+palette = 15=#eeeae4

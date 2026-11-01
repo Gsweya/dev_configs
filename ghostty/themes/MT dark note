@@ -1,0 +1,26 @@
+# MT dark note — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1f1f1f
+foreground = #d2dff4
+selection-background = #544836
+selection-foreground = #d2dff4
+cursor-color = #e3dce0
+cursor-text = #1f1f1f
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#141414
+palette = 1=#ff0000
+palette = 2=#8bb994
+palette = 3=#c0ac78
+palette = 4=#93afdd
+palette = 5=#f2c17b
+palette = 6=#72bac2
+palette = 7=#b2c3d3
+palette = 8=#768f95
+palette = 9=#fd3738
+palette = 10=#99c1a7
+palette = 11=#c4b691
+palette = 12=#a0b9e2
+palette = 13=#eec995
+palette = 14=#85c1cc
+palette = 15=#d2dff4

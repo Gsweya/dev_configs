@@ -1,0 +1,26 @@
+# Solid Kanagawa Lotus — Kanagawa Lotus with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #f2ecbc
+foreground = #434353
+selection-background = #9ea9aa
+selection-foreground = #000000
+cursor-color = #9b4978
+cursor-text = #f2ecbc
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e2ddb3
+palette = 1=#a4483f
+palette = 2=#486e39
+palette = 3=#7b6033
+palette = 4=#4a6698
+palette = 5=#9b4978
+palette = 6=#496a69
+palette = 7=#60606d
+palette = 8=#69685f
+palette = 9=#8e4642
+palette = 10=#46643e
+palette = 11=#6d5838
+palette = 12=#465c87
+palette = 13=#87476f
+palette = 14=#486164
+palette = 15=#d4cfa8

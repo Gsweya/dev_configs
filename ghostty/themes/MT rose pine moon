@@ -1,0 +1,26 @@
+# MT rose pine moon — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2a273f
+foreground = #e0def4
+selection-background = #485367
+selection-foreground = #e0def4
+cursor-color = #f6c177
+cursor-text = #2a273f
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#211f32
+palette = 1=#eb6f92
+palette = 2=#bdb897
+palette = 3=#d8aea8
+palette = 4=#a9bcdc
+palette = 5=#9ccfd8
+palette = 6=#96c2b5
+palette = 7=#d6cbef
+palette = 8=#c4a7e7
+palette = 9=#e985a6
+palette = 10=#c4c0aa
+palette = 11=#dab8b7
+palette = 12=#b4c3e1
+palette = 13=#aad2de
+palette = 14=#a5c8c2
+palette = 15=#e0def4

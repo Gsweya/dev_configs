@@ -10,12 +10,19 @@ font-feature = +liga
 
 # ── 🎨 Theme ────────────────────────────────────────
 # Follows the desktop: ☀️ Neon Day when it's light, 🌙 Neon Night when it's dark
-# (both in themes/). Pick another one with 🎨 in the tmux bar or `ktheme`; that
-# writes theme.ghostty next to this file, which overrides the line below.
+# (both in themes/). Pick another one, like the 187 from Monkeytype, with 🎨 in the
+# tmux bar or `ktheme`; that writes theme.ghostty next to this file, which overrides
+# the line below.
 theme = light:Neon Day,dark:Neon Night
 config-file = ?theme.ghostty
 # ⚙ ksettings writes see-through and the cursor here, overriding the lines below.
 config-file = ?kronikus.ghostty
+# A safety net for almost invisible text, kept low on purpose: below the limit
+# Ghostty doesn't lift a color, it jumps to pure white or black. The contrast
+# itself comes from the Neon and Solid themes (see ghostty/tune-themes).
+minimum-contrast = 1.5
+# Dim text (hints, the "in" and "on" of the prompt) fades less than Ghostty's 0.5.
+faint-opacity = 0.75
 
 # ── ✨ Cursor ────────────────────────────────────────
 cursor-style = bar
@@ -23,7 +30,7 @@ cursor-style-blink = true
 adjust-cursor-thickness = 3
 
 # ── 🪟 Window ────────────────────────────────────────
-background-opacity = 0.93
+background-opacity = 1
 background-blur = 12
 window-decoration = auto
 window-theme = auto

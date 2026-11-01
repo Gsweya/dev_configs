@@ -1,0 +1,26 @@
+# MT hanok — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #d8d2c3
+foreground = #393b3b
+selection-background = #a79b8c
+selection-foreground = #393b3b
+cursor-color = #513a2a
+cursor-text = #d8d2c3
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#cdc0af
+palette = 1=#ca4754
+palette = 2=#2c5043
+palette = 3=#504a29
+palette = 4=#4f4462
+palette = 5=#513a2a
+palette = 6=#2c4d61
+palette = 7=#4c443e
+palette = 8=#705543
+palette = 9=#ad454f
+palette = 10=#2c493e
+palette = 11=#4a462c
+palette = 12=#483f57
+palette = 13=#49372a
+palette = 14=#2e4858
+palette = 15=#393b3b

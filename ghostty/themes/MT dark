@@ -1,0 +1,26 @@
+# MT dark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #111111
+foreground = #eeeeee
+selection-background = #424242
+selection-foreground = #eeeeee
+cursor-color = #eeeeee
+cursor-text = #111111
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#202020
+palette = 1=#da3333
+palette = 2=#9aa586
+palette = 3=#bb9a86
+palette = 4=#a5a1ae
+palette = 5=#eeeeee
+palette = 6=#7cabad
+palette = 7=#c6c6c6
+palette = 8=#7c7c7c
+palette = 9=#de5858
+palette = 10=#abb49b
+palette = 11=#c5ab9b
+palette = 12=#b4b0bb
+palette = 13=#eeeeee
+palette = 14=#93b8ba
+palette = 15=#eeeeee

@@ -1,0 +1,26 @@
+# MT witch girl — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #f3dbda
+foreground = #2d4d41
+selection-background = #a4aaa2
+selection-foreground = #2d4d41
+cursor-color = #8fa49c
+cursor-text = #f3dbda
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e7c8be
+palette = 1=#877068
+palette = 2=#526348
+palette = 3=#755844
+palette = 4=#605a79
+palette = 5=#56786a
+palette = 6=#3b6470
+palette = 7=#495246
+palette = 8=#7e5a4f
+palette = 9=#756960
+palette = 10=#4a5e46
+palette = 11=#675643
+palette = 12=#56576e
+palette = 13=#4e6f62
+palette = 14=#375e66
+palette = 15=#2d4d41

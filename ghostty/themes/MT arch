@@ -1,0 +1,26 @@
+# MT arch — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0c0d11
+foreground = #f6f5f5
+selection-background = #2e4142
+selection-foreground = #f6f5f5
+cursor-color = #7ebab5
+cursor-text = #0c0d11
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#171a25
+palette = 1=#ff4754
+palette = 2=#8ca78a
+palette = 3=#b69b7f
+palette = 4=#a79abc
+palette = 5=#7ebab5
+palette = 6=#7ca4b5
+palette = 7=#c8c9d4
+palette = 8=#747897
+palette = 9=#fd6a74
+palette = 10=#a1b79f
+palette = 11=#c3ad97
+palette = 12=#b7acc7
+palette = 13=#96c6c2
+palette = 14=#94b4c2
+palette = 15=#f6f5f5

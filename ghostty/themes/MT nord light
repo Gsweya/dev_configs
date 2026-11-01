@@ -1,0 +1,26 @@
+# MT nord light — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #eceff4
+foreground = #2b5656
+selection-background = #a0b8ba
+selection-foreground = #2b5656
+cursor-color = #8fbcbb
+cursor-text = #eceff4
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d8dee9
+palette = 1=#bf616a
+palette = 2=#586d53
+palette = 3=#7e5f4b
+palette = 4=#686282
+palette = 5=#5a8685
+palette = 6=#436d79
+palette = 7=#3e5e67
+palette = 8=#606d86
+palette = 9=#a15f66
+palette = 10=#4f6854
+palette = 11=#6d5d4d
+palette = 12=#5b5f78
+palette = 13=#517c7c
+palette = 14=#3d6771
+palette = 15=#2b5656

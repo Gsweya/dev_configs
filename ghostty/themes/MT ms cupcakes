@@ -1,0 +1,26 @@
+# MT ms cupcakes — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ffffff
+foreground = #0a282f
+selection-background = #85ccd9
+selection-foreground = #0a282f
+cursor-color = #303030
+cursor-text = #ffffff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#edf8fa
+palette = 1=#6b9600
+palette = 2=#4d7c58
+palette = 3=#826f38
+palette = 4=#57739f
+palette = 5=#0095b0
+palette = 6=#2c7c84
+palette = 7=#4f2e4f
+palette = 8=#cf398a
+palette = 9=#588009
+palette = 10=#406b50
+palette = 11=#6a6136
+palette = 12=#486489
+palette = 13=#027f96
+palette = 14=#256b73
+palette = 15=#0a282f

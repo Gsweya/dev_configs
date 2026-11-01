@@ -1,0 +1,26 @@
+# MT luna — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #221c35
+foreground = #ffe3eb
+selection-background = #6a3a57
+selection-foreground = #ffe3eb
+cursor-color = #f67599
+cursor-text = #221c35
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2f2346
+palette = 1=#efc050
+palette = 2=#76b784
+palette = 3=#bea358
+palette = 4=#80a6e4
+palette = 5=#f67599
+palette = 6=#49b7c3
+palette = 7=#dbbedd
+palette = 8=#9978c2
+palette = 9=#f2c76f
+palette = 10=#91c099
+palette = 11=#cbb075
+palette = 12=#99b2e5
+palette = 13=#f88ba9
+palette = 14=#6dc0cb
+palette = 15=#ffe3eb

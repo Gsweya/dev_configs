@@ -1,0 +1,26 @@
+# MT material — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #263238
+foreground = #e6edf3
+selection-background = #3f5d5f
+selection-foreground = #e6edf3
+cursor-color = #80cbc4
+cursor-text = #263238
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2e3c43
+palette = 1=#fb4934
+palette = 2=#adc2a1
+palette = 3=#d5b499
+palette = 4=#c8b1d4
+palette = 5=#80cbc4
+palette = 6=#9dbed9
+palette = 7=#c2d1d9
+palette = 8=#809ca8
+palette = 9=#f76a5a
+palette = 10=#b8cbb1
+palette = 11=#d8bfab
+palette = 12=#cebdda
+palette = 13=#94d2cd
+palette = 14=#acc7de
+palette = 15=#e6edf3

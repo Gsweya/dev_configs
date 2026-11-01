@@ -1,0 +1,26 @@
+# MT mountain — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0f0f0f
+foreground = #e7e7e7
+selection-background = #3f3f3f
+selection-foreground = #e7e7e7
+cursor-color = #f5f5f5
+cursor-text = #0f0f0f
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1a1a1a
+palette = 1=#ac8c8c
+palette = 2=#8da78c
+palette = 3=#b69d81
+palette = 4=#a49ab3
+palette = 5=#e7e7e7
+palette = 6=#7ca7b4
+palette = 7=#c1c1c1
+palette = 8=#7b7b7b
+palette = 9=#b89e9e
+palette = 10=#9fb49e
+palette = 11=#c0ac95
+palette = 12=#b1a9bd
+palette = 13=#e7e7e7
+palette = 14=#91b4be
+palette = 15=#e7e7e7

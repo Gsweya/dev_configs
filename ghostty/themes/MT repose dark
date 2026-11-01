@@ -1,0 +1,26 @@
+# MT repose dark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2f3338
+foreground = #d6d2bc
+selection-background = #575958
+selection-foreground = #d6d2bc
+cursor-color = #d6d2bc
+cursor-text = #2f3338
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#3a3c3d
+palette = 1=#ff4a59
+palette = 2=#a9ceb9
+palette = 3=#e6bab4
+palette = 4=#d2bedf
+palette = 5=#d6d2bc
+palette = 6=#a5c9e0
+palette = 7=#c2bfad
+palette = 8=#9d9c92
+palette = 9=#f7656d
+palette = 10=#b5d2bd
+palette = 11=#e6c2b9
+palette = 12=#d6c5db
+palette = 13=#dbd7c1
+palette = 14=#b2cedc
+palette = 15=#d6d2bc

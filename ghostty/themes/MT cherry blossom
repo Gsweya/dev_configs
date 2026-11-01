@@ -1,0 +1,26 @@
+# MT cherry blossom — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #323437
+foreground = #d1d0c5
+selection-background = #7d467c
+selection-foreground = #d1d0c5
+cursor-color = #ffffff
+cursor-text = #323437
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#404346
+palette = 1=#e15c67
+palette = 2=#81c38e
+palette = 3=#cdb267
+palette = 4=#90b6f5
+palette = 5=#d65ccc
+palette = 6=#57c4cf
+palette = 7=#bdbeb9
+palette = 8=#979da2
+palette = 9=#de737a
+palette = 10=#93c89b
+palette = 11=#d0ba7c
+palette = 12=#9fbded
+palette = 13=#d573cb
+palette = 14=#72c9d0
+palette = 15=#d1d0c5

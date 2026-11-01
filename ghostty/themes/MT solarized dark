@@ -1,0 +1,26 @@
+# MT solarized dark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #002b36
+foreground = #62b9fe
+selection-background = #355720
+selection-foreground = #62b9fe
+cursor-color = #dc322f
+cursor-text = #002b36
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#00222b
+palette = 1=#d33682
+palette = 2=#72b380
+palette = 3=#bda257
+palette = 4=#7fa5e3
+palette = 5=#859900
+palette = 6=#45b4bf
+palette = 7=#4eb1da
+palette = 8=#2aa198
+palette = 9=#c458a3
+palette = 10=#74b99e
+palette = 11=#b0ac7d
+palette = 12=#7caceb
+palette = 13=#81a237
+palette = 14=#50bad1
+palette = 15=#62b9fe

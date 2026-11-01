@@ -1,0 +1,26 @@
+# MT modern dolch — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2d2e30
+foreground = #e3e6eb
+selection-background = #415a59
+selection-foreground = #e3e6eb
+cursor-color = #7eddd3
+cursor-text = #2d2e30
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#242527
+palette = 1=#d36a7b
+palette = 2=#9fc9a7
+palette = 3=#cfbe91
+palette = 4=#b4beea
+palette = 5=#7eddd3
+palette = 6=#8cc7d6
+palette = 7=#c6cacf
+palette = 8=#91959a
+palette = 9=#d68391
+palette = 10=#adcfb5
+palette = 11=#d3c6a3
+palette = 12=#bdc6ea
+palette = 13=#94e1da
+palette = 14=#9dcdda
+palette = 15=#e3e6eb

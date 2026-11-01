@@ -1,0 +1,26 @@
+# MT mint — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #05385b
+foreground = #edf5e1
+selection-background = #1d666b
+selection-foreground = #edf5e1
+cursor-color = #5cdb95
+cursor-text = #05385b
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#07324e
+palette = 1=#f35588
+palette = 2=#9dcf90
+palette = 3=#d7bc71
+palette = 4=#9ac0fd
+palette = 5=#5cdb95
+palette = 6=#66d1dd
+palette = 7=#bcd9d9
+palette = 8=#62a6cb
+palette = 9=#f2759a
+palette = 10=#add7a0
+palette = 11=#dbc787
+palette = 12=#abcbf7
+palette = 13=#79e0a4
+palette = 14=#81d8de
+palette = 15=#edf5e1

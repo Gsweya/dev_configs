@@ -1,0 +1,26 @@
+# MT lavender — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ada6c2
+foreground = #2f2a41
+selection-background = #7d7989
+selection-foreground = #2f2a41
+cursor-color = #e4e3e9
+cursor-text = #ada6c2
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#a19bb9
+palette = 1=#9b152f
+palette = 2=#2e3e24
+palette = 3=#4e3420
+palette = 4=#3b3552
+palette = 5=#4e4d52
+palette = 6=#153f4b
+palette = 7=#343141
+palette = 8=#3e3d42
+palette = 9=#851933
+palette = 10=#2c3728
+palette = 11=#452f25
+palette = 12=#352f4b
+palette = 13=#47454e
+palette = 14=#173846
+palette = 15=#2f2a41

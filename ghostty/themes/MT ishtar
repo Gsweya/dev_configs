@@ -1,0 +1,26 @@
+# MT ishtar — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #202020
+foreground = #fae1c3
+selection-background = #75372f
+selection-foreground = #fae1c3
+cursor-color = #c58940
+cursor-text = #202020
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#272727
+palette = 1=#d63d2c
+palette = 2=#6bac79
+palette = 3=#b69b50
+palette = 4=#799fdc
+palette = 5=#c64d3d
+palette = 6=#42acb7
+palette = 7=#d6c1a8
+palette = 8=#928576
+palette = 9=#dd5e4a
+palette = 10=#88b788
+palette = 11=#c4a967
+palette = 12=#93acd7
+palette = 13=#d06b58
+palette = 14=#67b7b9
+palette = 15=#fae1c3

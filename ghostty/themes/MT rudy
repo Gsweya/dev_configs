@@ -1,0 +1,26 @@
+# MT rudy — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1a2b3e
+foreground = #c9c8bf
+selection-background = #535149
+selection-foreground = #c9c8bf
+cursor-color = #af8f5c
+cursor-text = #1a2b3e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#152231
+palette = 1=#bf616a
+palette = 2=#93b193
+palette = 3=#bfa382
+palette = 4=#a1a7cc
+palette = 5=#af8f5c
+palette = 6=#7cb1bb
+palette = 7=#aeb5ba
+palette = 8=#7b93b2
+palette = 9=#c1767b
+palette = 10=#9eb69c
+palette = 11=#c1aa8e
+palette = 12=#a9aec9
+palette = 13=#b49a70
+palette = 14=#8bb6bc
+palette = 15=#c9c8bf

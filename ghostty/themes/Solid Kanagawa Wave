@@ -1,0 +1,26 @@
+# Solid Kanagawa Wave — Kanagawa Wave with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #1f1f28
+foreground = #dad7c0
+selection-background = #41506c
+selection-foreground = #e0ded3
+cursor-color = #b091ca
+cursor-text = #1f1f28
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#312f40
+palette = 1=#e0837f
+palette = 2=#95a677
+palette = 3=#ca9e72
+palette = 4=#78a0da
+palette = 5=#b091ca
+palette = 6=#77a7ad
+palette = 7=#c2c0b1
+palette = 8=#8a8981
+palette = 9=#e99e96
+palette = 10=#a9b68c
+palette = 11=#cfac84
+palette = 12=#94b2da
+palette = 13=#c1a7d0
+palette = 14=#93b8b7
+palette = 15=#e0ded3

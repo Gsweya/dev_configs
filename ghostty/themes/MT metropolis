@@ -1,0 +1,26 @@
+# MT metropolis — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0f1f2c
+foreground = #e4edf1
+selection-background = #234d53
+selection-foreground = #e4edf1
+cursor-color = #56c3b7
+cursor-text = #0f1f2c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#192e3e
+palette = 1=#d44729
+palette = 2=#8bb894
+palette = 3=#beab78
+palette = 4=#9eaada
+palette = 5=#56c3b7
+palette = 6=#75b4c8
+palette = 7=#b2cbd8
+palette = 8=#568da9
+palette = 9=#d76851
+palette = 10=#9dc3a7
+palette = 11=#c6b890
+palette = 12=#acb7df
+palette = 13=#72cbc3
+palette = 14=#8bbfd0
+palette = 15=#e4edf1

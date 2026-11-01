@@ -1,0 +1,26 @@
+# Solid Rose Pine — Rose Pine with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #191724
+foreground = #dbd9ef
+selection-background = #3e4d59
+selection-foreground = #dbd9ef
+cursor-color = #c4a7e7
+cursor-text = #191724
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2c2a3b
+palette = 1=#da7f96
+palette = 2=#5d9fbc
+palette = 3=#deaa60
+palette = 4=#89bbc4
+palette = 5=#c4a7e7
+palette = 6=#d5a7a5
+palette = 7=#b8b7c5
+palette = 8=#838094
+palette = 9=#dd96ad
+palette = 10=#7db0cb
+palette = 11=#ddb47f
+palette = 12=#9bc2cd
+palette = 13=#c8b1e8
+palette = 14=#d6b2b5
+palette = 15=#dcdbe6

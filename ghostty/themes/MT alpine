@@ -1,0 +1,26 @@
+# MT alpine — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #6c687f
+foreground = #ffffff
+selection-background = #9794a4
+selection-foreground = #ffffff
+cursor-color = #a09db2
+cursor-text = #6c687f
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#77738c
+palette = 1=#ffc3bb
+palette = 2=#ffffff
+palette = 3=#fffffe
+palette = 4=#ffffff
+palette = 5=#ffffff
+palette = 6=#feffff
+palette = 7=#f8f7ff
+palette = 8=#ece9ff
+palette = 9=#ffd4ce
+palette = 10=#ffffff
+palette = 11=#ffffff
+palette = 12=#ffffff
+palette = 13=#ffffff
+palette = 14=#ffffff
+palette = 15=#ffffff

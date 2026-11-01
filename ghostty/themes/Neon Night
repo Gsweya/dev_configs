@@ -1,25 +1,26 @@
-# 👻 Neon Night — rose + mint + violet on deep navy (dark)
+# Neon Night — rose + mint + violet on deep navy (dark)
+# Made by ghostty/tune-themes, change it there.
 background = #1a1b26
-foreground = #e6dfef
-selection-background = #3b2f4f
-selection-foreground = #ffffff
-cursor-color = #ff8fb8
+foreground = #e3dcec
+selection-background = #3f4d6d
+selection-foreground = #e3dcec
+cursor-color = #c3a2f0
 cursor-text = #1a1b26
 
 # 🌈 ANSI palette (0-7 normal, 8-15 bright)
-palette = 0=#1f1d2e
-palette = 1=#ff6b8b
-palette = 2=#7ee8c0
-palette = 3=#ffd28a
-palette = 4=#8ab4ff
-palette = 5=#c79bff
-palette = 6=#7fe3f0
-palette = 7=#d7cfe6
-palette = 8=#4a4560
-palette = 9=#ff8fa8
-palette = 10=#a6f5d8
-palette = 11=#ffe0a8
-palette = 12=#a8c8ff
-palette = 13=#dbb8ff
-palette = 14=#a8f0f8
-palette = 15=#f5f0ff
+palette = 0=#2c2d39
+palette = 1=#e28595
+palette = 2=#62c89e
+palette = 3=#dbaf68
+palette = 4=#8bb4fe
+palette = 5=#c3a2f0
+palette = 6=#60c3d4
+palette = 7=#bfb9c7
+palette = 8=#868491
+palette = 9=#e399a9
+palette = 10=#7eccaf
+palette = 11=#ddb985
+palette = 12=#9fbefb
+palette = 13=#caafef
+palette = 14=#7dc8d9
+palette = 15=#e2dde8

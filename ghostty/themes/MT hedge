@@ -1,0 +1,26 @@
+# MT hedge — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #415e31
+foreground = #f7f1d6
+selection-background = #63894e
+selection-foreground = #f7f1d6
+cursor-color = #f2efbb
+cursor-text = #415e31
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#38502a
+palette = 1=#fd9891
+palette = 2=#c0f6ca
+palette = 3=#ffe8ab
+palette = 4=#dfebff
+palette = 5=#91c275
+palette = 6=#a8f6ff
+palette = 7=#f3edca
+palette = 8=#ede5b4
+palette = 9=#fcaa9f
+palette = 10=#d2fcd2
+palette = 11=#fff1ca
+palette = 12=#ebf3fe
+palette = 13=#a5cb88
+palette = 14=#bffcfe
+palette = 15=#f7f1d6

@@ -1,0 +1,26 @@
+# MT iceberg dark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #161821
+foreground = #c6c8d1
+selection-background = #3a4557
+selection-foreground = #c6c8d1
+cursor-color = #d2d4de
+cursor-text = #161821
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#232531
+palette = 1=#e27878
+palette = 2=#9da080
+palette = 3=#bb9289
+palette = 4=#ac94b3
+palette = 5=#84a0c6
+palette = 6=#78a7a7
+palette = 7=#acafbe
+palette = 8=#7b819a
+palette = 9=#dc888a
+palette = 10=#a5a890
+palette = 11=#bd9d97
+palette = 12=#b19eb9
+palette = 13=#91a8c8
+palette = 14=#88aeaf
+palette = 15=#c6c8d1

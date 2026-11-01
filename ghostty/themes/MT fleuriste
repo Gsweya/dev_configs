@@ -1,0 +1,26 @@
+# MT fleuriste — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #c6b294
+foreground = #091914
+selection-background = #838673
+selection-foreground = #091914
+cursor-color = #8a785b
+cursor-text = #c6b294
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#b4a389
+palette = 1=#990000
+palette = 2=#32482c
+palette = 3=#543c25
+palette = 4=#403d5b
+palette = 5=#405a52
+palette = 6=#1c4851
+palette = 7=#292428
+palette = 8=#64374d
+palette = 9=#7c0504
+palette = 10=#2a3f27
+palette = 11=#453522
+palette = 12=#35364d
+palette = 13=#354d46
+palette = 14=#183f45
+palette = 15=#091914

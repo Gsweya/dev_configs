@@ -1,0 +1,26 @@
+# MT dmg — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #dadbdc
+foreground = #414141
+selection-background = #ca93ad
+selection-foreground = #414141
+cursor-color = #384693
+cursor-text = #dadbdc
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#bec1d2
+palette = 1=#ae185e
+palette = 2=#266838
+palette = 3=#725901
+palette = 4=#3a5c95
+palette = 5=#ae185e
+palette = 6=#04666f
+palette = 7=#3e4368
+palette = 8=#3846b1
+palette = 9=#982058
+palette = 10=#2b603a
+palette = 11=#68540e
+palette = 12=#3b5784
+palette = 13=#982058
+palette = 14=#105f66
+palette = 15=#414141

@@ -1,0 +1,26 @@
+# MT cy red — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #6e2626
+foreground = #ffaaaa
+selection-background = #ad4140
+selection-foreground = #ffaaaa
+cursor-color = #995b58
+cursor-text = #6e2626
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#3f1616
+palette = 1=#919fd9
+palette = 2=#90d29d
+palette = 3=#ddc176
+palette = 4=#a0c4fe
+palette = 5=#f96260
+palette = 6=#67d2de
+palette = 7=#ff9d9b
+palette = 8=#fe8580
+palette = 9=#aaa4d3
+palette = 10=#afd4a9
+palette = 11=#ecc488
+palette = 12=#bcc9f7
+palette = 13=#fc7270
+palette = 14=#8fd4de
+palette = 15=#ffaaaa

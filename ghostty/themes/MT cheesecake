@@ -1,0 +1,26 @@
+# MT cheesecake — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fdf0d5
+foreground = #3a3335
+selection-background = #d7aca5
+selection-foreground = #3a3335
+cursor-color = #892948
+cursor-text = #fdf0d5
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#f3e2bf
+palette = 1=#039331
+palette = 2=#2b683b
+palette = 3=#705910
+palette = 4=#3b5c92
+palette = 5=#8e2949
+palette = 6=#0f666e
+palette = 7=#6f264e
+palette = 8=#d20d7b
+palette = 9=#0e8032
+palette = 10=#2e5d3a
+palette = 11=#655117
+palette = 12=#3b547f
+palette = 13=#7d2b45
+palette = 14=#185c63
+palette = 15=#3a3335

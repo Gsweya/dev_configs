@@ -1,0 +1,26 @@
+# MT passion fruit — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #7c2142
+foreground = #ffffff
+selection-background = #a64e6a
+selection-foreground = #ffffff
+cursor-color = #ffffff
+cursor-text = #7c2142
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#833c5e
+palette = 1=#deb80b
+palette = 2=#acd7b3
+palette = 3=#deca99
+palette = 4=#b2cdf9
+palette = 5=#f4a3b4
+palette = 6=#95d8df
+palette = 7=#e4e2ef
+palette = 8=#b2add2
+palette = 9=#e5c63c
+palette = 10=#bddfc2
+palette = 11=#e5d5ad
+palette = 12=#c1d7fa
+palette = 13=#f6b5c3
+palette = 14=#aae0e5
+palette = 15=#ffffff

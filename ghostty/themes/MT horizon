@@ -1,0 +1,26 @@
+# MT horizon — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1c1e26
+foreground = #bbbbbb
+selection-background = #4e4744
+selection-foreground = #bbbbbb
+cursor-color = #bbbbbb
+cursor-text = #1c1e26
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#372d30
+palette = 1=#d55170
+palette = 2=#8ab5ad
+palette = 3=#a6b18e
+palette = 4=#ada9cc
+palette = 5=#c4a88a
+palette = 6=#8dafc6
+palette = 7=#c6a9a0
+palette = 8=#db886f
+palette = 9=#d0667f
+palette = 10=#97b9b3
+palette = 11=#acb599
+palette = 12=#b2afcb
+palette = 13=#c4ae96
+palette = 14=#98b3c6
+palette = 15=#bbbbbb

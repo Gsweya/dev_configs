@@ -1,0 +1,26 @@
+# MT red samurai — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #84202c
+foreground = #e2dad0
+selection-background = #a2594a
+selection-foreground = #e2dad0
+cursor-color = #c79e6e
+cursor-text = #84202c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#751d26
+palette = 1=#33bbda
+palette = 2=#bbd8b5
+palette = 3=#e6cba7
+palette = 4=#c7cef5
+palette = 5=#c79e6e
+palette = 6=#a3d9e3
+palette = 7=#e6c5bf
+palette = 8=#ee9e9f
+palette = 9=#58c3da
+palette = 10=#c8ddbf
+palette = 11=#ead3b4
+palette = 12=#d1d5f3
+palette = 13=#ccaa82
+palette = 14=#b5dee4
+palette = 15=#e2dad0

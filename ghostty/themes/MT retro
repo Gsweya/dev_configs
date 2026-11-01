@@ -1,0 +1,26 @@
+# MT retro — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #dad3c1
+foreground = #1d1b17
+selection-background = #a19c8e
+selection-foreground = #1d1b17
+cursor-color = #1d1b17
+cursor-text = #dad3c1
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#c8c3b3
+palette = 1=#ab4f59
+palette = 2=#3d4f31
+palette = 3=#5e4431
+palette = 4=#4e4563
+palette = 5=#1d1b17
+palette = 6=#305057
+palette = 7=#35312a
+palette = 8=#615b4e
+palette = 9=#8f454c
+palette = 10=#37452c
+palette = 11=#513c2c
+palette = 12=#443d54
+palette = 13=#181613
+palette = 14=#2c454a
+palette = 15=#1d1b17

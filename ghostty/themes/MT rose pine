@@ -1,0 +1,26 @@
+# MT rose pine — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1f1d27
+foreground = #e0def4
+selection-background = #3e4a53
+selection-foreground = #e0def4
+cursor-color = #f6c177
+cursor-text = #1f1d27
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#282533
+palette = 1=#eb6f92
+palette = 2=#9fb194
+palette = 3=#c6a58f
+palette = 4=#b0a7c9
+palette = 5=#9ccfd8
+palette = 6=#88b3c1
+palette = 7=#d6cbef
+palette = 8=#c4a7e7
+palette = 9=#e985a6
+palette = 10=#acbaa7
+palette = 11=#cbb0a3
+palette = 12=#bab2d2
+palette = 13=#aad2de
+palette = 14=#9abccb
+palette = 15=#e0def4

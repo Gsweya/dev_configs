@@ -1,0 +1,26 @@
+# Solid GitHub Dark — GitHub Dark Default with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #0d1117
+foreground = #ced5db
+selection-background = #314865
+selection-foreground = #ced5db
+cursor-color = #b596e4
+cursor-text = #0d1117
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2d333c
+palette = 1=#e98c83
+palette = 2=#6cb070
+palette = 3=#ca9c48
+palette = 4=#6ea6e9
+palette = 5=#b596e4
+palette = 6=#30bec8
+palette = 7=#abb2b8
+palette = 8=#767e89
+palette = 9=#e39c96
+palette = 10=#81b787
+palette = 11=#cba968
+palette = 12=#83b0e6
+palette = 13=#bba4e2
+palette = 14=#52c2cb
+palette = 15=#ced5db

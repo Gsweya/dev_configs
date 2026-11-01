@@ -1,0 +1,26 @@
+# MT solarized light — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fdf6e3
+foreground = #181819
+selection-background = #b9bf74
+selection-foreground = #181819
+cursor-color = #dc322f
+cursor-text = #fdf6e3
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#e2d8be
+palette = 1=#d33682
+palette = 2=#3d794c
+palette = 3=#826a1e
+palette = 4=#4b6da4
+palette = 5=#788a0a
+palette = 6=#087882
+palette = 7=#113c3a
+palette = 8=#057f78
+palette = 9=#ae306d
+palette = 10=#366642
+palette = 11=#6d5a1d
+palette = 12=#415c88
+palette = 13=#65730d
+palette = 14=#0b656d
+palette = 15=#181819

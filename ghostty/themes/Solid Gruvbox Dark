@@ -1,0 +1,26 @@
+# Solid Gruvbox Dark — Gruvbox Dark with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #282828
+foreground = #e4dcc6
+selection-background = #435b5d
+selection-foreground = #ffffff
+cursor-color = #df8db6
+cursor-text = #282828
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#383838
+palette = 1=#ea8e81
+palette = 2=#aaaa4f
+palette = 3=#d69a52
+palette = 4=#71b1b8
+palette = 5=#df8db6
+palette = 6=#74b484
+palette = 7=#cec9bb
+palette = 8=#9d8e7f
+palette = 9=#f1a797
+palette = 10=#c0be71
+palette = 11=#e1b174
+palette = 12=#92c2c3
+palette = 13=#eaa7c3
+palette = 14=#95c69b
+palette = 15=#ece8dd

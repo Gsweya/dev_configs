@@ -1,0 +1,26 @@
+# MT tron orange — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0d1c1c
+foreground = #ffffff
+selection-background = #3f4916
+selection-foreground = #ffffff
+cursor-color = #f0e800
+cursor-text = #0d1c1c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#9c9191
+palette = 1=#ff0000
+palette = 2=#77b784
+palette = 3=#c2a75c
+palette = 4=#99aac5
+palette = 5=#f0e800
+palette = 6=#52b6c1
+palette = 7=#ffc9a6
+palette = 8=#ff6600
+palette = 9=#ff3333
+palette = 10=#92c59d
+palette = 11=#ceb97d
+palette = 12=#adbbd1
+palette = 13=#f3ed33
+palette = 14=#75c5cd
+palette = 15=#ffffff

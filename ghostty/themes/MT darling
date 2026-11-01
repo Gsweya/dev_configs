@@ -1,0 +1,26 @@
+# MT darling — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #fec8cd
+foreground = #404040
+selection-background = #b3999b
+selection-foreground = #404040
+cursor-color = #959595
+cursor-text = #fec8cd
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#f2babd
+palette = 1=#196ccb
+palette = 2=#495e44
+palette = 3=#6e503c
+palette = 4=#595373
+palette = 5=#6d6d6d
+palette = 6=#365d69
+palette = 7=#632a2a
+palette = 8=#a30000
+palette = 9=#2163af
+palette = 10=#465742
+palette = 11=#644c3c
+palette = 12=#534e68
+palette = 13=#646464
+palette = 14=#385761
+palette = 15=#404040

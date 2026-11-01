@@ -1,0 +1,26 @@
+# MT bushido — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #242933
+foreground = #f6f0e9
+selection-background = #823943
+selection-foreground = #f6f0e9
+cursor-color = #ec4c56
+cursor-text = #242933
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1c222d
+palette = 1=#ec4c56
+palette = 2=#75b682
+palette = 3=#c0a459
+palette = 4=#84a9e8
+palette = 5=#ec4c56
+palette = 6=#48b6c2
+palette = 7=#cfced0
+palette = 8=#8790a2
+palette = 9=#ee6d73
+palette = 10=#8fc297
+palette = 11=#cbb376
+palette = 12=#9bb7e8
+palette = 13=#ee6d73
+palette = 14=#6bc2ca
+palette = 15=#f6f0e9

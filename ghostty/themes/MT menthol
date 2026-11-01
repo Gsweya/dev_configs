@@ -1,0 +1,26 @@
+# MT menthol — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #00c18c
+foreground = #1f1f1f
+selection-background = #258b6f
+selection-foreground = #1f1f1f
+cursor-color = #99fdd8
+cursor-text = #00c18c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#17ae7d
+palette = 1=#a20014
+palette = 2=#2e3f25
+palette = 3=#4e331e
+palette = 4=#3c3452
+palette = 5=#4e4e4e
+palette = 6=#134049
+palette = 7=#142e24
+palette = 8=#00492d
+palette = 9=#880616
+palette = 10=#2a3823
+palette = 11=#452f1e
+palette = 12=#352f47
+palette = 13=#454545
+palette = 14=#153941
+palette = 15=#1f1f1f

@@ -1,0 +1,26 @@
+# MT discord — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #313338
+foreground = #dcdee3
+selection-background = #4c5493
+selection-foreground = #dcdee3
+cursor-color = #5a65ea
+cursor-text = #313338
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2b2d31
+palette = 1=#df4f4b
+palette = 2=#81c28f
+palette = 3=#ccb066
+palette = 4=#8eb5f3
+palette = 5=#6c7bfd
+palette = 6=#56c3ce
+palette = 7=#c4c6cd
+palette = 8=#989aa4
+palette = 9=#de6c69
+palette = 10=#93c8a0
+palette = 11=#cfb97f
+palette = 12=#9ebdf0
+palette = 13=#828ff8
+palette = 14=#71c8d2
+palette = 15=#dcdee3

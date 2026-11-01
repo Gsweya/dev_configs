@@ -1,0 +1,26 @@
+# MT carbon — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #313131
+foreground = #f5e6c8
+selection-background = #824a22
+selection-foreground = #f5e6c8
+cursor-color = #f66e0d
+cursor-text = #313131
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2b2b2b
+palette = 1=#f63e3a
+palette = 2=#7ec08c
+palette = 3=#c9ae62
+palette = 4=#8db3f1
+palette = 5=#f66e0d
+palette = 6=#52c0cc
+palette = 7=#d5cbb8
+palette = 8=#999999
+palette = 9=#f66056
+palette = 10=#96c898
+palette = 11=#d2b976
+palette = 12=#a2bde9
+palette = 13=#f68632
+palette = 14=#73c8cb
+palette = 15=#f5e6c8

@@ -1,0 +1,26 @@
+# MT iceberg light — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #e8e9ec
+foreground = #33374c
+selection-background = #9faece
+selection-foreground = #33374c
+cursor-color = #262a3f
+cursor-text = #e8e9ec
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ccceda
+palette = 1=#cc517a
+palette = 2=#336436
+palette = 3=#6a5406
+palette = 4=#125e81
+palette = 5=#2d539e
+palette = 6=#06645f
+palette = 7=#44485c
+palette = 8=#646779
+palette = 9=#ad4c71
+palette = 10=#335b3a
+palette = 11=#5f4e14
+palette = 12=#195676
+palette = 13=#2e4d8e
+palette = 14=#0f5b5b
+palette = 15=#33374c

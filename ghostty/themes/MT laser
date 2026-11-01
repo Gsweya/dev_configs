@@ -1,0 +1,26 @@
+# MT laser — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #221b44
+foreground = #dbe7e8
+selection-background = #144f6f
+selection-foreground = #dbe7e8
+cursor-color = #009eaf
+cursor-text = #221b44
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#3e234c
+palette = 1=#a8d400
+palette = 2=#79aa82
+palette = 3=#b29e67
+palette = 4=#84a1d0
+palette = 5=#009eaf
+palette = 6=#5eabb3
+palette = 7=#e0b4c3
+palette = 8=#e8547d
+palette = 9=#b2d82e
+palette = 10=#8db696
+palette = 11=#baad81
+palette = 12=#95afd5
+palette = 13=#2cadba
+palette = 14=#77b7be
+palette = 15=#dbe7e8

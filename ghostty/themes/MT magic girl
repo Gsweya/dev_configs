@@ -1,0 +1,26 @@
+# MT magic girl — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ffffff
+foreground = #046552
+selection-background = #d8b7c5
+selection-foreground = #046552
+cursor-color = #e45c96
+cursor-text = #ffffff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#f2f2f2
+palette = 1=#a08637
+palette = 2=#5b7757
+palette = 3=#846f49
+palette = 4=#677095
+palette = 5=#b4758f
+palette = 6=#427882
+palette = 7=#12705d
+palette = 8=#2b8472
+palette = 9=#817f3c
+palette = 10=#4a7356
+palette = 11=#6a6d4b
+palette = 12=#536e88
+palette = 13=#917283
+palette = 14=#347377
+palette = 15=#046552

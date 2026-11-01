@@ -1,0 +1,26 @@
+# MT pulse — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #181818
+foreground = #e5f4f4
+selection-background = #184b4d
+selection-foreground = #e5f4f4
+cursor-color = #17b8bd
+cursor-text = #181818
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#262727
+palette = 1=#da3333
+palette = 2=#7cb187
+palette = 3=#b6a064
+palette = 4=#939dd6
+palette = 5=#17b8bd
+palette = 6=#6aaccc
+palette = 7=#c1cccd
+palette = 8=#7e8185
+palette = 9=#dc5a5a
+palette = 10=#91be9d
+palette = 11=#bfb181
+palette = 12=#a3aedc
+palette = 13=#40c4c8
+palette = 14=#83bad4
+palette = 15=#e5f4f4

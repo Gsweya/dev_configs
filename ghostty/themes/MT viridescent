@@ -1,0 +1,26 @@
+# MT viridescent — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2c3333
+foreground = #e9f5db
+selection-background = #475d54
+selection-foreground = #e9f5db
+cursor-color = #f0d3c9
+cursor-text = #2c3333
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#232828
+palette = 1=#ff4646
+palette = 2=#c1c59b
+palette = 3=#e6baa5
+palette = 4=#b8c2ea
+palette = 5=#95d5b2
+palette = 6=#96ccd4
+palette = 7=#c6dabf
+palette = 8=#84a98c
+palette = 9=#fb6964
+palette = 10=#c9cfa8
+palette = 11=#e7c6b0
+palette = 12=#c2cce7
+palette = 13=#a6dbba
+palette = 14=#a7d4d5
+palette = 15=#e9f5db

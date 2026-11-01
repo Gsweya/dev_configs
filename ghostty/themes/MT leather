@@ -1,0 +1,26 @@
+# MT leather — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #a86948
+foreground = #000000
+selection-background = #cd9d79
+selection-foreground = #000000
+cursor-color = #8c2400
+cursor-text = #a86948
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#9a5f3f
+palette = 1=#500010
+palette = 2=#131700
+palette = 3=#261003
+palette = 4=#1b141f
+palette = 5=#ffe4bc
+palette = 6=#001b1c
+palette = 7=#0a0000
+palette = 8=#1e0100
+palette = 9=#3d000b
+palette = 10=#070900
+palette = 11=#140500
+palette = 12=#0d0810
+palette = 13=#271600
+palette = 14=#000d0d
+palette = 15=#000000

@@ -1,0 +1,26 @@
+# MT terminal — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #191a1b
+foreground = #e7eae0
+selection-background = #3a4a1a
+selection-foreground = #e7eae0
+cursor-color = #79a617
+cursor-text = #191a1b
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#28292a
+palette = 1=#c93f36
+palette = 2=#66a674
+palette = 3=#b1974c
+palette = 4=#749ad7
+palette = 5=#79a617
+palette = 6=#34a6b2
+palette = 7=#c3c6c0
+palette = 8=#818284
+palette = 9=#cf6158
+palette = 10=#80b48a
+palette = 11=#bca86a
+palette = 12=#8baad9
+palette = 13=#8fb43f
+palette = 14=#58b4bb
+palette = 15=#e7eae0

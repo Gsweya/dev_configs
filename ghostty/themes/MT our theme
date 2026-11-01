@@ -1,0 +1,26 @@
+# MT our theme — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ce1226
+foreground = #ffffff
+selection-background = #e5721e
+selection-foreground = #ffffff
+cursor-color = #fcd116
+cursor-text = #ce1226
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#9f1020
+palette = 1=#fcd116
+palette = 2=#bafec7
+palette = 3=#ffedbc
+palette = 4=#e4eeff
+palette = 5=#fcd116
+palette = 6=#bef8ff
+palette = 7=#fff4f3
+palette = 8=#ffe0de
+palette = 9=#fede58
+palette = 10=#e3ffe8
+palette = 11=#fff8e4
+palette = 12=#f3f7ff
+palette = 13=#fede58
+palette = 14=#e2fcff
+palette = 15=#ffffff

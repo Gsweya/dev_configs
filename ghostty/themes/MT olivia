@@ -1,0 +1,26 @@
+# MT olivia — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1c1b1d
+foreground = #f2efed
+selection-background = #504340
+selection-foreground = #f2efed
+cursor-color = #deaf9d
+cursor-text = #1c1b1d
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#262223
+palette = 1=#bf616a
+palette = 2=#94b39a
+palette = 3=#bea789
+palette = 4=#b5a3c4
+palette = 5=#deaf9d
+palette = 6=#8aafc2
+palette = 7=#d0c8c7
+palette = 8=#928080
+palette = 9=#c97d84
+palette = 10=#a7bfab
+palette = 11=#c8b59d
+palette = 12=#c1b2cc
+palette = 13=#e2bcad
+palette = 14=#9fbccb
+palette = 15=#f2efed

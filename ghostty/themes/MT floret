@@ -1,0 +1,26 @@
+# MT floret — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #00272c
+foreground = #e5e5e5
+selection-background = #3b513b
+selection-foreground = #e5e5e5
+cursor-color = #c3bd40
+cursor-text = #00272c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#173033
+palette = 1=#b16330
+palette = 2=#81bf8d
+palette = 3=#cab069
+palette = 4=#a0b2cf
+palette = 5=#ffdd6d
+palette = 6=#5bc1cc
+palette = 7=#bec7ca
+palette = 8=#779097
+palette = 9=#bb7d54
+palette = 10=#95c79f
+palette = 11=#cfbb82
+palette = 12=#aebcd3
+palette = 13=#fadf85
+palette = 14=#77c8d1
+palette = 15=#e5e5e5

@@ -1,0 +1,26 @@
+# Solid Dracula — Dracula with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #282a36
+foreground = #f4f4ee
+selection-background = #5d5376
+selection-foreground = #f4f4ee
+cursor-color = #e591be
+cursor-text = #282a36
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#383a44
+palette = 1=#ec8f88
+palette = 2=#89d89c
+palette = 3=#cacd71
+palette = 4=#ba9be9
+palette = 5=#e591be
+palette = 6=#76d4e8
+palette = 7=#ccccc7
+palette = 8=#8c93a7
+palette = 9=#f3aaa3
+palette = 10=#a1deae
+palette = 11=#d2d58b
+palette = 12=#cab2ed
+palette = 13=#ebaacc
+palette = 14=#93dcea
+palette = 15=#f4f4ee

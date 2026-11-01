@@ -1,0 +1,26 @@
+# MT 80s after dark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1b1d36
+foreground = #e1e7ec
+selection-background = #56415e
+selection-foreground = #e1e7ec
+cursor-color = #99d6ea
+cursor-text = #1b1d36
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2d374f
+palette = 1=#fffb85
+palette = 2=#87ba91
+palette = 3=#c2ad73
+palette = 4=#91b0e2
+palette = 5=#fca6d1
+palette = 6=#6abac3
+palette = 7=#c8e1eb
+palette = 8=#99d6ea
+palette = 9=#f9f79a
+palette = 10=#99c3a3
+palette = 11=#c8b98b
+palette = 12=#a1bbe4
+palette = 13=#f7b3d6
+palette = 14=#82c3cb
+palette = 15=#e1e7ec

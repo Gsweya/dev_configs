@@ -1,0 +1,26 @@
+# MT olive — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #e9e5cc
+foreground = #373731
+selection-background = #aead8e
+selection-foreground = #373731
+cursor-color = #92946f
+cursor-text = #e9e5cc
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d4cfbc
+palette = 1=#cf2f2f
+palette = 2=#52674d
+palette = 3=#785a47
+palette = 4=#635d7d
+palette = 5=#777955
+palette = 6=#3d6773
+palette = 7=#49473d
+palette = 8=#6a6653
+palette = 9=#b1312f
+palette = 10=#4d5d47
+palette = 11=#6b5343
+palette = 12=#5a556e
+palette = 13=#6a6c4e
+palette = 14=#3c5d66
+palette = 15=#373731

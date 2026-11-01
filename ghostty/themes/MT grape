@@ -1,0 +1,26 @@
+# MT grape — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #2c003e
+foreground = #ffffff
+selection-background = #722f2a
+selection-foreground = #ffffff
+cursor-color = #ff8f00
+cursor-text = #2c003e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#3f0e4c
+palette = 1=#ff4081
+palette = 2=#74b582
+palette = 3=#c0a55a
+palette = 4=#82a9e7
+palette = 5=#ff8f00
+palette = 6=#46b5c1
+palette = 7=#e5c9de
+palette = 8=#b664a1
+palette = 9=#ff669a
+palette = 10=#90c49b
+palette = 11=#cdb77b
+palette = 12=#9bbaec
+palette = 13=#ffa533
+palette = 14=#6bc4cd
+palette = 15=#ffffff

@@ -1,0 +1,26 @@
+# Solid TokyoNight Day — TokyoNight Day with even, readable colors
+# Made by ghostty/tune-themes, change it there.
+background = #e1e2e7
+foreground = #384050
+selection-background = #8fa1c7
+selection-foreground = #000000
+cursor-color = #7051a1
+cursor-text = #e1e2e7
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d2d3d9
+palette = 1=#9f4152
+palette = 2=#4d692d
+palette = 3=#7b5b2d
+palette = 4=#395da6
+palette = 5=#7051a1
+palette = 6=#006984
+palette = 7=#565c68
+palette = 8=#5f6275
+palette = 9=#884152
+palette = 10=#465e33
+palette = 11=#6b5434
+palette = 12=#385692
+palette = 13=#614a8c
+palette = 14=#085e77
+palette = 15=#c4c6ce

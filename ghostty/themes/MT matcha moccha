@@ -1,0 +1,26 @@
+# MT matcha moccha — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #523525
+foreground = #ecddcc
+selection-background = #616539
+selection-foreground = #ecddcc
+cursor-color = #7ec160
+cursor-text = #523525
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#422b1e
+palette = 1=#fb4934
+palette = 2=#8dce99
+palette = 3=#dabe72
+palette = 4=#9dc2fd
+palette = 5=#7ec160
+palette = 6=#63ceda
+palette = 7=#e3c5af
+palette = 8=#d39979
+palette = 9=#f86752
+palette = 10=#a2d3a5
+palette = 11=#e0c686
+palette = 12=#afc9f5
+palette = 13=#94c776
+palette = 14=#80d3d9
+palette = 15=#ecddcc

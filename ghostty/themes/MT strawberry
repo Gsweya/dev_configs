@@ -1,0 +1,26 @@
+# MT strawberry — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #f37f83
+foreground = #161613
+selection-background = #9e6464
+selection-foreground = #161613
+cursor-color = #fcfcf8
+cursor-text = #f37f83
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#ef6e77
+palette = 1=#594701
+palette = 2=#253920
+palette = 3=#472d18
+palette = 4=#332e4b
+palette = 5=#494946
+palette = 6=#0b3942
+palette = 7=#380e18
+palette = 8=#770021
+palette = 9=#4c3d05
+palette = 10=#22321d
+palette = 11=#3d2817
+palette = 12=#2d2940
+palette = 13=#3f3f3c
+palette = 14=#0d3239
+palette = 15=#161613

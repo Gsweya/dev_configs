@@ -1,0 +1,26 @@
+# MT vaporwave — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #a4a7ea
+foreground = #252025
+selection-background = #9c67c3
+selection-foreground = #252025
+cursor-color = #0880a3
+cursor-text = #a4a7ea
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#989bd9
+palette = 1=#573ca9
+palette = 2=#00461c
+palette = 3=#4b3a00
+palette = 4=#1c3b70
+palette = 5=#910b8b
+palette = 6=#014349
+palette = 7=#2d2a3c
+palette = 8=#3b3c67
+palette = 9=#4d368f
+palette = 10=#073e1e
+palette = 11=#433507
+palette = 12=#1e3661
+palette = 13=#7b0f77
+palette = 14=#083c42
+palette = 15=#252025

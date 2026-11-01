@@ -1,0 +1,26 @@
+# MT spiderman — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0d1219
+foreground = #f0f0f0
+selection-background = #752427
+selection-foreground = #f0f0f0
+cursor-color = #e23636
+cursor-text = #0d1219
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#0b1c2e
+palette = 1=#0476f2
+palette = 2=#60a06f
+palette = 3=#ab8f44
+palette = 4=#6e93d0
+palette = 5=#e23636
+palette = 6=#2da1ad
+palette = 7=#a0c6f2
+palette = 8=#0c79f6
+palette = 9=#338ef2
+palette = 10=#7db089
+palette = 11=#b9a266
+palette = 12=#88a6d6
+palette = 13=#e55b5b
+palette = 14=#54b1ba
+palette = 15=#f0f0f0

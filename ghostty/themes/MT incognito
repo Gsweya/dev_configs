@@ -1,0 +1,26 @@
+# MT incognito — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #0e0e0e
+foreground = #c6c6c6
+selection-background = #56380a
+selection-foreground = #c6c6c6
+cursor-color = #ff9900
+cursor-text = #0e0e0e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1d1d1d
+palette = 1=#e44545
+palette = 2=#6eaf7c
+palette = 3=#b99e53
+palette = 4=#7ba1df
+palette = 5=#ff9900
+palette = 6=#40afbb
+palette = 7=#acacac
+palette = 8=#7b7b7b
+palette = 9=#de5f5f
+palette = 10=#80b48b
+palette = 11=#bca66a
+palette = 12=#8aa8da
+palette = 13=#f6a42b
+palette = 14=#5bb4bd
+palette = 15=#c6c6c6

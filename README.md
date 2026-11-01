@@ -4,7 +4,7 @@ Personal configs for the dev tools I use, mainly terminals.
 
 | Folder | What's inside |
 | --- | --- |
-| `ghostty/` | [Ghostty](https://ghostty.org) terminal config with 👻 Neon themes: 🌙 Night (dark) and ☀️ Day (light), following the desktop |
+| `ghostty/` | [Ghostty](https://ghostty.org) terminal config with 👻 Neon themes: 🌙 Night (dark) and ☀️ Day (light), following the desktop, all 187 [Monkeytype](https://monkeytype.com) themes, and readable "Solid" versions of 10 popular themes |
 | `shell/` | 🥽 Kronikus prompt for bash and fish: avatar, name, folder, git (with starship icons), command timing |
 | `tmux/` | 👻 tmux config (clickable tab bar on top, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker), `ktour` (hands-on tour) and `ksettings` (⚙ settings) |
 
@@ -23,11 +23,41 @@ Reload inside Ghostty with `Ctrl+Shift+,` (or open a new window).
 The config uses the [Lilex](https://github.com/mishamyrt/Lilex) font, so install it or change `font-family`.
 
 🌗 **Light & dark.** `theme = light:Neon Day,dark:Neon Night` makes Ghostty follow your desktop:
-☀️ Neon Day (lavender white, deep rose / mint / violet) when it's light, 🌙 Neon Night (deep navy, pastel neon) when it's dark.
+☀️ Neon Day (lavender white, deep rose / mint / violet) when it's light, 🌙 Neon Night (deep navy, calm rose / mint / violet) when it's dark.
 It switches on its own when the desktop does. The prompt, tmux, gterminal and ktips only use the 16 terminal colors, so they follow along.
 
 🎨 **Other themes.** Run `ktheme` (or click 🎨 in the tmux bar) to pick another one, see [ktheme](#-ktheme-theme-picker) below.
 It writes `~/.config/ghostty/theme.ghostty`, which the `config-file = ?theme.ghostty` line pulls in, so `config.ghostty` itself never changes.
+
+⌨️ **Monkeytype themes.** All 187 themes from [Monkeytype](https://github.com/monkeytypegame/monkeytype) (GPL-3.0) are in `ghostty/themes/`, named like `MT serika dark`. `ghostty/monkeytype-themes` makes them from Monkeytype's own color list, and runs again to pick up new ones.
+
+A Monkeytype theme has roles, not the 16 colors a terminal needs, so:
+
+| Monkeytype | Terminal |
+| --- | --- |
+| `bg`, `caret`, `subAlt` | background, cursor, the surface under the bar's chips: exact |
+| `text`, `main`, `error` | text, the one accent, red: exact unless unreadable (below 4.5:1, 3:1, 3:1) |
+| `sub` | comments and quiet text: exact, or lifted to 4.5:1 if fainter |
+| green, yellow, blue, cyan | not in Monkeytype: made here at a calm lightness, so `ls` and git diffs keep their meaning |
+
+Effects a theme does in CSS, like an animated gradient, have no place in a terminal. A few themes put light text on a mid-tone background that no white can make readable, and those get dark text.
+
+The look comes from there too: the theme's accent only marks what's active, everything else stays in the quiet color, active items are flat chips, and keys in the screens' footers look like Monkeytype's key hints.
+
+✅ **Readable colors.** Neon and the Solid themes are made by `ghostty/tune-themes`, which keeps each theme's background and hues and fixes how light and how saturated each color is:
+
+| | On dark | On light |
+| --- | --- | --- |
+| Plain text | 9-13:1 | 8-13:1 |
+| Keyword colors, all about equally loud | 6-8.5:1 | 4.8-7:1 |
+| Comments and other quiet text | 4.6:1 | 4.6:1 |
+| Selection against the background, a solid block | 2:1 | 2:1 |
+| Text on the selection | 6:1 or more | 6:1 or more |
+
+Similar keyword colors are also kept apart, so blue and cyan stay two colors. `ghostty/tune-themes --check` prints the numbers.
+For comparison, plain TokyoNight has its comments at 1.9:1 and Rose Pine Dawn its yellow at 2.1:1.
+
+`minimum-contrast` stays at a low 1.5 on purpose. Ghostty doesn't lift a color under the limit, it jumps to pure white or black, so a higher value turns grey comments into the loudest text on screen. `faint-opacity = 0.75` keeps dim text readable.
 
 📋 **Select = copy.** Anything you select with the mouse goes straight to the clipboard (`copy-on-select = clipboard`), so you can paste it anywhere with `Ctrl+V` / `Ctrl+Shift+V`.
 

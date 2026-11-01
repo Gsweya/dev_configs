@@ -1,0 +1,26 @@
+# MT mr sleeves — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #d1d7da
+foreground = #1d1d1d
+selection-background = #af9b97
+selection-foreground = #1d1d1d
+cursor-color = #8fadc9
+cursor-text = #d1d7da
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#bfcbd1
+palette = 1=#ab5253
+palette = 2=#4c5d43
+palette = 3=#6e503d
+palette = 4=#5b5271
+palette = 5=#8f6256
+palette = 6=#395e6a
+palette = 7=#323434
+palette = 8=#5a5e60
+palette = 9=#8f4748
+palette = 10=#43503b
+palette = 11=#5e4637
+palette = 12=#4f4760
+palette = 13=#78544b
+palette = 14=#33515b
+palette = 15=#1d1d1d

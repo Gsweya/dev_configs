@@ -1,0 +1,26 @@
+# MT superuser — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #262a33
+foreground = #e5f7ef
+selection-background = #2c594e
+selection-foreground = #e5f7ef
+cursor-color = #43ffaf
+cursor-text = #262a33
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1f232c
+palette = 1=#ff5f5f
+palette = 2=#88ca95
+palette = 3=#d3b86c
+palette = 4=#a7bcdd
+palette = 5=#43ffaf
+palette = 6=#5ecad6
+palette = 7=#c1d4d5
+palette = 8=#7d93a4
+palette = 9=#fa7d7c
+palette = 10=#9bd3a7
+palette = 11=#d7c586
+palette = 12=#b3c8e1
+palette = 13=#72ffc1
+palette = 14=#79d3db
+palette = 15=#e5f7ef

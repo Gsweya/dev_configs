@@ -1,0 +1,26 @@
+# MT taro — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #b3baff
+foreground = #130f1a
+selection-background = #8588bd
+selection-foreground = #130f1a
+cursor-color = #0e9390
+cursor-text = #b3baff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#a3a7df
+palette = 1=#6c5e00
+palette = 2=#374024
+palette = 3=#503832
+palette = 4=#483652
+palette = 5=#130f1a
+palette = 6=#2a4047
+palette = 7=#282437
+palette = 8=#4e4a6d
+palette = 9=#5a4e05
+palette = 10=#303622
+palette = 11=#44302d
+palette = 12=#3d2e47
+palette = 13=#0d0913
+palette = 14=#25363e
+palette = 15=#130f1a

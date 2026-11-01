@@ -1,0 +1,26 @@
+# MT grand prix — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #36475c
+foreground = #c1c7d7
+selection-background = #617150
+selection-foreground = #c1c7d7
+cursor-color = #c0d036
+cursor-text = #36475c
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#42536b
+palette = 1=#fd7651
+palette = 2=#9adda8
+palette = 3=#e9cc81
+palette = 4=#b4d0ff
+palette = 5=#c0d036
+palette = 6=#72dee9
+palette = 7=#b6c1d3
+palette = 8=#a3b5cb
+palette = 9=#f68b71
+palette = 10=#aae1b9
+palette = 11=#ebd59b
+palette = 12=#c2d8ff
+palette = 13=#c8d65f
+palette = 14=#8ce3ef
+palette = 15=#c1c7d7

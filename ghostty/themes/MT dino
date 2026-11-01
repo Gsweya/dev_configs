@@ -1,0 +1,26 @@
+# MT dino — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #ffffff
+foreground = #1d221f
+selection-background = #87d0a8
+selection-foreground = #1d221f
+cursor-color = #40d672
+cursor-text = #ffffff
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#cafad8
+palette = 1=#ef5052
+palette = 2=#3d7e4e
+palette = 3=#896f1f
+palette = 4=#4f72ad
+palette = 5=#049e49
+palette = 6=#077e88
+palette = 7=#3c3f3d
+palette = 8=#757575
+palette = 9=#c54748
+palette = 10=#376c45
+palette = 11=#73601f
+palette = 12=#456291
+palette = 13=#098541
+palette = 14=#0b6c73
+palette = 15=#1d221f

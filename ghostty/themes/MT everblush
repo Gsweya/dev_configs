@@ -1,0 +1,26 @@
+# MT everblush — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #141b1e
+foreground = #dadada
+selection-background = #334a37
+selection-foreground = #dadada
+cursor-color = #6cbfbf
+cursor-text = #141b1e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#232a2d
+palette = 1=#e57474
+palette = 2=#7cb688
+palette = 3=#bfa764
+palette = 4=#87abe3
+palette = 5=#8ccf7e
+palette = 6=#57b7c1
+palette = 7=#bcbdbd
+palette = 8=#838887
+palette = 9=#e38888
+palette = 10=#8fbd98
+palette = 11=#c4b17c
+palette = 12=#98b4e1
+palette = 13=#9cd190
+palette = 14=#71bec6
+palette = 15=#dadada

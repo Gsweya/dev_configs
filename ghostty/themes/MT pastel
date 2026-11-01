@@ -1,0 +1,26 @@
+# MT pastel — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #e0b2bd
+foreground = #3a2b3c
+selection-background = #a1876e
+selection-foreground = #3a2b3c
+cursor-color = #fbf4b6
+cursor-text = #e0b2bd
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#d29fab
+palette = 1=#b61f24
+palette = 2=#374e31
+palette = 3=#5c4526
+palette = 4=#444668
+palette = 5=#645d22
+palette = 6=#1b5057
+palette = 7=#31394a
+palette = 8=#1f5365
+palette = 9=#9d2129
+palette = 10=#384733
+palette = 11=#55402a
+palette = 12=#41405e
+palette = 13=#5c5327
+palette = 14=#214952
+palette = 15=#3a2b3c

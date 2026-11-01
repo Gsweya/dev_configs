@@ -1,0 +1,26 @@
+# MT serika dark — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #323437
+foreground = #d1d0c5
+selection-background = #655a2d
+selection-foreground = #d1d0c5
+cursor-color = #e2b714
+cursor-text = #323437
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2c2e31
+palette = 1=#e15c67
+palette = 2=#8dcf9a
+palette = 3=#deb66f
+palette = 4=#97bdfd
+palette = 5=#e2b714
+palette = 6=#63cfdb
+palette = 7=#bebeb8
+palette = 8=#9b9da0
+palette = 9=#de737a
+palette = 10=#9ed2a6
+palette = 11=#debe83
+palette = 12=#a5c3f4
+palette = 13=#e2bf3b
+palette = 14=#7ed4dc
+palette = 15=#d1d0c5

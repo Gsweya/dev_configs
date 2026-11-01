@@ -1,0 +1,26 @@
+# MT 8008 — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #333a45
+foreground = #e9ecf0
+selection-background = #974363
+selection-foreground = #e9ecf0
+cursor-color = #f44c7f
+cursor-text = #333a45
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2e343d
+palette = 1=#fb544e
+palette = 2=#89cb97
+palette = 3=#d4ba6e
+palette = 4=#96bdfd
+palette = 5=#f44c7f
+palette = 6=#60cbd8
+palette = 7=#cdd3db
+palette = 8=#99a4b4
+palette = 9=#f7726e
+palette = 10=#9cd2a9
+palette = 11=#d8c488
+palette = 12=#a7c6fa
+palette = 13=#f26c96
+palette = 14=#7bd2dd
+palette = 15=#e9ecf0

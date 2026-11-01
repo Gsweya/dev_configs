@@ -1,0 +1,26 @@
+# MT dots — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #121520
+foreground = #ffffff
+selection-background = #41444d
+selection-foreground = #ffffff
+cursor-color = #ffffff
+cursor-text = #121520
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#1b1e2c
+palette = 1=#da3333
+palette = 2=#a6a6a6
+palette = 3=#a6a6a5
+palette = 4=#a6a6a6
+palette = 5=#ffffff
+palette = 6=#a5a6a6
+palette = 7=#cfd2dc
+palette = 8=#777e9b
+palette = 9=#e15c5c
+palette = 10=#b8b8b8
+palette = 11=#b8b8b7
+palette = 12=#b8b8b8
+palette = 13=#ffffff
+palette = 14=#b7b8b8
+palette = 15=#ffffff

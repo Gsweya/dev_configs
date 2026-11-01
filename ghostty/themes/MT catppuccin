@@ -1,0 +1,26 @@
+# MT catppuccin — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #1e1e2e
+foreground = #cdd6f4
+selection-background = #4e4466
+selection-foreground = #cdd6f4
+cursor-color = #f2cdcd
+cursor-text = #1e1e2e
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#2c2c3e
+palette = 1=#f38ba8
+palette = 2=#85bb90
+palette = 3=#c3ad70
+palette = 4=#90b0e3
+palette = 5=#cba6f7
+palette = 6=#68bcc6
+palette = 7=#b2bad6
+palette = 8=#80859e
+palette = 9=#eb9ab7
+palette = 10=#93c0a4
+palette = 11=#c5b58a
+palette = 12=#9cb8e6
+palette = 13=#cbb0f6
+palette = 14=#7cc1cf
+palette = 15=#cdd6f4

@@ -1,0 +1,26 @@
+# MT striker — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #124883
+foreground = #d6dbd9
+selection-background = #49719b
+selection-foreground = #d6dbd9
+cursor-color = #d7dcda
+cursor-text = #124883
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#104176
+palette = 1=#ff7662
+palette = 2=#ecd7b7
+palette = 3=#facecb
+palette = 4=#ddd5f9
+palette = 5=#d7dcda
+palette = 6=#bce0f8
+palette = 7=#c0cfdc
+palette = 8=#96b9e2
+palette = 9=#f98c7c
+palette = 10=#efdfc4
+palette = 11=#fad8d4
+palette = 12=#e3ddfa
+palette = 13=#dee3e1
+palette = 14=#c7e6f9
+palette = 15=#d6dbd9

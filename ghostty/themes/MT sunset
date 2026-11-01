@@ -1,0 +1,26 @@
+# MT sunset — from Monkeytype (GPL-3.0)
+# Made by ghostty/monkeytype-themes, change it there.
+background = #211e24
+foreground = #f4e0c9
+selection-background = #5f413c
+selection-foreground = #f4e0c9
+cursor-color = #ffca99
+cursor-text = #211e24
+
+# 🌈 ANSI palette (0-7 normal, 8-15 bright)
+palette = 0=#161319
+palette = 1=#66a1ff
+palette = 2=#83ba8e
+palette = 3=#c4ad6d
+palette = 4=#8eb0e7
+palette = 5=#f79777
+palette = 6=#62bcc6
+palette = 7=#ccbec4
+palette = 8=#8380ba
+palette = 9=#82aef4
+palette = 10=#9ac29a
+palette = 11=#ceb77f
+palette = 12=#a2bae1
+palette = 13=#f6a687
+palette = 14=#7fc3c7
+palette = 15=#f4e0c9
