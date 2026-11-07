@@ -5,6 +5,7 @@ Every file in ghostty/themes/ becomes one editor theme, so run this again after 
 
     editors/zed/Neon.json, Solid.json, Monkeytype.json    Zed theme families
     editors/kronikus-themes.vsix                          a VS Code extension with all of them
+    editors/nvim/lua/kronikus/colors.lua                  the same colors for Neovim
 
 Ghostty gives 16 terminal colors and a few more. An editor needs roles, so:
 
@@ -33,6 +34,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 THEMES = os.path.join(HERE, '..', 'ghostty', 'themes')
 ZED = os.path.join(HERE, 'zed')
 VSIX = os.path.join(HERE, 'kronikus-themes.vsix')
+NVIM = os.path.join(HERE, 'nvim', 'lua', 'kronikus', 'colors.lua')
 VERSION = '1.0.0'  # VS Code only updates with --force on the same version
 load = lambda name: importlib.machinery.SourceFileLoader(name, os.path.join(HERE, '..', 'ghostty', name)).load_module()
 tune, mt = load('tune-themes'), load('monkeytype-themes')
@@ -329,6 +331,14 @@ def vscode_theme(name, r):
     return {'$schema': 'vscode://schemas/color-theme', 'name': name, 'type': 'dark' if r['dark'] else 'light',
             'semanticHighlighting': True, 'colors': c, 'tokenColors': tokens}
 
+# ── Neovim ───────────────────────────────────────────
+def nvim_row(name, r):
+    """A line of colors.lua: editors/nvim/lua/kronikus/init.lua puts these on Catppuccin."""
+    t = {k: r[k] for k in 'bg fg accent quiet dim chip caret keyword red green yellow blue cyan special'.split()}
+    t |= dict(sel=r['sel'], mantle=mix(r['bg'], r['chip'], .5), raised=mix(r['chip'], r['quiet'], .3), lifted=mix(r['chip'], r['quiet'], .6))
+    pairs = ','.join(f'{k}="{v}"' for k, v in t.items())
+    return f'  ["{name}"]={{dark={str(r["dark"]).lower()},bold={str(r["bold"]).lower()},{pairs}}},'
+
 def pack(files):
     """A .vsix is a zip with a manifest. The dates are fixed so the same themes give the same file."""
     package = json.loads(files['extension/package.json'])
@@ -353,12 +363,13 @@ def pack(files):
 def main():
     names = sorted(os.listdir(THEMES))
     os.makedirs(ZED, exist_ok=True)
-    contributes, files = [], {}
+    contributes, files, rows = [], {}, []
     for family, prefix in FAMILIES.items():
         themes = []
         for name in (n for n in names if n.startswith(prefix)):
             r = roles(os.path.join(THEMES, name))
             themes.append(zed_theme(name, r))
+            rows.append(nvim_row(name, r))
             path = 'themes/' + re.sub(r'[^a-z0-9]+', '-', name.lower()) + '.json'
             files['extension/' + path] = json.dumps(vscode_theme(name, r), indent=2, ensure_ascii=False)
             contributes.append({'label': name, 'uiTheme': 'vs-dark' if r['dark'] else 'vs', 'path': './' + path})
@@ -372,6 +383,9 @@ def main():
         'engines': {'vscode': '^1.70.0'}, 'categories': ['Themes'], 'contributes': {'themes': contributes}}, indent=2, ensure_ascii=False)
     with open(VSIX, 'wb') as f:
         f.write(pack(files))
+    os.makedirs(os.path.dirname(NVIM), exist_ok=True)
+    with open(NVIM, 'w') as f:
+        f.write('-- Written by editors/make-themes from ghostty/themes/. Monkeytype colors are GPL-3.0.\nreturn {\n' + '\n'.join(rows) + '\n}\n')
     print(len(contributes), 'themes')
 
 if __name__ == '__main__':

@@ -1,0 +1,2 @@
+# Syntax colors from the 16 terminal colors, so they change with ktheme.
+--theme=ansi
