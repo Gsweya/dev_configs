@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# 🔔 knotify — tells you a slow command finished (the Kronikus prompts call this)
+#
+#   ✅ Finished · 2 🟩 server        a desktop notification (notify-send)
+#   npm test · ⏱ 3m12s · 📂 app
+#
+#   knotify MODE STATUS DURATION COMMAND
+#
+#   away     only when you are not looking at that terminal: another tab or split,
+#            another app in front, or tmux detached
+#   always   after every slow command
+#
+# A finished command in another tab also puts ✅ or ❌ on that tab until you open it.
+# Editors, pagers, ssh and the like are skipped: you end those yourself.
+# How slow counts as slow: ⚙ settings → Notify, or KRONIKUS_NOTIFY_MIN (seconds).
+# Outside tmux there's no telling whether you're looking, so away acts like always.
+
+mode=$1 st=$2 dur=$3 cmd=${4//[[:cntrl:]]/ }
+
+first=${cmd%% *}
+case ${first##*/} in
+    vi|vim|nvim|nano|hx|micro|emacs|less|more|man|top|htop|btop|watch|ssh|mosh|tmux|bash|fish|zsh|sh|claude|gterminal|ksettings|ktheme|ktips|ktour|kbox)
+        exit 0 ;;
+esac
+
+where=${PWD##*/} tab= looking=0
+if [[ -n $TMUX_PANE ]]; then
+    IFS='|' read -r pane_on win_on tab session < <(tmux display -p -t "$TMUX_PANE" \
+        '#{pane_active}|#{window_active}|#{window_index} #{window_name}|#{session_name}' 2>/dev/null)
+    focused=$(tmux list-clients -t "$session" -F '#{client_flags}' 2>/dev/null | grep -c focused)
+    [[ $pane_on == 1 && $win_on == 1 ]] && (( focused )) && looking=1
+    if [[ $win_on == 0 ]]; then
+        (( st == 0 )) && mark=✅ || mark=❌
+        tmux set -w -t "$TMUX_PANE" @k-done "$mark" 2>/dev/null
+    fi
+fi
+
+[[ $mode == away ]] && (( looking )) && exit 0
+type -P notify-send >/dev/null || exit 0
+
+if (( st == 0 )); then title='✅ Finished' icon=dialog-information
+else title="❌ Failed ($st)" icon=dialog-error
+fi
+(( ${#cmd} > 120 )) && cmd=${cmd:0:119}…
+notify-send -a Kronikus -i "$icon" -h string:desktop-entry:com.mitchellh.ghostty \
+    "$title${tab:+ · $tab}" "$cmd · ⏱ $dur · 📂 $where"

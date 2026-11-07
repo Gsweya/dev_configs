@@ -1,42 +1,57 @@
 #!/usr/bin/env bash
 # 🎨 ktheme — switch the Ghostty theme; tmux and the prompt follow it (pure bash)
 #
-#   🎨 theme   🌗 desktop is light → ☀️ side
+#   🎨 theme   198 · all
+#   / ser▌
 #
-#   ❯ 👻 Neon         ☀️ Neon Day               🌙 Neon Night            ✓ auto
-#     🐱 Catppuccin   ☀️ Catppuccin Latte       🌙 Catppuccin Mocha
-#     🌹 Rose Pine    ☀️ Rose Pine Dawn         🌙 Rose Pine
-#     …
+#   ❯  serika dark                                     ● ● ●       each row in its own
+#      serika                                          ● ● ●       background and colors
+#      …
 #
-# Moving through the list previews each theme live in every Ghostty window.
-# ⏎ keeps it in auto: light or dark follows your desktop. d / l keep only the
-# dark / light one. esc or q puts back what you had.
+#    tab  all / dark / light    ⏎  keep    esc  cancel
+#
+# Monkeytype's themes, like its theme list: every row is painted in that theme,
+# with a dot each for its accent, quiet and text color. Type to search. Moving
+# through the list previews the theme live in every Ghostty window.
+#
+# After them come 🌗 Neon and the Solid themes of ghostty/tune-themes, which
+# follow your desktop: ⏎ keeps that, Ctrl+D or Ctrl+L keeps only the dark or light side.
 #
 #   ktheme                 the picker (or click 🎨 in the tmux bar, prefix + T)
-#   ktheme "Rose Pine"     any Ghostty theme by name, or "light:A,dark:B"
+#   ktheme "MT serika"     any Ghostty theme by name, or "light:A,dark:B"
 #   ktheme --list          every theme name Ghostty knows (ghostty +list-themes)
 #
 # Writes theme.ghostty next to the Ghostty config (pulled in by its config-file
-# line), then sends Ghostty SIGUSR2 so it reloads. tmux, the Kronikus prompt,
-# gterminal and ktips only use the 16 terminal colors, so they change with it.
+# line), then sends Ghostty SIGUSR2 so it reloads. tmux, the Kronikus prompt, gterminal,
+# ktips, ls, git, nano and bat only use the 16 terminal colors, so they change with it.
+#
+# Code keeps its own colors in anything else, so those follow by other means:
+#
+#   Neovim                    watches theme.ghostty, previews included (editors/nvim)
+#   Zed, VS Code, Cursor      their theme setting, once you keep a theme
+#   Claude Code               its ANSI mode, so it uses the 16 colors (only from auto or ANSI)
+#
+# Ghostty's own themes (ktheme --list) have no editor version: those stay as they were.
 
 # Name, light theme, dark theme (empty light = dark only).
-themes=(
-    '👻 Neon|Neon Day|Neon Night'
-    '🐱 Catppuccin|Catppuccin Latte|Catppuccin Mocha'
-    '🌹 Rose Pine|Rose Pine Dawn|Rose Pine'
-    '🗼 Tokyo Night|TokyoNight Day|TokyoNight'
-    '🍂 Gruvbox|Gruvbox Light|Gruvbox Dark'
-    '❄️ Nord|Nord Light|Nord'
-    '🌲 Everforest|Everforest Light Med|Everforest Dark Hard'
-    '🌊 Kanagawa|Kanagawa Lotus|Kanagawa Wave'
-    '🐙 GitHub|GitHub Light Default|GitHub Dark Default'
-    '☀️ Solarized|iTerm2 Solarized Light|iTerm2 Solarized Dark'
-    '🧛 Dracula||Dracula'
+pairs=(
+    '🌗 Neon|Neon Day|Neon Night'
+    '🌗 Solid Catppuccin|Solid Catppuccin Latte|Solid Catppuccin Mocha'
+    '🌗 Solid Rose Pine|Solid Rose Pine Dawn|Solid Rose Pine'
+    '🌗 Solid Tokyo Night|Solid TokyoNight Day|Solid TokyoNight'
+    '🌗 Solid Gruvbox|Solid Gruvbox Light|Solid Gruvbox Dark'
+    '🌗 Solid Nord|Solid Nord Light|Solid Nord'
+    '🌗 Solid Everforest|Solid Everforest Light|Solid Everforest Dark'
+    '🌗 Solid Kanagawa|Solid Kanagawa Lotus|Solid Kanagawa Wave'
+    '🌗 Solid GitHub|Solid GitHub Light|Solid GitHub Dark'
+    '🌗 Solid Solarized|Solid Solarized Light|Solid Solarized Dark'
+    '🌗 Solid Dracula||Solid Dracula'
 )
 
-file=${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/theme.ghostty
-b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m' y=$'\e[33m'
+conf=${XDG_CONFIG_HOME:-$HOME/.config}
+file=$conf/ghostty/theme.ghostty
+dir=${file%/*}/themes
+b=$'\e[1m' r=$'\e[0m' m=$'\e[35m' q=$'\e[90m'
 
 # Writes "theme = $1" (or removes the file when $1 is empty) and reloads Ghostty.
 apply() {
@@ -45,6 +60,62 @@ apply() {
     else rm -f "$file"
     fi
     pkill -USR2 -x ghostty 2>/dev/null
+}
+
+# Sets "key": "value" in a settings file: its line, or a new one at the top.
+# These files can hold comments, so they are edited as text and not as JSON.
+put() {
+    [[ -f $1 ]] || return 0
+    if grep -q "^\s*\"$2\":" "$1"; then
+        sed -i --follow-symlinks -E "s/^(\s*\"$2\": *)\"[^\"]*\"/\1\"$3\"/" "$1"
+    else
+        sed -i --follow-symlinks "0,/^{/a\\    \"$2\": \"$3\"," "$1"
+    fi
+}
+
+# Hands the theme $1 to everything with colors of its own (Neovim sees theme.ghostty).
+# A 🌗 theme: Zed follows the desktop, VS Code and Claude Code get today's side.
+follow() {
+    local light=$1 dark=$1 now scheme f fg bg line side=dark
+    if [[ $1 == light:*,dark:* ]]; then
+        light=${1%,dark:*} light=${light#light:} dark=${1#*,dark:}
+    fi
+    [[ -f $dir/$light && -f $dir/$dark ]] || return 0
+
+    now=$dark
+    scheme=$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)
+    [[ -n $scheme && $scheme != *dark* ]] && now=$light
+
+    for f in "$conf/zed/settings.json" "$HOME/.var/app/dev.zed.Zed/config/zed/settings.json"; do
+        [[ -f $f ]] || continue
+        if grep -Eq '^\s*"theme": *\{' "$f"; then
+            sed -i --follow-symlinks -E '/^\s*"theme": *\{/,/^\s*\}/{
+                s/("mode": *)"[^"]*"/\1"system"/
+                s/("light": *)"[^"]*"/\1"'"$light"'"/
+                s/("dark": *)"[^"]*"/\1"'"$dark"'"/
+            }' "$f"
+        else
+            put "$f" theme "$now"
+        fi
+    done
+
+    # Without the extension VS Code would fall back to its default theme.
+    compgen -G "$HOME/.vscode/extensions/kronikus.kronikus-themes-*" >/dev/null &&
+        put "$conf/Code/User/settings.json" workbench.colorTheme "$now"
+    compgen -G "$HOME/.cursor/extensions/kronikus.kronikus-themes-*" >/dev/null &&
+        put "$conf/Cursor/User/settings.json" workbench.colorTheme "$now"
+
+    while IFS= read -r line; do
+        case $line in
+            'background = '*) bg=${line#*= } ;;
+            'foreground = '*) fg=${line#*= } ;;
+        esac
+    done < "$dir/$now"
+    (( 0x${fg:1:2} + 0x${fg:3:2} + 0x${fg:5:2} < 0x${bg:1:2} + 0x${bg:3:2} + 0x${bg:5:2} )) && side=light
+    f=${CLAUDE_CONFIG_DIR:-$HOME/.claude}/settings.json
+    if [[ -f $f ]] && grep -Eq '^\s*"theme": *"(auto|dark-ansi|light-ansi)"' "$f"; then
+        put "$f" theme "$side-ansi"
+    fi
 }
 
 # The theme in use: theme.ghostty if there is one, else the theme line of the main config.
@@ -60,13 +131,6 @@ current() {
     done
 }
 
-# "light:A,dark:B" for a list entry, or just B when it has no light side.
-auto() {
-    local l=${1#*|} dk=${1##*|}
-    l=${l%%|*}
-    [[ -n $l ]] && REPLY="light:$l,dark:$dk" || REPLY=$dk
-}
-
 case $1 in
     --list) ghostty +list-themes --plain | sed 's/ (.*)$//'; exit ;;
     -h|--help) sed -n '2,/^$/s/^# \{0,1\}//p' "$0"; exit ;;
@@ -79,76 +143,156 @@ case $1 in
             grep -qxF -- "$p" <<< "$known" || { echo "🎨 no theme called \"$p\" (see ktheme --list)" >&2; exit 1; }
         done
         apply "$1"
+        follow "$1"
         echo "🎨 theme = $1"
         exit ;;
 esac
 
-# Which side "auto" shows right now, when the desktop says (GNOME and friends).
-side=
-case $(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null) in
-    *dark*) side=dark ;;
-    ?*)     side=light ;;
-esac
+# "r;g;b" for #rrggbb in REPLY.
+rgb() { printf -v REPLY '%d;%d;%d' "0x${1:1:2}" "0x${1:3:2}" "0x${1:5:2}"; }
 
-draw() {
-    local i name l dk mark rows cols
-    read -r rows cols < <(stty size </dev/tty)
-    printf '\e[H\e[2J'
-    printf '\e[2;3H%s🎨 theme%s' "$b$m" "$r"
-    [[ $side == dark ]]  && printf '   %s🌗 desktop is dark → 🌙 side%s' "$d" "$r"
-    [[ $side == light ]] && printf '   %s🌗 desktop is light → ☀️ side%s' "$d" "$r"
-
-    for i in "${!themes[@]}"; do
-        IFS='|' read -r name l dk <<< "${themes[i]}"
-        auto "${themes[i]}"
-        mark=
-        if   [[ $orig == "$REPLY" ]]; then mark="$g✓ auto$r"
-        elif [[ $orig == "$dk" ]];    then mark="$g✓ dark$r"
-        elif [[ -n $l && $orig == "$l" ]]; then mark="$g✓ light$r"
-        fi
-        printf '\e[%d;3H' $(( 4 + i ))
-        (( i == sel )) && printf '%s❯%s %s%s%s' "$m" "$r" "$b$m" "$name" "$r" || printf '  %s' "$name"
-        if [[ -n $l ]]; then printf '\e[%d;20H%s☀️ %s%s' $(( 4 + i )) "$d" "${l#iTerm2 }" "$r"
-        else printf '\e[%d;20H%s   dark only%s' $(( 4 + i )) "$d" "$r"
-        fi
-        printf '\e[%d;45H%s🌙 %s%s' $(( 4 + i )) "$d" "${dk#iTerm2 }" "$r"
-        [[ -n $mark ]] && printf '\e[%d;70H%s' $(( 4 + i )) "$mark"
-    done
-
-    # A strip of the 16 colors, so the preview shows more than the background.
-    printf '\e[%d;3H' $(( 5 + ${#themes[@]} ))
-    for i in 1 2 3 4 5 6; do printf '\e[3%dm●\e[0m ' "$i"; done
-    printf '  '
-    for i in 1 2 3 4 5 6; do printf '\e[9%dm●\e[0m ' "$i"; done
-    printf '  %s%s❯ prompt%s %sdim%s' "$c" "$b" "$r" "$d" "$r"
-
-    printf '\e[%d;3H%s↑↓%s preview   %s⏎%s keep (auto)   %sd%s dark   %sl%s light   %sesc%s cancel%s' "$rows" \
-        "$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r$b" "$r$d" "$r"
+# Adds a row: shown name, theme value, kind (dark, light or both), theme file with its
+# colors. A row with kind "auto" works out dark or light from the background.
+names=() values=() kinds=() bgs=() mains=() subs=() texts=()
+add() {
+    local line bg= main= sub= text= kind=$3
+    [[ -f $4 ]] || return
+    while IFS= read -r line; do
+        case $line in
+            'background = '*) bg=${line#*= } ;;
+            'foreground = '*) text=${line#*= } ;;
+            'palette = 5='*)  main=${line#*5=} ;;
+            'palette = 8='*)  sub=${line#*8=} ;;
+        esac
+    done < "$4"
+    if [[ $kind == auto ]]; then
+        (( 0x${bg:1:2} + 0x${bg:3:2} + 0x${bg:5:2} > 384 )) && kind=light || kind=dark
+    fi
+    names+=("$1") values+=("$2") kinds+=("$kind")
+    rgb "$bg"; bgs+=("$REPLY")
+    rgb "$main"; mains+=("$REPLY")
+    rgb "$sub"; subs+=("$REPLY")
+    rgb "$text"; texts+=("$REPLY")
 }
 
-preview() { auto "${themes[sel]}"; apply "$REPLY"; }
+for f in "$dir"/MT\ *; do
+    name=${f##*/MT }
+    add "$name" "MT $name" auto "$f"
+done
+for p in "${pairs[@]}"; do
+    IFS='|' read -r name l dk <<< "$p"
+    [[ -n $l ]] && value="light:$l,dark:$dk" || value=$dk
+    add "$name" "$value" both "$dir/$dk"
+done
 
 current
 orig=$REPLY had_file=0
 [[ -f $file ]] && had_file=1
-sel=0
-for i in "${!themes[@]}"; do
-    [[ $orig == *"${themes[i]##*|}"* ]] && { sel=$i; break; }
+query= group=all view=() sel=0 top=0
+
+# The rows that match the search and the tab filter, as indices in view.
+filter() {
+    local i kind low=${query,,}
+    view=()
+    for i in "${!names[@]}"; do
+        kind=${kinds[i]}
+        [[ $group != all && $kind != "$group" && $kind != both ]] && continue
+        [[ -z $query || ${names[i],,} == *"$low"* ]] && view+=("$i")
+    done
+    (( sel >= ${#view[@]} )) && sel=$(( ${#view[@]} ? ${#view[@]} - 1 : 0 ))
+}
+
+# A key as a Monkeytype chip: quiet background, then what it does.
+key() { printf '\e[7;90m %s \e[0m %s%s%s   ' "$1" "$q" "$2" "$r"; }
+
+draw() {
+    local rows cols i n row shown width name tick bold wide
+    read -r rows cols < <(stty size </dev/tty)
+    shown=$(( rows - 11 ))
+    (( shown < 3 )) && shown=3
+    width=$(( cols - 6 ))
+    (( width > 66 )) && width=66
+    (( sel < top )) && top=$sel
+    (( sel >= top + shown )) && top=$(( sel - shown + 1 ))
+
+    printf '\e[H\e[2J\e[2;3H%s🎨 theme%s   %s%d · %s%s' "$b$m" "$r" "$q" "${#view[@]}" "$group" "$r"
+    printf '\e[3;3H%s/%s %s%s▌%s' "$m" "$r" "$query" "$m" "$r"
+
+    for (( n = 0; n < shown && top + n < ${#view[@]}; n++ )); do
+        i=${view[top + n]}
+        name=${names[i]} tick= bold= wide=0
+        [[ $name == 🌗* ]] && wide=1  # the emoji takes two columns
+        [[ ${values[i]} == "$orig" ]] && tick=' ✓'
+        printf '\e[%d;3H' $(( 5 + n ))
+        if (( top + n == sel )); then printf '%s❯%s' "$m" "$r"; bold=$b; else printf ' '; fi
+        # The row in its own colors, the dots at its right end.
+        printf ' \e[48;2;%sm\e[38;2;%sm %s%s%s\e[22m' "${bgs[i]}" "${mains[i]}" "$bold" "$name" "$tick"
+        printf '%*s' $(( width - ${#name} - ${#tick} - wide - 8 )) ''
+        printf '\e[38;2;%sm● \e[38;2;%sm● \e[38;2;%sm● \e[0m' "${mains[i]}" "${subs[i]}" "${texts[i]}"
+    done
+    (( ${#view[@]} )) || printf '\e[5;5H%sno theme with that name%s' "$q" "$r"
+
+    # A sample in the live colors of the theme: prompt, code, comment.
+    row=$(( rows - 4 ))
+    printf '\e[%d;3H\e[90m╰─\e[35m❯\e[0m git commit \e[33m-m\e[0m \e[32m"fix the parser"\e[0m  \e[90m# a comment\e[0m  \e[1;31m❌ 1\e[0m' "$row"
+    printf '\e[%d;3H\e[35mconst\e[0m total \e[36m=\e[0m \e[34msum\e[0m(items, \e[33m42\e[0m)  \e[90m// keywords, names, numbers\e[0m' $(( row + 1 ))
+
+    printf '\e[%d;3H' "$rows"
+    key tab "$group"; key ↑↓ preview; key ⏎ keep; key esc cancel
+}
+
+preview() {
+    wanted=
+    (( ${#view[@]} )) && apply "${values[view[sel]]}"
+}
+
+restore() { if (( had_file )); then apply "$orig"; else apply ''; fi; }
+
+filter
+for i in "${!view[@]}"; do
+    [[ ${values[view[i]]} == "$orig" ]] && { sel=$i; break; }
 done
 
 printf '\e[?1049h\e[?25l'
 trap "printf '\e[?25h\e[?1049l'" EXIT
+trap 'restore; exit 130' INT
 trap : WINCH  # resize: interrupts read below, so the loop redraws
+wanted=
 while :; do
     draw
-    IFS= read -rsn1 key || continue
-    [[ $key == $'\e' ]] && { IFS= read -rsn2 -t 0.05 rest; key+=$rest; }
+    # Held-down arrows would reload Ghostty on every row: preview once the list stops.
+    if [[ -n $wanted ]]; then
+        IFS= read -rsn1 -t 0.15 key || { preview; continue; }
+    else
+        IFS= read -rsn1 key || continue
+    fi
+    # Arrows are 3 characters, Page Up / Down 4: reading more would swallow the next key.
+    if [[ $key == $'\e' ]]; then
+        IFS= read -rsn2 -t 0.05 rest; key+=$rest
+        [[ $rest == [0-9] || $rest == \[[0-9] ]] && { IFS= read -rsn1 -t 0.05 rest; key+=$rest; }
+        [[ $key == $'\e\e'* ]] && key=$'\e'  # tmux can hand over two esc presses at once
+    fi
+    n=${#view[@]}
     case $key in
-        $'\e[A'|k) (( sel > 0 )) && { (( sel-- )); preview; } ;;
-        $'\e[B'|j) (( sel < ${#themes[@]} - 1 )) && { (( sel++ )); preview; } ;;
-        '')        preview; exit ;;
-        d)         apply "${themes[sel]##*|}"; exit ;;
-        l)         IFS='|' read -r _ l _ <<< "${themes[sel]}"; [[ -n $l ]] && { apply "$l"; exit; } ;;
-        q|$'\e')   (( had_file )) && apply "$orig" || apply ''; exit ;;
+        $'\e[A')       (( sel > 0 )) && { (( sel-- )); wanted=1; } ;;
+        $'\e[B')       (( sel < n - 1 )) && { (( sel++ )); wanted=1; } ;;
+        $'\e[5~')      sel=$(( sel > 10 ? sel - 10 : 0 )); wanted=1 ;;
+        $'\e[6~')      (( n )) && { sel=$(( sel + 10 < n ? sel + 10 : n - 1 )); wanted=1; } ;;
+        '')            (( n )) && { preview; follow "${values[view[sel]]}"; }; exit ;;
+        $'\t')         case $group in all) group=dark ;; dark) group=light ;; *) group=all ;; esac
+                       filter; wanted=1 ;;
+        $'\x04'|$'\x0c')  # Ctrl+D / Ctrl+L: one side of a 🌗 row
+                       (( n )) || continue
+                       value=${values[view[sel]]}
+                       [[ $value == light:* ]] || continue
+                       l=${value%,dark:*} dk=${value#*,dark:}
+                       [[ $key == $'\x04' ]] && l=$dk || l=${l#light:}
+                       apply "$l"; follow "$l"
+                       exit ;;
+        $'\x7f'|$'\b') query=${query%?}; filter; wanted=1 ;;
+        $'\e')         if [[ -n $query ]]; then query=; filter; wanted=1
+                       else restore; exit
+                       fi ;;
+        [[:print:]])   query+=$key; sel=0; top=0; filter; wanted=1 ;;
     esac
 done

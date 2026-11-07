@@ -16,18 +16,30 @@
 #   KRONIKUS_TIPS    1 = add a random tip to it, from ktips (default: 1)
 #                    the very first terminal asks "take the tour?" (ktour) instead
 #   KRONIKUS_ASK_TAB 1 = a new tmux tab asks for its name, ⏎ keeps the automatic one (default: 1)
+#   KRONIKUS_SIGN    the ❯ before your command, any short text like $ or # (default: ❯)
+#                    $ turns into # when you are root
+#   KRONIKUS_SIGN_COLOR  magenta, cyan, green, yellow, blue or text (default: magenta)
+#   KRONIKUS_LAST    1 = show the latest command in the tmux bar (default: 1)
+#   KRONIKUS_NOTIFY  away = 🔔 when a slow command ends and you are not looking,
+#                    always, or off (default: away, see knotify)
+#   KRONIKUS_NOTIFY_MIN  seconds that count as slow (default: 5)
 #   KRONIKUS_STARSHIP  starship config for the git part (default: ~/.config/kronikus/starship.toml)
 #                      if starship or this file is missing, a plain ⎇ branch is shown
 
 [[ $- == *i* ]] || return
 
 # Settings saved by ksettings (KRONIKUS_*=value). A variable already set above still wins.
-if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/kronikus/settings ]]; then
-    while IFS='=' read -r __k_key __k_val; do
-        [[ $__k_key == KRONIKUS_* && -z ${!__k_key+x} ]] && printf -v "$__k_key" '%s' "$__k_val"
-    done < "${XDG_CONFIG_HOME:-$HOME/.config}/kronikus/settings"
-    unset __k_key __k_val
-fi
+# Read again before every prompt, so ⚙ changes reach shells that are already open.
+__k_settings=${XDG_CONFIG_HOME:-$HOME/.config}/kronikus/settings
+__k_own=${__k_own-" ${!KRONIKUS_*} "}  # yours, taken before the defaults below exist
+__k_load() {
+    [[ -f $__k_settings ]] || return
+    local k v
+    while IFS='=' read -r k v; do
+        [[ $k == KRONIKUS_* && $__k_own != *" $k "* ]] && printf -v "$k" '%s' "$v"
+    done < "$__k_settings"
+}
+__k_load
 
 KRONIKUS_NAME=${KRONIKUS_NAME:-Kronikus}
 KRONIKUS_AVATAR=${KRONIKUS_AVATAR:-🥽}
@@ -38,6 +50,11 @@ KRONIKUS_GREET=${KRONIKUS_GREET:-1}
 KRONIKUS_TIPS=${KRONIKUS_TIPS:-1}
 KRONIKUS_ASK_TAB=${KRONIKUS_ASK_TAB:-1}
 KRONIKUS_STARSHIP=${KRONIKUS_STARSHIP:-$HOME/.config/kronikus/starship.toml}
+KRONIKUS_SIGN=${KRONIKUS_SIGN:-❯}
+KRONIKUS_SIGN_COLOR=${KRONIKUS_SIGN_COLOR:-magenta}
+KRONIKUS_LAST=${KRONIKUS_LAST:-1}
+KRONIKUS_NOTIFY=${KRONIKUS_NOTIFY:-away}
+KRONIKUS_NOTIFY_MIN=${KRONIKUS_NOTIFY_MIN:-5}
 
 __k_ready=
 __k_start=
@@ -45,6 +62,7 @@ __k_cmd=
 __k_status=0
 __k_starship=
 [[ -f $KRONIKUS_STARSHIP ]] && __k_starship=$(type -P starship)
+__k_knotify=$(type -P knotify)
 
 # Inside tmux: remember the session, so each command can save "folder + last command" for gterminal.
 __k_tmux=
@@ -69,6 +87,15 @@ __k_branch() {
     done
 }
 
+# The latest command in the tmux bar, kept per pane so each terminal shows its own.
+# Style codes are ours; in the command itself a # must stay a plain # for tmux, and the
+# space at the end keeps a final ; from being read as tmux's command separator.
+__k_last() {
+    [[ -n $TMUX_PANE && $KRONIKUS_LAST == 1 ]] || return
+    local line=${1//[[:cntrl:]]/ }
+    tmux set -p -t "$TMUX_PANE" @k-last "${line//#/##} " \; set -p -t "$TMUX_PANE" @k-last-info "$2" 2>/dev/null
+}
+
 # Runs right before each command typed at the prompt.
 __k_preexec() {
     [[ -n $__k_ready && -z $COMP_LINE ]] || return
@@ -79,11 +106,13 @@ __k_preexec() {
     h=$(HISTTIMEFORMAT= history 1)
     [[ $h =~ ^\ *[0-9]+\*?\ +(.*)$ ]] && __k_cmd=${BASH_REMATCH[1]} || __k_cmd=$BASH_COMMAND
     __k_start=${EPOCHREALTIME//[.,]/}
+    __k_last "$__k_cmd" '#[fg=yellow]⏳ running#[default]'
 }
 
 # Runs before each prompt: prints the summary of the last command, then builds PS1.
 __k_precmd() {
     local st=$__k_status
+    __k_load
     if [[ -n $__k_start ]]; then
         local us=$(( ${EPOCHREALTIME//[.,]/} - __k_start )) dur icon
         local ms=$(( us / 1000 ))
@@ -102,9 +131,17 @@ __k_precmd() {
             printf '\r\e[K'
         fi
         printf "$icon %s \e[2m· ⏱ %s · 🕒 %(%H:%M:%S)T\e[0m\n" "$__k_cmd" "$dur" -1
+        local info
+        (( st == 0 )) && info='#[fg=green]✅#[default]' || info="#[fg=red]#[bold]❌ $st#[default]"
+        printf -v info '%s #[fg=brightblack]· ⏱ %s · 🕒 %(%H:%M:%S)T#[default]' "$info" "$dur" -1
+        __k_last "$__k_cmd" "$info"
+        if [[ $KRONIKUS_NOTIFY != off && -n $__k_knotify ]] && (( ms >= KRONIKUS_NOTIFY_MIN * 1000 )); then
+            ( "$__k_knotify" "$KRONIKUS_NOTIFY" "$st" "$dur" "$__k_cmd" >/dev/null 2>&1 & )
+        fi
         if [[ -n $__k_tmux && $__k_cmd != gterminal* ]]; then
             # Asked every time: the session may have been renamed since this shell started.
-            __k_tmux=$(tmux display -p -t "$TMUX_PANE" '#S' 2>/dev/null)
+            # ⚡ quick sessions (gterminal) are never saved, so they answer nothing.
+            __k_tmux=$(tmux display -p -t "$TMUX_PANE" '#{?@k-quick,,#S}' 2>/dev/null)
             [[ -n $__k_tmux ]] && printf '%s\n%s\n' "$PWD" "$__k_cmd" > "$__k_state/$__k_tmux"
         fi
         __k_start=
@@ -114,10 +151,17 @@ __k_precmd() {
     [[ -z $dir ]] && dir=/
     printf '\e]0;👻 %s\a' "$dir"
 
-    local branch arrow=35
+    local branch arrow=35 sign=$KRONIKUS_SIGN mark=
     branch=$(__k_branch)
+    case $KRONIKUS_SIGN_COLOR in
+        cyan) arrow=36 ;; green) arrow=32 ;; yellow) arrow=33 ;; blue) arrow=34 ;; text) arrow=39 ;;
+    esac
     (( st != 0 )) && arrow=31
-    PS1="\n\[\e[35m\]╭─\[\e[0m\] ${KRONIKUS_AVATAR} \[\e[1;35m\]${KRONIKUS_NAME}\[\e[0m\] \[\e[2m\]in\[\e[0m\] 📂 \[\e[36m\]\w\[\e[0m\]"
+    # \$ is bash's own $ / # for root; the other two would otherwise run as code in PS1.
+    sign=${sign//\\/\\\\} sign=${sign//\$/\\\$} sign=${sign//\`/\\\`}
+    # Tells tmux where this prompt starts, for ▲ ▼ and Alt+↑ ↓.
+    [[ -n $TMUX ]] && mark='\[\e]133;A\a\]'
+    PS1="\n$mark\[\e[90m\]╭─\[\e[0m\] ${KRONIKUS_AVATAR} \[\e[1;35m\]${KRONIKUS_NAME}\[\e[0m\] \[\e[2m\]in\[\e[0m\] 📂 \[\e[36m\]\w\[\e[0m\]"
     if [[ -n $branch ]]; then
         local git=
         # starship only runs inside a repo, for its branch + status icons ( main !? ⇡1)
@@ -125,7 +169,7 @@ __k_precmd() {
         [[ -z $git ]] && git="\[\e[32m\]⎇ ${branch//\\/\\\\}\[\e[0m\]"
         PS1+=" \[\e[2m\]on\[\e[0m\] $git"
     fi
-    PS1+="\n\[\e[35m\]╰─\[\e[${arrow}m\]❯\[\e[0m\] "
+    PS1+="\n\[\e[90m\]╰─\[\e[${arrow}m\]${sign}\[\e[0m\] "
     __k_ready=1
     __k_ask_tab
 }
@@ -149,8 +193,13 @@ __k_ask_tab() {
 
 # Tiny round picture + name (+ a tip), once per new terminal (kitty graphics protocol, 4×2 cells).
 __k_greet() {
-    # Not inside tmux: there every new pane would greet again.
-    [[ $KRONIKUS_GREET == 1 && -z $TMUX ]] || return
+    # Not inside tmux, where every new pane would greet again; except the first shell
+    # of a ⚡ quick session (gterminal), which stands in for a plain terminal.
+    [[ $KRONIKUS_GREET == 1 && ( -z $TMUX || -n $KRONIKUS_GREET_HERE ) ]] || return
+    if [[ -n $KRONIKUS_GREET_HERE ]]; then
+        unset KRONIKUS_GREET_HERE
+        tmux set-environment -t "$TMUX_PANE" -u KRONIKUS_GREET_HERE 2>/dev/null
+    fi
     if [[ ($TERM_PROGRAM == ghostty || $TERM == xterm-kitty) && -f $KRONIKUS_PICTURE ]]; then
         local data chunk ctl='f=100,a=T,c=4,r=2,C=1,q=2,'
         data=$(base64 -w0 "$KRONIKUS_PICTURE")

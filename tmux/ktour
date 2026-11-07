@@ -138,8 +138,9 @@ ${c2}with your last command already typed: Enter continues it"
 step 5 check_ktheme "Click $(K 🎨) in the top bar.
 ↑↓ previews each theme live, ⏎ keeps one, esc goes back to what you had.
 
-Themes follow your desktop: light when it is light, dark when it is dark.
-In the picker, d keeps only the dark side, l only the light one."
+Every Monkeytype theme is there: type a few letters to search, tab for dark or light.
+The one you keep also recolors code in your editors.
+The 🌗 ones at the end follow your desktop: light when it is light, dark when it is dark."
 
 step 6 - "Your prompt:
 
@@ -151,6 +152,19 @@ step 6 - "Your prompt:
     main !? ⇡1${c2}git branch: ! changed, ? new files, + staged, ⇡ ahead
    ✅ / ❌${c2}how the last command went, how long it took, when it ended
    ❯${c2}turns red when the last command failed"
+
+step 6 - "Your commands, under the top bar:
+
+   ❯ npm test  ✅ · ⏱ 3.4s · 🕒 14:02:11                ▲ ▼ │ ⌨ box
+
+   $(K '❯ npm test')${c2}the last command here: click it to jump to it in the scrollback
+   $(K '▲ ▼')${c2}previous / next command, also $(K 'Alt+↑ ↓'); q goes back
+   $(K '⌨ box')${c2}a box to write or paste a command in, also $(K Alt+i)
+${c2}⏎ runs it, $(K Alt+i) jumps between the box and the terminal
+   🔔${c2}a slow command ended while you were away: a notification,
+${c2}and a ✅ or ❌ on its tab
+
+${d}⚙ settings changes the cursor color, the sign (❯ \$ # λ…) and when 🔔 speaks up.$r"
 
 step 6 - "Handy keys in any shell:
 

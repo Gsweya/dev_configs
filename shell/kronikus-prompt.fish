@@ -7,18 +7,24 @@
 # Source it from ~/.config/fish/config.fish:  source ~/.config/kronikus/prompt.fish
 # Same settings as the bash version (ksettings, or set them before sourcing):
 #   KRONIKUS_NAME, KRONIKUS_AVATAR, KRONIKUS_ANIM, KRONIKUS_ANIM_MIN,
-#   KRONIKUS_PICTURE, KRONIKUS_GREET, KRONIKUS_TIPS, KRONIKUS_ASK_TAB, KRONIKUS_STARSHIP
+#   KRONIKUS_PICTURE, KRONIKUS_GREET, KRONIKUS_TIPS, KRONIKUS_ASK_TAB, KRONIKUS_STARSHIP,
+#   KRONIKUS_SIGN, KRONIKUS_SIGN_COLOR, KRONIKUS_LAST, KRONIKUS_NOTIFY, KRONIKUS_NOTIFY_MIN
 
 status is-interactive; or return
 
 # Settings saved by ksettings (KRONIKUS_*=value). A variable already set above still wins.
-set -l __k_settings (set -q XDG_CONFIG_HOME; and echo $XDG_CONFIG_HOME; or echo ~/.config)/kronikus/settings
-if test -f $__k_settings
+# Read again before every prompt, so ⚙ changes reach shells that are already open.
+set -g __k_settings (set -q XDG_CONFIG_HOME; and echo $XDG_CONFIG_HOME; or echo ~/.config)/kronikus/settings
+# Yours, taken before the defaults below exist.
+set -q __k_own; or set -g __k_own (set -n | string match 'KRONIKUS_*')
+function __k_load
+    test -f $__k_settings; or return
     for line in (string match -r '^KRONIKUS_\w+=.*' <$__k_settings)
         set -l kv (string split -m1 = -- $line)
-        set -q $kv[1]; or set -g $kv[1] $kv[2]
+        contains -- $kv[1] $__k_own; or set -g $kv[1] $kv[2]
     end
 end
+__k_load
 
 set -q KRONIKUS_NAME; or set -g KRONIKUS_NAME Kronikus
 set -q KRONIKUS_AVATAR; or set -g KRONIKUS_AVATAR 🥽
@@ -29,6 +35,25 @@ set -q KRONIKUS_GREET; or set -g KRONIKUS_GREET 1
 set -q KRONIKUS_TIPS; or set -g KRONIKUS_TIPS 1
 set -q KRONIKUS_ASK_TAB; or set -g KRONIKUS_ASK_TAB 1
 set -q KRONIKUS_STARSHIP; or set -g KRONIKUS_STARSHIP ~/.config/kronikus/starship.toml
+set -q KRONIKUS_SIGN; or set -g KRONIKUS_SIGN ❯
+set -q KRONIKUS_SIGN_COLOR; or set -g KRONIKUS_SIGN_COLOR magenta
+set -q KRONIKUS_LAST; or set -g KRONIKUS_LAST 1
+set -q KRONIKUS_NOTIFY; or set -g KRONIKUS_NOTIFY away
+set -q KRONIKUS_NOTIFY_MIN; or set -g KRONIKUS_NOTIFY_MIN 5
+
+# What you type: the same roles as in the editors, in terminal colors so ktheme changes them.
+set -g fish_color_keyword magenta
+set -g fish_color_command blue
+set -g fish_color_param normal
+set -g fish_color_option normal
+set -g fish_color_quote green
+set -g fish_color_escape cyan
+set -g fish_color_operator cyan
+set -g fish_color_redirection cyan
+set -g fish_color_end brblack
+set -g fish_color_comment brblack
+set -g fish_color_autosuggestion brblack
+set -g fish_color_error red
 
 # Inside tmux: remember the session, so each command can save "folder + last command" for gterminal.
 set -g __k_tmux
@@ -57,6 +82,20 @@ function __k_branch
     end
 end
 
+# The latest command in the tmux bar, kept per pane so each terminal shows its own.
+# Style codes are ours; in the command itself a # must stay a plain # for tmux, and the
+# space at the end keeps a final ; from being read as tmux's command separator.
+function __k_last -a line info
+    set -q TMUX_PANE; and test "$KRONIKUS_LAST" = 1; or return
+    set line (string join ' ' -- (string split \n -- $line) | string replace -ra '[[:cntrl:]]' ' ' | string replace -a '#' '##')
+    tmux set -p -t "$TMUX_PANE" @k-last "$line " \; set -p -t "$TMUX_PANE" @k-last-info "$info" 2>/dev/null
+end
+
+function __k_preexec --on-event fish_preexec
+    test -n "$(string trim -- $argv[1])"; or return
+    __k_last $argv[1] '#[fg=yellow]⏳ running#[default]'
+end
+
 # After each command: what ran, ✅/❌, how long, when it finished.
 function __k_postexec --on-event fish_postexec
     set -l st $status
@@ -80,10 +119,19 @@ function __k_postexec --on-event fish_postexec
         end
         printf '\r\e[K'
     end
-    printf '%s %s \e[2m· ⏱ %s · 🕒 %s\e[0m\n' $icon $argv[1] $dur (date +%H:%M:%S)
+    set -l now (date +%H:%M:%S)
+    printf '%s %s \e[2m· ⏱ %s · 🕒 %s\e[0m\n' $icon $argv[1] $dur $now
+    set -l info '#[fg=green]✅#[default]'
+    test $st -ne 0; and set info "#[fg=red]#[bold]❌ $st#[default]"
+    __k_last $argv[1] "$info #[fg=brightblack]· ⏱ $dur · 🕒 $now#[default]"
+    if test "$KRONIKUS_NOTIFY" != off; and test $ms -ge (math $KRONIKUS_NOTIFY_MIN \* 1000); and command -q knotify
+        command knotify $KRONIKUS_NOTIFY $st $dur (string join ' ' -- (string split \n -- $argv[1])) &>/dev/null &
+        disown 2>/dev/null
+    end
     if test -n "$__k_tmux"; and not string match -q "gterminal*" -- $argv[1]
         # Asked every time: the session may have been renamed since this shell started.
-        set __k_tmux (tmux display -p -t "$TMUX_PANE" '#S' 2>/dev/null)
+        # ⚡ quick sessions (gterminal) are never saved, so they answer nothing.
+        set __k_tmux (tmux display -p -t "$TMUX_PANE" '#{?@k-quick,,#S}' 2>/dev/null)
         test -n "$__k_tmux"
         and printf '%s\n%s\n' $PWD (string join '; ' -- (string split \n -- $argv[1])) >$__k_state/$__k_tmux
     end
@@ -91,12 +139,14 @@ end
 
 function fish_prompt
     set -l st $status
-    set -l arrow magenta
+    __k_load
+    set -l arrow $KRONIKUS_SIGN_COLOR
+    test "$arrow" = text; and set arrow normal
     test $st -ne 0; and set arrow red
     set -l branch (__k_branch)
 
     printf '\n%s╭─%s %s %s%s%s %sin%s 📂 %s%s%s' \
-        (set_color magenta) (set_color normal) $KRONIKUS_AVATAR \
+        (set_color brblack) (set_color normal) $KRONIKUS_AVATAR \
         (set_color -o magenta) $KRONIKUS_NAME (set_color normal) \
         (set_color -d) (set_color normal) \
         (set_color cyan) (string replace -r "^$HOME" '~' -- $PWD) (set_color normal)
@@ -108,7 +158,9 @@ function fish_prompt
         test -n "$git"; or set git (set_color green)"⎇ $branch"(set_color normal)
         printf ' %son%s %s' (set_color -d) (set_color normal) "$git"
     end
-    printf '\n%s╰─%s❯%s ' (set_color magenta) (set_color $arrow) (set_color normal)
+    set -l sign $KRONIKUS_SIGN
+    test "$sign" = '$'; and fish_is_root_user; and set sign '#'
+    printf '\n%s╰─%s%s%s ' (set_color brblack) (set_color $arrow) "$sign" (set_color normal)
 end
 
 function fish_title
@@ -135,8 +187,13 @@ end
 
 # Tiny round picture + name (+ a tip), once per new terminal (kitty graphics protocol, 4×2 cells).
 function fish_greeting
-    # Not inside tmux: there every new pane would greet again.
-    test "$KRONIKUS_GREET" = 1; and not set -q TMUX; or return
+    # Not inside tmux, where every new pane would greet again; except the first shell
+    # of a ⚡ quick session (gterminal), which stands in for a plain terminal.
+    test "$KRONIKUS_GREET" = 1; and begin; not set -q TMUX; or set -q KRONIKUS_GREET_HERE; end; or return
+    if set -q KRONIKUS_GREET_HERE
+        set -e KRONIKUS_GREET_HERE
+        tmux set-environment -t "$TMUX_PANE" -u KRONIKUS_GREET_HERE 2>/dev/null
+    end
     if begin; test "$TERM_PROGRAM" = ghostty; or test "$TERM" = xterm-kitty; end; and test -f "$KRONIKUS_PICTURE"
         set -l data (base64 -w0 $KRONIKUS_PICTURE)
         set -l ctl 'f=100,a=T,c=4,r=2,C=1,q=2,'

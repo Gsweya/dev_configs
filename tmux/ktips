@@ -21,14 +21,24 @@ tips=(
     'Click your avatar in the top bar (or Ctrl+b S) for ⚙ settings'
     'ksettings: avatar, name, greeting, tips, see-through and bar position'
     'Window too see-through? ⚙ settings → See-through → 100% makes it solid'
+    'Pick the cursor color, or type any #rrggbb: ⚙ settings → Cursor → Color'
+    'Your prompt sign can be $, #, λ or anything short: ⚙ settings → Prompt → Sign'
+    'Alt+i opens the ⌨ command box under the terminal, and jumps between the two'
+    'In the ⌨ box, ⏎ runs the command and keeps you there, Alt+⏎ only types it in the terminal'
+    'The line under the bar shows the last command, click it to jump there in the scrollback'
+    'Alt+↑ ↓ or ▲ ▼ walk through your commands in the scrollback, q goes back'
+    'A slow command ended while you were away? 🔔 tells you. ⚙ settings → Notify sets when'
+    'A ✅ or ❌ on a tab means a command finished there, opening the tab clears it'
     'Cursor as a bar │, underline _, block █ or dot ●, thin or thick: ⚙ settings → Cursor'
     'In gterminal, r renames a session, saved ones too'
     'New tabs ask for a name, ⏎ keeps the automatic one. ⚙ settings → Ask tab name turns it off'
     'Click ❓ in the top bar (or Ctrl+b ?) for all shortcuts'
     'Click 🎨 in the top bar (or Ctrl+b T) to try other themes live'
-    'Themes follow your desktop: light when it is light, dark when it is dark'
-    'In the theme picker, d keeps the dark side only, l the light side only'
-    'ktheme "Rose Pine" sets any Ghostty theme, ktheme --list shows all'
+    'All 187 Monkeytype themes are in 🎨: type a few letters to find one, like serika'
+    'In the theme picker, tab shows only dark or only light themes'
+    'The 🌗 themes at the end of the picker follow your desktop, Ctrl+D keeps the dark side'
+    'ktheme "MT serika dark" sets any theme by name, ktheme --list shows all'
+    'A theme you keep in 🎨 also recolors code in Neovim, Zed, VS Code, Cursor and bat'
     # ⌨️ tmux
     'Ctrl+b z zooms the current split to full size, and back'
     'Ctrl+b d detaches: everything keeps running, gterminal brings it back'
@@ -46,10 +56,16 @@ tips=(
     '💤 saved sessions reopen in the same folder with your last command typed'
     'In gterminal, x kills a live session or forgets a saved one'
     'In gterminal, 1-9 opens that row right away'
+    'gterminal → ⚡ quick terminal opens tmux with the ⌨ box, no name to type and nothing saved'
+    '⚙ settings → Opens can start every new Ghostty window as a ⚡ quick terminal with the box'
+    'A ⚡ quick session ends with its window. Rename it (✎) to keep it'
     # 👻 Ghostty
     'Ghostty: Ctrl+Shift+T opens a tab, Alt+1..9 jumps between tabs'
     'Ghostty: Ctrl+Shift+O / Ctrl+Shift+E split the window side / down'
     'Ghostty: Ctrl+= and Ctrl+- zoom the font, Ctrl+0 resets it'
+    '▾ → 🔤 font: ← → tries every installed monospace font live, ⏎ types one'
+    '⚙ settings → Skin changes the whole tmux bar: neon, omarchy, powerline, bubbles, minimal, retro'
+    '⚙ settings → Icons → nerd swaps the emoji in the bar for Nerd Font glyphs'
     'Ghostty: Ctrl+Shift+, reloads the config'
     'Ghostty: Ctrl+click a link to open it'
     'Selecting text with the mouse already copies it, just paste'
@@ -112,6 +128,8 @@ row() {
     [[ -n $3 ]] && printf '\e[39G%s%s%s\e[47G%s' "$b$c" "$3" "$r" "$4"
     printf '\n'
 }
+# A key as a Monkeytype chip: quiet background, then what it does.
+key() { printf '\e[7;90m %s \e[0m \e[90m%s\e[0m   ' "$1" "$2"; }
 title() { printf '\n  %s%s%s %s%s%s\n' "$b" "$1" "$r" "$d" "$2" "$r"; }
 
 draw() {
@@ -126,8 +144,11 @@ draw() {
     row 'right-click' 'a window: rename, move or close it'
     row '＋'         'new terminal in this folder'
     row '▾'          'bash, fish, split side / down, sessions, tour'
-    row '🎨'         'theme: preview live, light / dark follow the desktop'
+    row '🎨'         'theme: type to search, previews live'
     row '❓'         'this screen'
+    row '❯ npm test' 'the last command: click to jump to it'
+    row '▲ ▼ Alt+↑ ↓' 'previous / next command in the scrollback'
+    row '⌨ box Alt+i' 'write or paste a command, ⏎ runs it'
 
     title '⌨️  KEYS' "press $prefix, let go, then:"
     row 'c'   'new window'         '1-9'    'go to window'
@@ -138,6 +159,7 @@ draw() {
     row 's'   'sessions'           '['      'scroll, q leaves'
     row '$'   'rename session'     'T'      'theme'
     row 'S'   'settings'           '?'      'this screen'
+    row 'b'   'command box'
 
     title '📋 COPY & PASTE'
     row 'drag'          'copied as soon as you let go'
@@ -148,9 +170,10 @@ draw() {
     title '💡 TIP' "$(( tip + 1 ))/${#tips[@]}"
     printf '    %s%s%s\n\n' "$y" "${tips[tip]//Ctrl+b/$prefix}" "$r"
 
-    printf '  %sn%s %snext tip%s   %sp%s %sprevious%s   %st%s %stour%s' "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r"
-    [[ -n $TMUX ]] && printf '   %sa%s %sall tmux keys%s' "$b" "$r" "$d" "$r"
-    printf '   %sq%s %sclose%s' "$b" "$r" "$d" "$r"
+    printf '  '
+    key n 'next tip'; key p previous; key t tour
+    [[ -n $TMUX ]] && key a 'all tmux keys'
+    key q close
 }
 
 pick

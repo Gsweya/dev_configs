@@ -6,8 +6,8 @@ Personal configs for the dev tools I use, mainly terminals.
 | --- | --- |
 | `ghostty/` | [Ghostty](https://ghostty.org) terminal config with 👻 Neon themes: 🌙 Night (dark) and ☀️ Day (light), following the desktop, all 187 [Monkeytype](https://monkeytype.com) themes, and readable "Solid" versions of 10 popular themes |
 | `shell/` | 🥽 Kronikus prompt for bash and fish: avatar, name, folder, git (with starship icons), command timing |
-| `tmux/` | 👻 tmux config (clickable tab bar on top, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker), `ktour` (hands-on tour) and `ksettings` (⚙ settings) |
-| `editors/` | 🧩 all the Ghostty themes for [Zed](https://zed.dev) and VS Code, with the same names and colors |
+| `tmux/` | 👻 tmux config (clickable tab bar on top, mouse select = copy), `gterminal`, a session picker that brings you back where you were, `ktips` (shortcuts + tips), `ktheme` (theme picker), `ktour` (hands-on tour), `ksettings` (⚙ settings, fonts, 6 bar skins), `kbox` (⌨ command box) and `knotify` (🔔 finished commands) |
+| `editors/` | 🧩 all the Ghostty themes for [Zed](https://zed.dev), VS Code, Cursor and Neovim, with the same names and colors |
 
 **New here?** Install everything (the sections below), open a new terminal and press `⏎` when it asks
 *"First time here?"*. That starts 🎓 `ktour`, a 5-minute hands-on tour. You can run `ktour` again any time.
@@ -21,7 +21,7 @@ cp ghostty/themes/* ~/.config/ghostty/themes/
 ```
 
 Reload inside Ghostty with `Ctrl+Shift+,` (or open a new window).
-The config uses the [Lilex](https://github.com/mishamyrt/Lilex) font, so install it or change `font-family`.
+The config uses the [Lilex](https://github.com/mishamyrt/Lilex) font, so install it, or pick another one in ⚙ settings → [🔤 Font](#-fonts-and-emoji).
 
 🌗 **Light & dark.** `theme = light:Neon Day,dark:Neon Night` makes Ghostty follow your desktop:
 ☀️ Neon Day (lavender white, deep rose / mint / violet) when it's light, 🌙 Neon Night (deep navy, calm rose / mint / violet) when it's dark.
@@ -60,35 +60,85 @@ For comparison, plain TokyoNight has its comments at 1.9:1 and Rose Pine Dawn it
 
 `minimum-contrast` stays at a low 1.5 on purpose. Ghostty doesn't lift a color under the limit, it jumps to pure white or black, so a higher value turns grey comments into the loudest text on screen. `faint-opacity = 0.75` keeps dim text readable.
 
-📋 **Select = copy.** Anything you select with the mouse goes straight to the clipboard (`copy-on-select = clipboard`), so you can paste it anywhere with `Ctrl+V` / `Ctrl+Shift+V`.
+### 🔤 Fonts and emoji
 
-## 🧩 Zed + VS Code themes
+Open ▾ → 🔤 font in the tmux bar, or type `ksettings font`:
 
-Every Ghostty theme also works in Zed and VS Code under the same name, all 208: Neon, Solid and `MT serika dark` and friends.
+```
+  🔤 FONT
+  ❯ Font          JetBrains Mono                   ← → try the next one · ⏎ type a name
+    Size          13 pt config.ghostty's
+    Emoji         Ghostty's (Noto Color Emoji) 🎨 🦀 ✅
+
+  preview
+    0O 1lI {} => != -> ===    main  🎨 🦀 ✅ 👻
+```
+
+- **Font**: `←` `→` go through every monospace font you have installed (`fc-list :spacing=mono`), and each one shows **live** in every Ghostty window. `⏎` types a name; a font that isn't installed is refused
+- **Size** in points, live too. Windows you zoomed with `Ctrl+=` keep their own size
+- **Emoji**: Ghostty's own pick (Noto Color Emoji on Linux), or any other emoji font you have, like Twemoji. Noto Emoji is the plain black-and-white one. A new emoji font you put in `~/.local/share/fonts` shows up here by itself
+- Saved in `~/.config/ghostty/kronikus.ghostty`, so `config.ghostty` keeps Lilex as the default. Going back to it (or to 13 pt) takes the line out again
+- The Nerd Font glyphs (the bar's round chips, git's ``) come from Ghostty itself, so they work with any font
+
+🧊 **Google's Noto 3D emoji.** These are the new 3D-looking emoji Google is bringing to Android and Pixel. They aren't out as a font you can download yet; for now they're only on Emojipedia. An unofficial `.ttf` is passed around (from a keyboard app's Telegram channel). It isn't from Google, so it's your call. Once you have an emoji font file, the steps are the same:
 
 ```sh
-mkdir -p ~/.config/zed/themes
+mkdir -p ~/.local/share/fonts && cp Noto3D.ttf ~/.local/share/fonts/ && fc-cache -f
+```
+
+Then pick it in ⚙ settings → Emoji. Emoji are 2 cells wide in any emoji font, so the bar and the screens keep their layout.
+
+📋 **Select = copy.** Anything you select with the mouse goes straight to the clipboard (`copy-on-select = clipboard`), so you can paste it anywhere with `Ctrl+V` / `Ctrl+Shift+V`.
+
+## 🧩 Code colors: Zed, VS Code, Cursor, Neovim and more
+
+A terminal theme only recolors what's drawn in the 16 terminal colors. Editors and pagers bring their own colors for code, so `ktheme` takes those along: pick a theme once and keywords, strings and comments change everywhere.
+
+| Where | How it follows |
+| --- | --- |
+| `ls`, `git`, `grep`, nano, tmux, the prompt | already in the 16 colors |
+| `bat` | `--theme=ansi` in its config |
+| fish | colors what you type in the 16 colors. bash can't color what you type at all |
+| Neovim | watches the theme file, so it changes while open, previews included |
+| Zed, VS Code, Cursor | `ktheme` sets their theme when you keep one (⏎): it replaces what was set there |
+| Claude Code | ANSI mode (`auto` draws code in fixed colors no theme can reach). Left alone if you picked another mode in `/theme` |
+
+Ghostty's own themes (`ktheme --list`) have no editor version, so those leave the editors as they are. Other programs with their own themes, like JetBrains, don't follow.
+
+Every Ghostty theme also works in the editors under the same name, all 208: Neon, Solid and `MT serika dark` and friends.
+
+```sh
+mkdir -p ~/.config/zed/themes ~/.config/bat ~/.config/nvim/lua
 cp editors/zed/*.json ~/.config/zed/themes/
 code --install-extension editors/kronikus-themes.vsix --force
+cursor --install-extension editors/kronikus-themes.vsix --force
+cp editors/bat/config ~/.config/bat/config
+cp -r editors/nvim/lua/kronikus ~/.config/nvim/lua/
+```
+
+Neovim needs [catppuccin](https://github.com/catppuccin/nvim), which keeps every plugin styled, with the colors on top of it:
+
+```lua
+{
+  "catppuccin/nvim", name = "catppuccin", lazy = false, priority = 1000,
+  config = function(_, opts) require("kronikus").setup(opts) end,
+}
 ```
 
 The Flatpak build of Zed keeps its config elsewhere: copy to `~/.var/app/dev.zed.Zed/config/zed/themes/` for that one.
 
-Pick a theme with `Ctrl+K` `Ctrl+T` in either editor. Zed loads new themes on its own, VS Code after `Developer: Reload Window`.
+Zed loads new themes on its own, VS Code after `Developer: Reload Window`. You can also pick one by hand with `Ctrl+K` `Ctrl+T`, until the next `ktheme`.
 
-🌗 **Light & dark.** To follow the desktop like Ghostty does:
+🌗 **Light & dark.** With a 🌗 theme Zed and Neovim follow the desktop like Ghostty does. VS Code, Cursor and Claude Code get the side in use when you pick it. To make those follow too:
 
 ```jsonc
-// Zed: settings.json
-"theme": { "mode": "system", "light": "Neon Day", "dark": "Neon Night" }
-
-// VS Code: settings.json
+// VS Code, Cursor: settings.json
 "window.autoDetectColorScheme": true,
 "workbench.preferredLightColorTheme": "Neon Day",
 "workbench.preferredDarkColorTheme": "Neon Night"
 ```
 
-`editors/make-themes` writes both from `ghostty/themes/`, so run it after those change. The colors go like this:
+`editors/make-themes` writes all of them from `ghostty/themes/`, so run it after those change. The colors go like this:
 
 | In the editor | Ghostty color |
 | --- | --- |
@@ -102,6 +152,7 @@ Pick a theme with `Ctrl+K` `Ctrl+T` in either editor. Zed loads new themes on it
 Code is read all day, so a syntax color fainter than 4.5:1 is lifted to it, with the same hue. The accent stays exact on the screens around the code, where it only marks what's active, as in the tmux bar. If lifting brings two colors together they're turned apart, and a theme whose accent is as pale as its text gets bold keywords. A few Monkeytype themes have a mid-tone background, where 4.5:1 would wash every color out to near white: those stay colored at 3.4-4.4:1.
 
 ## 🥽 Kronikus prompt (bash + fish)
+
 
 What it looks like:
 
@@ -123,9 +174,11 @@ What it looks like:
 - Inside a git repo, the branch and status icons come from [starship](https://starship.rs) (`!` modified, `+` staged, `?` untracked, `⇡`/`⇣` ahead/behind, …). It only uses starship for that part. Without starship you get a plain `⎇ main`
 - After each command, prints what ran, ✅ or ❌ with the exit code, how long it took and when it finished
 - Plays a short spinner when a slow command (2s or more) finishes
-- The arrow turns red when the last command failed
+- The arrow turns red when the last command failed. Its look is yours: pick a sign like `$`, `#` or `λ` and a color in ⚙ settings (`$` shows as `#` when you're root)
 - Pure bash otherwise. Outside a repo nothing extra runs, and inside one starship adds about 15ms
-- Inside tmux it saves the folder and last command of each session for `gterminal`
+- Inside tmux it saves the folder and last command of each session for `gterminal`, shows the last command under the top bar, and marks each prompt so you can jump between commands
+- 🔔 Tells you when a slow command finishes while you aren't looking (see [knotify](#-knotify-finished-commands))
+- ⚙ settings reach shells that are already open, at their next prompt. Only the greeting waits for a new terminal
 
 ### Setup
 
@@ -182,6 +235,11 @@ export KRONIKUS_ANIM_MIN=2        # seconds before the spinner plays
 export KRONIKUS_GREET=1           # 0 turns off the picture greeting
 export KRONIKUS_TIPS=1            # 0 hides the tip under the greeting
 export KRONIKUS_ASK_TAB=1         # 0: new tmux tabs don't ask for a name
+export KRONIKUS_SIGN="❯"          # the sign before your command, like $ or #
+export KRONIKUS_SIGN_COLOR=magenta  # magenta, cyan, green, yellow, blue or text
+export KRONIKUS_LAST=1            # 0: no last command in the tmux bar
+export KRONIKUS_NOTIFY=away       # away, always or off
+export KRONIKUS_NOTIFY_MIN=5      # seconds that count as a slow command
 export KRONIKUS_PICTURE=~/.config/kronikus/avatar.png
 export KRONIKUS_STARSHIP=~/.config/kronikus/starship.toml  # starship config for the git part
 ```
@@ -193,7 +251,7 @@ fish: the same names, set like `set -g KRONIKUS_AVATAR 🥽`.
 ```sh
 cp tmux/tmux.conf ~/.tmux.conf
 mkdir -p ~/.local/bin
-cp tmux/gterminal tmux/ktips tmux/ktheme tmux/ktour tmux/ksettings ~/.local/bin/
+cp tmux/gterminal tmux/ktips tmux/ktheme tmux/ktour tmux/ksettings tmux/kbox tmux/knotify ~/.local/bin/
 ```
 
 If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
@@ -202,16 +260,17 @@ If tmux is already running, reload it with `tmux source ~/.tmux.conf`.
 
 ```
  🥽 Kronikus ›  👻 work  ✎  │ ◀   1 🐚 bash   2 📝 nvim   3 🐟 fish  ▶ │ ＋ ▾      🎨  ❓  │ 📂 app   🕒 14:02 
+ ❯ npm test  ✅ · ⏱ 3.4s · 🕒 14:02:11                                                         ▲ ▼ │ ⌨ box 
 ```
 
 On the far left is **you**: the same avatar and name as the greeting. Click it to open ⚙ settings (below) and change them; the bar updates right away.
-Thin `│` lines split the bar into groups, and ◀ ▶ are solid round buttons so they're easy to spot.
+Thin `│` lines split the bar into groups, and ◀ ▶ are round buttons so they're easy to spot.
 tmux can't draw pictures in its bar, so it's the emoji avatar here, not the photo. The name hides on windows narrower than 120 columns.
 
-The bar sits at the **top**, like browser tabs, with an empty line under it so it doesn't crowd your terminal.
-The session name, the current tab and the clock are rounded pills (Nerd Font glyphs, built into Ghostty), and the other tabs take the same width so nothing moves when you switch.
+The bar sits at the **top**, like browser tabs. The line under it shows the last command of the terminal you're in, what it did, how long it took and when it ended (`⏳ running` while it runs). Each split keeps its own. Long commands are cut to fit.
+The session name, the current tab and the clock are flat rounded chips (Nerd Font glyphs, built into Ghostty), the accent color only marks what's active, and the other tabs take the same width so nothing moves when you switch.
 The 📂 folder only shows on windows wider than 140 columns, so tabs and buttons keep their room. Long tab names are cut at 14 characters.
-Prefer it at the bottom? Change `status-position top` to `bottom` in `~/.tmux.conf`. No gap line? `status 2` → `status on`.
+Prefer it at the bottom, or no last-command line? Both are in ⚙ settings.
 
 | Click | Does |
 | --- | --- |
@@ -221,13 +280,90 @@ Prefer it at the bottom? Change `status-position top` to `bottom` in `~/.tmux.co
 | a window (`1 🐚 bash`) | switches to it. Scroll the wheel over the bar to flip through windows. Right-click any tab for ✎ rename, ◀ ▶ move, ＋ new after, ✕ close |
 | `◀` / `▶` | previous / next terminal (wraps around) |
 | `＋` | new terminal in the current folder. It asks for a tab name first: type one, or `⏎` to keep the automatic one (the running program) |
-| `▾` | menu: 🐚 bash, 🐟 fish, ↔ split side, ↕ split down, 👻 sessions, 🎨 theme, ⚙ settings, ✎ rename session, 🎓 tour, ❓ help |
+| `▾` | menu: 🐚 bash, 🐟 fish, ↔ split side, ↕ split down, 👻 sessions, 🎨 theme, ⚙ settings, 🔤 font, ⌨ command box, ✎ rename session, 🎓 tour, ❓ help |
 | `🎨` | theme picker (also `prefix + T`) |
 | `❓` | help & tips (also `prefix + ?`) |
+| `❯ npm test` | jumps to that command in the scrollback. Press `q` or `esc` to go back |
+| `▲` / `▼` | previous / next command in the scrollback (also `Alt+↑` / `Alt+↓`). Vim and other full-screen programs keep those keys |
+| `⌨ box` | opens or closes the [command box](#-kbox-command-box) (also `prefix + b`, or ▾) |
 
-Each window shows an icon for what runs in it (🐚 bash, 🐟 fish, 📝 editor, 🟩 node, 🐍 python, 🌿 git, 🔐 ssh, 🤖 claude, 🎓 the tour, 🔧 anything else).
+Each window shows an icon for what runs in it (🐚 bash, 🐟 fish, 📝 editor, 🟩 node, 🐍 python, 🌿 git, 🔐 ssh, 🤖 claude, 🎓 the tour, ⌨️ the command box, 🔧 anything else).
+
+### 🖌 Skins and icons
+
+⚙ settings → **Skin** changes how the whole bar looks, live, and **Icons** picks what the icons are drawn with. Every skin keeps the same buttons in the same places, so clicks, the tour and the tips still work:
+
+```
+neon       🥽 Kronikus ›  👻 work  ✎  │ ◀   1 🐚 bash    2 📝 nvim  ▶ │ ＋ ▾      🎨  ❓  │  🕒 14:02 
+omarchy     work    1: bash  2: nvim                           󰏘     14:02 🥽
+powerline   🥽 Kronikus  👻 work  ✎ ◀   1 🐚 bash    2 📝 nvim  ▶  ＋ ▾          🎨 ❓   🕒 14:02 
+bubbles    🥽 Kronikus  👻 work  ✎  ◀  1 🐚 bash   2 📝 nvim  ▶  ＋  ▾     🎨  ❓  🕒 14:02 
+minimal    🥽 Kronikus  👻 work ✎  ◀  1 🐚 bash  2 📝 nvim  ▶  ＋ ▾              🎨  ❓  app · 14:02
+retro      🥽 Kronikus [👻 work] ✎ [◀]  1:🐚 bash [2:📝 nvim] [▶] [＋][▾]        [🎨][❓] [🕒 14:02]
+```
+
+| Skin | Look |
+| --- | --- |
+| `neon` | the default: rounded chips for what's active, other tabs as wide as a chip so nothing moves |
+| `omarchy` | like [Omarchy](https://omarchy.org)'s tmux: a solid accent block for the session, plain `1:name` tabs, the mode tmux is in (`COPY`, `PREFIX`, `ZOOM`) on the right, the active split's border lit. Best with Icons → nerd |
+| `powerline` | you and the session as arrow segments, the current tab and the clock as accent arrows |
+| `bubbles` | every tab and button a pill, the active ones filled with the accent |
+| `minimal` | words only, no chips. The current tab is in the accent, its name underlined |
+| `retro` | `[brackets]` around what's active and plain ASCII lines between splits |
+
+| Icons | Draws with |
+| --- | --- |
+| `emoji` | 🐚 📝 🎨 ❓ 📂 🕒 (the default) |
+| `nerd` | Nerd Font glyphs:      󰏘    , like Omarchy and most status bars. Built into Ghostty |
+| `text` | no pictures: `◀ ▶ + ▾ ◐ ?` and the tab names alone |
+
+All of them only use the theme's 16 colors, so any theme works with any skin. The choice goes to `~/.config/kronikus/tmux.conf`, and ksettings reloads the tmux config to apply it.
 
 ✎ **Renaming keeps your place.** Renaming a session (any way: ✎, `prefix + $`, gterminal `r`) moves its saved folder + last command to the new name, so gterminal never shows a stale 💤 copy under the old one.
+
+### ⌨ kbox: command box
+
+An optional box under the terminal to write or paste a command in. Click `⌨ box`, press `Alt+i` or `prefix + b`, or type `kbox`:
+
+```
+╭─ 🥽 Kronikus in 📂 ~/code/app
+╰─❯ npm test
+──────────────────────────────────────────────────────────────────────────
+⌨ runs in bash · ~/code/app        ⏎ run · Alt+⏎ type only · Alt+i jump · Ctrl+d close
+❯ npm test
+```
+
+| Key | Does |
+| --- | --- |
+| `⏎` | runs it in the terminal above, and you stay in the box for the next one |
+| `Alt+⏎` | types it in the terminal without running it, and takes you there to edit it |
+| `Alt+i` | jumps between the terminal and the box. Opens the box if it's closed, and works inside any program |
+| `↑` `↓` `Ctrl+R` | your earlier box commands and your bash history |
+| `Tab` | completes files and commands, from the folder of the terminal above |
+| `Ctrl+D` | closes the box |
+
+- Pasting several lines keeps them together as one command until you press `⏎`
+- It runs in the terminal you last came from, and its title line tells you which one. The text goes in as if you typed it, so if a program like vim is running there, vim gets it
+- Each tab has its own box, a real tmux pane: click it, or drag its border to make it taller. When its terminal closes, the box goes too
+- Box commands are saved in `~/.local/state/kronikus/kbox_history`
+- While you type in the box, the tab keeps the name of its terminal
+- ⚡ **Without making a session first**: gterminal's ⚡ quick terminal opens tmux with the box already open. Set ⚙ settings → **Opens** to `⚡ quick terminal + ⌨ box` and every new Ghostty window starts that way (see [gterminal](#-gterminal))
+
+### 🔔 knotify: finished commands
+
+When a slow command finishes and you aren't looking at it, you get a desktop notification:
+
+```
+❌ Failed (1) · 2 server
+npm test · ⏱ 3m12s · 📂 app
+```
+
+- "Not looking" means another tab or split, another app in front of Ghostty, or tmux detached. Outside tmux there's no way to tell, so it always notifies
+- A command that finishes in another tab also puts ✅ or ❌ on that tab until you open it
+- ⚙ settings → **Notify**: `when you are not looking`, `always` or `off`. **After**: what counts as slow, 5 seconds by default, or `every command`
+- Editors, pagers, `ssh` and the like are skipped, because you end those yourself
+- Uses `notify-send`, so it needs a desktop that shows notifications. Ghostty's own `notify-on-command-finish` can't see commands inside tmux
+- In bash, a command that starts with `(` isn't tracked at all: no ✅ line, no last command and no notification
 
 ### ❓ ktips: shortcuts + tips
 
@@ -264,22 +400,24 @@ Click `❓`, press `prefix + ?` inside tmux, press `?` in gterminal or type `kti
 Click `🎨`, press `prefix + T` or type `ktheme`:
 
 ```
-  🎨 theme   🌗 desktop is light → ☀️ side
+  🎨 theme   198 · all
+  / ser▌
 
-  ❯ 👻 Neon         ☀️ Neon Day               🌙 Neon Night            ✓ auto
-    🐱 Catppuccin   ☀️ Catppuccin Latte       🌙 Catppuccin Mocha
-    🌹 Rose Pine    ☀️ Rose Pine Dawn         🌙 Rose Pine
-    🗼 Tokyo Night  ☀️ TokyoNight Day         🌙 TokyoNight
-    …               (Gruvbox, Nord, Everforest, Kanagawa, GitHub, Solarized, Dracula)
+  ❯  serika dark                                     ● ● ●
+     serika                                          ● ● ●
+     …
 
-  ● ● ● ● ● ●   ● ● ● ● ● ●   ❯ prompt dim
+  ╰─❯ git commit -m "fix the parser"  # a comment  ❌ 1
+  const total = sum(items, 42)  // keywords, names, numbers
 
-  ↑↓ preview   ⏎ keep (auto)   d dark   l light   esc cancel
+   tab  all    ↑↓  preview    ⏎  keep    esc  cancel
 ```
 
-- Moving through the list **previews each theme live** in every Ghostty window (it reloads Ghostty with `SIGUSR2`)
-- `⏎` keeps it in **auto**: light or dark follows your desktop. `d` / `l` keep only the dark / light side. `esc` puts back what you had
-- Any of Ghostty's 460+ themes works from the command line: `ktheme "Rose Pine"`, `ktheme "light:Nord Light,dark:Nord"`. `ktheme --list` shows all names, and a name Ghostty doesn't know is refused, so the config never breaks
+- Like Monkeytype's own list, **every row is painted in that theme**, with a dot each for its accent, quiet and text color
+- **Type to search.** `tab` shows all, only dark or only light themes. `esc` clears the search, then cancels and puts back what you had
+- Moving through the list **previews each theme live** in every Ghostty window (it reloads Ghostty with `SIGUSR2`). Holding an arrow key previews where you stop
+- The 🌗 rows at the end are Neon and the Solid themes, which follow your desktop. `⏎` keeps that, `Ctrl+D` / `Ctrl+L` keep only the dark / light side
+- Any of Ghostty's 460+ themes works from the command line: `ktheme "MT serika dark"`, `ktheme "light:Nord Light,dark:Nord"`. `ktheme --list` shows all names, and a name Ghostty doesn't know is refused, so the config never breaks
 - Needs Ghostty 1.2+ for the live reload. Older versions: press `Ctrl+Shift+,` after picking
 
 ### ⚙ ksettings: settings
@@ -294,7 +432,8 @@ Click your avatar in the bar, press `prefix + S`, pick ▾ → ⚙ settings or t
     Name          Kronikus
     Picture       ~/.config/kronikus/avatar.png ✓
 
-  👋 GREETING
+  👋 NEW TERMINAL
+    Opens         ⚡ quick terminal + ⌨ box
     Greeting      ● on
     Tip           ● on
     Spinner       ● on
@@ -302,19 +441,37 @@ Click your avatar in the bar, press `prefix + S`, pick ▾ → ⚙ settings or t
 
   🎨 LOOK
     Theme         ☀️ Neon Day  🌙 Neon Night
+    Skin          omarchy 2/6
+    Icons         🐚 emoji   nerd  Aa text
     See-through   93%
     Bar           top
+
+  🔤 FONT
+    Font          Lilex config.ghostty's
+    Size          13 pt config.ghostty's
+    Emoji         Ghostty's (Noto Color Emoji) 🎨 🦀 ✅
 
   📍 CURSOR
     Shape         │  _  █  ●   bar
     Size          ▮▮▮▯ bold 3 px
     Blink         ● on
+    Color         █ the theme's
+
+  ❯ PROMPT
+    Sign          ❯  $  #  ›  ➜  λ  ▶  %
+    Sign color    ● magenta
+
+  ⏱ COMMANDS
+    Last command  ● on
+    Notify        🔔 when you are not looking
+    After         commands of 5s or more
 
   🎓 HELP
     Tour
     Shortcuts
 
   preview
+    0O 1lI {} => != -> ===    main  🎨 🦀 ✅ 👻
     🥽 Kronikus is back
     ╭─ 🥽 Kronikus in 📂 ~/code/app
 ```
@@ -324,11 +481,16 @@ Click your avatar in the bar, press `prefix + S`, pick ▾ → ⚙ settings or t
 - **Ask tab name**: every new tab (＋, ▾, `prefix + c`) asks `✎ name this tab (⏎ keeps bash):` before its first prompt. A name you type sticks; `⏎` or `Ctrl+C` keeps the automatic name. Splits, tabs you already named and sessions gterminal restores don't ask
 - Profile and greeting go to `~/.config/kronikus/settings` (`KRONIKUS_*=value` lines), which the bash and fish prompts read. Avatar and name change in the tmux bar at once; the greeting in new terminals
 - **See-through** sets Ghostty's `background-opacity` (100% = solid) in `~/.config/ghostty/kronikus.ghostty` and reloads Ghostty. Turn it up if windows behind Ghostty show through and clutter the bar
-- **Bar** puts the tmux bar on top or at the bottom (`~/.config/kronikus/tmux.conf`, loaded at the end of the tmux config)
+- **Opens**: what a new Ghostty window starts with. `🐚 a plain shell` (the default), `⚡ quick terminal + ⌨ box`, `⚡ quick terminal` without the box, or `👻 gterminal` to pick a session (`q` there gives you a plain shell). It sets Ghostty's `command` in `~/.config/ghostty/kronikus.ghostty`, to `gterminal --start …`. If tmux is missing or anything fails, you get the plain shell, so a window always opens
+- **Bar** puts the tmux bar on top or at the bottom (`~/.config/kronikus/tmux.conf`, read by the tmux config)
+- **Skin** and **Icons**: see [Skins and icons](#-skins-and-icons). **Font**, **Size** and **Emoji**: see [Fonts and emoji](#-fonts-and-emoji)
 - **Cursor**: `←` `→` pick the shape: `│` bar, `_` underline, `█` block or `●` dot. **Size** sets how thick a bar / underline is (1, 2, 3 or 5 px) or how big the dot is; a block always fills its cell. **Blink** turns blinking on or off. You see the real cursor change after the preview prompt
   - Saved in `~/.config/ghostty/kronikus.ghostty` (Ghostty reloads at once) and as tmux's `cursor-style` in `~/.config/kronikus/tmux.conf`, because tmux would otherwise put a block back after programs like vim
   - Ghostty has no round cursor, so the **dot** is a small custom shader (`~/.config/ghostty/shaders/kronikus-cursor.glsl`, written by ksettings): Ghostty's block is made invisible and the shader draws a dot in its place, a ring when the window isn't focused. When a program asks for a bar or underline (vim's insert mode), the shader draws that instead
   - It also sets `shell-integration-features = no-cursor`, otherwise Ghostty's shell integration turns the cursor back into a bar at every prompt
+  - **Color**: `←` `→` go through the theme's color, the color of the text, rose, amber, mint, sky and violet. `⏎` takes any `#rrggbb`. On a block cursor, the letter underneath takes the background color
+- **Sign**: the sign before your command. `←` `→` pick one, `⏎` types your own. **Sign color** uses the terminal colors, so it follows the theme. The arrow still turns red when a command fails
+- **Last command** shows or hides the line under the bar. **Notify** and **After**: see [knotify](#-knotify-finished-commands)
 - **Theme**, **Tour** and **Shortcuts** open ktheme, ktour and ktips
 
 ### 🎓 ktour: hands-on tour
@@ -366,9 +528,10 @@ Type `gterminal` in any terminal (or press `prefix + s` / click the session name
   ──────────────────────────────── │ ────────────────────────────────────────
   ❯ 🟢 work           🪟 2        │ 📂 ~/code/app
     🔵 api            🪟 1        │ 🕒 active 3m ago · attached
-    💤 notes          saved       │ ❯  npm test
-    ✨ new session                 │
-                                   │ 🪟 WINDOWS
+    ⚡ quick          🪟 1 ⚡     │ ❯  npm test
+    💤 notes          saved       │
+    ✨ new session                 │ 🪟 WINDOWS
+    ⚡ quick terminal              │
                                    │ ▸ 1 📝 editor     nvim · ~/code/app
                                    │   2 🟩 server     node · ~/code/app/api
                                    │
@@ -379,6 +542,11 @@ Type `gterminal` in any terminal (or press `prefix + s` / click the session name
 ```
 
 - 🟢 / 🔵 **live** sessions (attached / in the background) reopen exactly as you left them
+- ⚡ **quick terminal** opens tmux right away with the [⌨ box](#-kbox-command-box) open, for when you just want a terminal: no name to type, and **nothing is saved**. It's called `quick` (`quick2`, … if that's taken) and has ⚡ in the bar
+  - It ends when the window that opened it closes (or detaches), like a plain terminal. Switching to another session doesn't end it
+  - Rename it (✎, `r` here) and it becomes a normal session: saved, and kept when the window closes
+  - The first terminal in it greets you like a new Ghostty window (the emoji avatar, since tmux can't show the picture) and doesn't ask for a tab name
+  - ⚙ settings → **Opens** can make every new Ghostty window a quick terminal
 - 💤 **saved** sessions were closed or are gone after a reboot. Opening one starts it again **in the same folder** and **types the last command** for you, so `Enter` continues it
 - The right panel shows the selected session's folder, last command, windows and what's on screen
 - Saving needs the Kronikus prompt (bash or fish). It writes to `~/.local/state/kronikus/tmux/`

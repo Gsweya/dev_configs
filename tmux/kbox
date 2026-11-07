@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+# ⌨ kbox — an optional box under the terminal to write or paste a command in (pure bash)
+#
+#   ⌨ runs in 🐚 bash · ~/code/app          ⏎ run · Alt+⏎ type only · Alt+i jump · Ctrl+d close
+#   ❯ npm test█
+#
+#   ⏎          runs it in the terminal above, you stay in the box for the next one
+#   Alt+⏎      types it there without running it, and takes you there to edit it
+#   Alt+i      jumps between the terminal and the box (opens the box when needed)
+#   ↑↓ Ctrl+r  your commands: earlier box commands and the bash history
+#   Tab        completes, from the folder of the terminal above
+#   Ctrl+d     closes the box. A multi-line paste stays one command until you run it.
+#
+#   kbox                 jump (same as Alt+i)
+#   kbox --toggle        open or close it (⌨ in the bar, prefix + b)
+#   kbox --tidy          closes boxes left alone in a window (tmux calls this)
+#
+# Each tmux window has its own box, in a real pane: click it, drag its border to
+# make it taller. It is a small bash of its own whose Enter key sends the line
+# instead of running it, which is what gives it readline, history and completion.
+
+# ── Inside the box: this same file is the rc file of the box's bash ──
+if [[ $- == *i* && -n $KBOX_RC ]]; then
+    unset KBOX_RC
+    __box_history=${XDG_STATE_HOME:-$HOME/.local/state}/kronikus/kbox_history
+    mkdir -p "${__box_history%/*}"
+    unset HISTFILE  # lines are saved one by one in __box_send
+    HISTSIZE=5000 HISTCONTROL=ignoredups
+    [[ -f ~/.bash_history ]] && history -r ~/.bash_history
+    [[ -f $__box_history ]] && history -r "$__box_history"
+    tmux set -p -t "$TMUX_PANE" @k-box 1
+    tmux set -p -t "$TMUX_PANE" allow-rename off
+
+    # The terminal this box serves, in REPLY: where you came from, else the first one.
+    __box_target() {
+        local id box last
+        REPLY=
+        while IFS='|' read -r id box last; do
+            [[ -n $box ]] && continue
+            [[ $last == 1 || -z $REPLY ]] && REPLY=$id
+        done < <(tmux list-panes -t "$TMUX_PANE" -F '#{pane_id}|#{@k-box}|#{pane_last}' 2>/dev/null)
+    }
+
+    # Follows the folder of that terminal, so Tab completes the right files.
+    __box_sync() {
+        local folder
+        __box_target
+        [[ -n $REPLY ]] || return
+        folder=$(tmux display -p -t "$REPLY" '#{pane_current_path}' 2>/dev/null)
+        [[ -d $folder ]] && cd -- "$folder"
+    }
+
+    # Runs before each prompt of the box: the title line.
+    __box_prompt() {
+        local cmd folder rows cols keys='⏎ run · Alt+⏎ type only · Alt+i jump · ↑↓ history · Ctrl+d close'
+        __box_sync
+        IFS='|' read -r cmd folder < <(tmux display -p -t "$REPLY" '#{pane_current_command}|#{pane_current_path}' 2>/dev/null)
+        read -r rows cols < <(stty size)
+        printf '\e[H\e[2J\e[1;35m⌨\e[0m \e[2mruns in\e[0m \e[1m%s\e[0m \e[2m·\e[0m \e[36m%s\e[0m' "${cmd:-nothing}" "${folder/#$HOME/\~}"
+        (( cols >= ${#cmd} + ${#folder} + ${#keys} + 16 )) && printf '\e[%dG\e[2m%s\e[0m' $(( cols - ${#keys} )) "$keys"
+        printf '\n'
+    }
+
+    # Enter: hands the line over to the terminal. $1 = run, or type (no Enter, and go there).
+    __box_send() {
+        local line=$READLINE_LINE
+        READLINE_LINE= READLINE_POINT=0
+        [[ $line == *[![:space:]]* ]] || return
+        __box_target
+        local to=$REPLY
+        [[ -n $to ]] || return
+        history -s -- "$line"
+        printf '%s\n' "${line//$'\n'/; }" >> "$__box_history"
+        tmux if -F -t "$to" '#{pane_in_mode}' "send -t $to -X cancel"  # back out of scrollback
+        # A buffer and not send-keys: pasted lines stay together and nothing is read as a key name.
+        printf '%s' "$line" | tmux load-buffer -b kbox - && tmux paste-buffer -d -p -b kbox -t "$to"
+        if [[ $1 == run ]]; then tmux send-keys -t "$to" Enter
+        else tmux select-pane -t "$to"
+        fi
+    }
+
+    PROMPT_COMMAND=__box_prompt
+    PS1='\[\e[1;35m\]❯\[\e[0m\] '
+    # Enter = send the line, then accept the now empty line, which redraws the title.
+    bind -x '"\C-x\C-a": __box_send run'
+    bind -x '"\C-x\C-b": __box_send type'
+    bind -x '"\C-x\C-c": __box_sync'
+    bind '"\C-x\C-d": accept-line'
+    bind '"\C-x\C-e": complete'
+    bind '"\C-m": "\C-x\C-a\C-x\C-d"'
+    bind '"\C-j": "\C-x\C-a\C-x\C-d"'
+    bind '"\e\C-m": "\C-x\C-b\C-x\C-d"'
+    bind '"\t": "\C-x\C-c\C-x\C-e"'
+    return
+fi
+
+# ── Outside: open, close and jump ─────────────────────
+self=$(readlink -f "$0")
+case $1 in
+    -h|--help) sed -n '2,/^$/s/^# \{0,1\}//p' "$0"; exit ;;
+    --run)     KBOX_RC=1 exec -a kbox bash --noprofile --rcfile "$self" -i ;;
+esac
+# From outside tmux only with a pane to open it in (gterminal's ⚡ quick terminal does that).
+[[ -n $TMUX || -n $2 ]] || { echo '⌨ kbox lives inside tmux' >&2; exit 1; }
+
+pane=${2:-$TMUX_PANE}
+find_box() { tmux list-panes -t "$pane" -F '#{?@k-box,#{pane_id},}' 2>/dev/null | grep -m1 .; }
+open_box() { tmux split-window -f -v -l 3 -t "$pane" -c '#{pane_current_path}' "$self --run"; }
+
+case $1 in
+    --toggle) if box=$(find_box); then tmux kill-pane -t "$box"; else open_box; fi ;;
+    --tidy)
+        # A box with no terminal left would otherwise keep the tab open.
+        tmux list-panes -a -F '#{window_panes} #{@k-box} #{pane_id}' 2>/dev/null |
+            while read -r count box id; do
+                [[ $count == 1 && $box == 1 ]] && tmux kill-pane -t "$id"
+            done ;;
+    *)  if ! box=$(find_box); then open_box
+        elif [[ $(tmux display -p -t "$pane" '#{pane_active}') == 1 && $box == "$pane" ]]; then tmux last-pane -t "$pane"
+        elif [[ $(tmux display -p -t "$box" '#{pane_active}') == 1 ]]; then tmux last-pane -t "$box"
+        else tmux select-pane -t "$box"
+        fi ;;
+esac
+exit 0

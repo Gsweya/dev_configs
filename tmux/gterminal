@@ -7,8 +7,10 @@
 #   ──────────────────────────    │  ──────────────────────────────
 #   ❯ 🟢 work         🪟 2        │  📂 ~/code/app
 #     🔵 api          🪟 1        │  🕒 active 3m ago · attached
-#     💤 notes        saved       │  ❯  npm test
+#     ⚡ quick        🪟 1        │  ❯  npm test
+#     💤 notes        saved       │
 #     ✨ new session              │
+#     ⚡ quick terminal           │
 #                                 │  🪟 WINDOWS
 #                                 │  ▸ 1 📝 editor   nvim · ~/code/app
 #                                 │    2 🟩 server   node · ~/code/app/api
@@ -21,6 +23,12 @@
 #    it again in the same folder and types the last command for you, so Enter
 #    continues it. The Kronikus prompt saves folder + command after every
 #    command run inside tmux.
+# ⚡ quick: a session that is never saved, with the ⌨ command box open. It ends
+#    when the window that opened it closes (or detaches); ✎ rename it to keep it.
+#
+#   gterminal --start box       what ⚙ settings → Opens puts in Ghostty's `command`:
+#   gterminal --start quick     a quick session with the box, without it, or this
+#   gterminal --start sessions  picker. Anything going wrong falls back to a plain shell.
 #
 # Keys: ↑/↓ or j/k move · enter open · 1-9 open that one · n new · r rename · x kill/forget · ? help · q quit
 # Run `gterminal` anywhere, or prefix + s inside tmux.
@@ -34,28 +42,39 @@ if [[ $1 == --renamed ]]; then
     exit 0
 fi
 
+# tmux runs this when a client detaches (window closed): quick sessions it opened
+# and nobody else is looking at go with it.
+if [[ $1 == --tidy ]]; then
+    tmux list-sessions -F '#{session_id}|#{@k-quick}|#{@k-owner}|#{session_attached}' 2>/dev/null |
+        while IFS='|' read -r id quick owner att; do
+            [[ $quick == 1 && $owner == "$2" && $att == 0 ]] && tmux kill-session -t "$id"
+        done
+    exit 0
+fi
+
+here=$(cd "${BASH_SOURCE%/*}" && pwd)
 b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m'
 
 load() {
-    names=() kinds=() dirs=() cmds=() wins=() times=()
+    names=() kinds=() dirs=() cmds=() wins=() times=() quick=()
     nlive=0 nsaved=0
-    local name win att act dir cmd f
-    while IFS=$'\t' read -r name win att act dir; do
+    local name win att act q dir cmd f
+    while IFS=$'\t' read -r name win att act q dir; do
         cmd=
         [[ -f $state/$name ]] && { read -r _; read -r cmd; } < "$state/$name"
-        names+=("$name") dirs+=("$dir") cmds+=("$cmd") wins+=("$win") times+=("$act")
+        names+=("$name") dirs+=("$dir") cmds+=("$cmd") wins+=("$win") times+=("$act") quick+=("$q")
         (( att )) && kinds+=(attached) || kinds+=(live)
         (( nlive++ ))
-    done < <(tmux list-sessions -F $'#{session_name}\t#{session_windows}\t#{session_attached}\t#{session_activity}\t#{pane_current_path}' 2>/dev/null)
+    done < <(tmux list-sessions -F $'#{session_name}\t#{session_windows}\t#{session_attached}\t#{session_activity}\t#{@k-quick}\t#{pane_current_path}' 2>/dev/null)
     for f in "$state"/*; do
         [[ -f $f ]] || continue
         name=${f##*/}
         is_live "$name" && continue
         { read -r dir; read -r cmd; } < "$f"
-        names+=("$name") kinds+=(saved) dirs+=("$dir") cmds+=("$cmd") wins+=(0) times+=("$(stat -c %Y "$f")")
+        names+=("$name") kinds+=(saved) dirs+=("$dir") cmds+=("$cmd") wins+=(0) times+=("$(stat -c %Y "$f")") quick+=("")
         (( nsaved++ ))
     done
-    names+=("") kinds+=(new) dirs+=("$PWD") cmds+=("") wins+=(0) times+=(0)
+    names+=("" "") kinds+=(new quick) dirs+=("$PWD" "$PWD") cmds+=("" "") wins+=(0 0) times+=(0 0) quick+=("" "")
     (( sel >= ${#names[@]} )) && sel=$(( ${#names[@]} - 1 ))
 }
 
@@ -104,6 +123,12 @@ activity() {
         new)
             R+=("$b$c✨ NEW SESSION$r" "📂 $c${here:0:w-4}$r" "" "${d}⏎ starts a fresh session in this folder$r")
             return ;;
+        quick)
+            R+=("$b$c⚡ QUICK TERMINAL$r" "📂 $c${here:0:w-4}$r" ""
+                "${d}⏎ opens a terminal with the ⌨ command box, right away:$r"
+                "${d}  no name to type, and nothing is saved. It ends when$r"
+                "${d}  its window closes; ✎ rename it to keep it$r")
+            return ;;
         saved)
             ago "${times[sel]}"
             R+=("$b$m💤 ${name:0:w-4}$r" "📂 $c${here:0:w-4}$r" "🕒 ${d}last used $REPLY$r")
@@ -116,6 +141,7 @@ activity() {
     if [[ $kind == attached ]]; then R+=("🕒 ${d}active $REPLY · ${r}${g}attached$r")
     else R+=("🕒 ${d}active $REPLY · in the background$r")
     fi
+    [[ -n ${quick[sel]} ]] && R+=("⚡ ${d}quick: not saved, ends with its window · r keeps it$r")
     [[ -n ${cmds[sel]} ]] && R+=("$m❯$r  ${cmds[sel]:0:w-4}")
 
     R+=("" "$b🪟 WINDOWS$r")
@@ -166,7 +192,9 @@ draw() {
             live)     ico=🔵 info="🪟 ${wins[i]}" ;;
             saved)    ico=💤 info="${d}saved$r" ;;
             new)      printf '✨ %snew session%s' "$c" "$r"; continue ;;
+            quick)    printf '⚡ %squick terminal%s' "$c" "$r"; continue ;;
         esac
+        [[ -n ${quick[i]} ]] && info+=" $d⚡$r"
         (( i == sel )) && printf '%s %s%-14.14s%s  %s' "$ico" "$b$m" "${names[i]}" "$r" "$info" \
                        || printf '%s %-14.14s  %s' "$ico" "${names[i]}" "$info"
     done
@@ -191,16 +219,34 @@ tui_on()  { printf '\e[?1049h\e[?25l'; }
 tui_off() { printf '\e[?25h\e[?1049l'; }
 
 # Attach (outside tmux) or switch (inside tmux) to session $1.
+# Opened by Ghostty (--start), a failed attach falls back to a plain shell.
 go() {
     tui_off
     [[ -n $TMUX ]] && exec tmux switch-client -t "=$1"
-    exec tmux attach -t "=$1"
+    [[ -n $start ]] || exec tmux attach -t "=$1"
+    tmux attach -t "=$1" || exec "${SHELL:-/bin/bash}" -l
+    exit 0
+}
+
+# ⚡ A quick session: never saved, gone when the window that opened it closes.
+# $1 = box to open the ⌨ command box in it.
+quick_session() {
+    local n=1 name=quick owner id
+    while tmux has-session -t "=$name" 2>/dev/null || [[ -e $state/$name ]]; do name=quick$(( ++n )); done
+    # The window it belongs to is the tmux client: this terminal, or the one showing the popup.
+    if [[ -n $TMUX ]]; then owner=$(tmux display -p '#{client_tty}'); else owner=$(tty); fi
+    # The first shell greets like a plain terminal (KRONIKUS_GREET_HERE), and doesn't ask for a tab name.
+    id=$(tmux new-session -d -P -F '#{session_id}' -s "$name" -c "${dirs[sel]:-$PWD}" -e KRONIKUS_GREET_HERE=1 \; \
+         set -t "=$name:" @k-quick 1 \; set -t "=$name:" @k-owner "$owner" \; set -w -t "=$name:" @k-asked 1) || return 1
+    [[ $1 == box ]] && "$here/kbox" --toggle "$id:"
+    go "$name"
 }
 
 open() {
     local name=${names[sel]} dir=${dirs[sel]} cmd=${cmds[sel]} id
     case ${kinds[sel]} in
         new) new_session; return ;;
+        quick) quick_session box; return ;;
         saved)
             [[ -d $dir ]] || dir=$HOME
             # @k-asked: its shell doesn't ask for a tab name (the last command gets typed there).
@@ -231,7 +277,7 @@ new_session() {
 # Live sessions are renamed in tmux, saved ones just get their save file renamed.
 rename() {
     local old=${names[sel]} name rows cols
-    [[ ${kinds[sel]} == new ]] && return
+    [[ ${kinds[sel]} == new || ${kinds[sel]} == quick ]] && return
     read -r rows cols < <(stty size </dev/tty)
     at $(( rows - 1 )) 3; printf '\e[K\e[?25h✎ %srename%s %s → ' "$b" "$r" "$old"
     read -r -e -i "$old" name
@@ -249,12 +295,25 @@ rename() {
 
 forget() {
     case ${kinds[sel]} in
-        new) return ;;
+        new|quick) return ;;
         live|attached) tmux kill-session -t "=${names[sel]}" ;;
     esac
     rm -f "$state/${names[sel]}"
     load
 }
+
+# Opened by Ghostty: a quick session right away, or this picker (q gives a plain shell).
+start=
+if [[ $1 == --start ]]; then
+    start=$2
+    { type -P tmux >/dev/null && [[ -z $TMUX ]]; } || exec "${SHELL:-/bin/bash}" -l
+    if [[ $start == box || $start == quick ]]; then
+        load
+        sel=$(( ${#names[@]} - 1 ))
+        quick_session "$start"
+        exec "${SHELL:-/bin/bash}" -l
+    fi
+fi
 
 sel=0
 load
@@ -273,7 +332,8 @@ while :; do
         n)         new_session; tui_on ;;
         r)         rename ;;
         x)         forget ;;
-        '?')       "${BASH_SOURCE%/*}/ktips"; tui_on ;;
-        q|$'\e')   exit 0 ;;
+        '?')       "$here/ktips"; tui_on ;;
+        q|$'\e')   [[ -n $start ]] && { tui_off; trap - EXIT; exec "${SHELL:-/bin/bash}" -l; }
+                   exit 0 ;;
     esac
 done

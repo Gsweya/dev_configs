@@ -7,22 +7,26 @@
 #   ❯ Avatar        🥽                          ← → pick · ⏎ type your own
 #     Name          Kronikus                    ⏎ edit
 #     Picture       ~/.config/kronikus/avatar.png  ✓
-#   👋 GREETING     Greeting · Tip · Spinner · Ask tab name   ⏎ on / off
-#   🎨 LOOK         Theme · See-through · Bar   ⏎ / ← →
-#   📍 CURSOR       │ _ █ ●  · Size · Blink     ← →
+#   👋 NEW TERMINAL Opens · Greeting · Tip · Spinner · Ask tab name
+#   🎨 LOOK         Theme · Skin · Icons · See-through · Bar   ⏎ / ← →
+#   🔤 FONT         Font · Size · Emoji         ← → try the next one · ⏎ type a name
+#   📍 CURSOR       │ _ █ ●  · Size · Blink · Color   ← →
+#   ❯ PROMPT        Sign · Sign color           ← → pick · ⏎ type your own
+#   ⏱ COMMANDS      Last command · Notify · After
 #   🎓 HELP         Tour · Shortcuts
 #
 # Every change is saved right away:
-#   profile + greeting  → ~/.config/kronikus/settings  (KRONIKUS_*=value, read by
-#                         the bash and fish prompts; a variable you set yourself
-#                         before sourcing the prompt still wins)
-#   see-through, cursor → ~/.config/ghostty/kronikus.ghostty, Ghostty reloads
-#                         (the ● dot is drawn by ~/.config/ghostty/shaders/kronikus-cursor.glsl)
-#   bar, cursor in tmux → ~/.config/kronikus/tmux.conf, tmux changes right away
-# Avatar and name show up in the tmux bar at once; the greeting in new terminals.
+#   profile, prompt     → ~/.config/kronikus/settings  (KRONIKUS_*=value, read by
+#                         the bash and fish prompts before each prompt; a variable
+#                         you set yourself before sourcing the prompt still wins)
+#   see-through, cursor, → ~/.config/ghostty/kronikus.ghostty, Ghostty reloads
+#   font, opens            (the ● dot is drawn by ~/.config/ghostty/shaders/kronikus-cursor.glsl)
+#   bar, skin, icons,   → ~/.config/kronikus/tmux.conf, tmux changes right away
+#   cursor in tmux
+# The bar and the next prompt show changes at once; the greeting in new terminals.
 #
 # Open it by clicking your avatar in the tmux bar, prefix + S, ▾ → ⚙ settings,
-# or type ksettings.
+# or type ksettings. `ksettings font` starts on the font (▾ → 🔤 font).
 
 conf=${XDG_CONFIG_HOME:-$HOME/.config}
 file=$conf/kronikus/settings
@@ -35,11 +39,38 @@ b=$'\e[1m' d=$'\e[2m' r=$'\e[0m' m=$'\e[35m' c=$'\e[36m' g=$'\e[32m' y=$'\e[33m'
 declare -A val=(
     [KRONIKUS_AVATAR]=🥽 [KRONIKUS_NAME]=Kronikus [KRONIKUS_PICTURE]=$conf/kronikus/avatar.png
     [KRONIKUS_GREET]=1 [KRONIKUS_TIPS]=1 [KRONIKUS_ANIM]=1 [KRONIKUS_ASK_TAB]=1
-    [KRONIKUS_CURSOR]=bar [KRONIKUS_CURSOR_SIZE]=3 [KRONIKUS_CURSOR_BLINK]=1
+    [KRONIKUS_CURSOR]=bar [KRONIKUS_CURSOR_SIZE]=3 [KRONIKUS_CURSOR_BLINK]=1 [KRONIKUS_CURSOR_COLOR]=theme
+    [KRONIKUS_SIGN]=❯ [KRONIKUS_SIGN_COLOR]=magenta
+    [KRONIKUS_LAST]=1 [KRONIKUS_NOTIFY]=away [KRONIKUS_NOTIFY_MIN]=5
+    [KRONIKUS_START]=shell [KRONIKUS_SKIN]=neon [KRONIKUS_ICONS]=emoji
+    [KRONIKUS_FONT]= [KRONIKUS_FONT_SIZE]= [KRONIKUS_EMOJI]=
 )
 keys=(KRONIKUS_AVATAR KRONIKUS_NAME KRONIKUS_PICTURE KRONIKUS_GREET KRONIKUS_TIPS KRONIKUS_ANIM KRONIKUS_ASK_TAB
-      KRONIKUS_CURSOR KRONIKUS_CURSOR_SIZE KRONIKUS_CURSOR_BLINK)
+      KRONIKUS_CURSOR KRONIKUS_CURSOR_SIZE KRONIKUS_CURSOR_BLINK KRONIKUS_CURSOR_COLOR
+      KRONIKUS_SIGN KRONIKUS_SIGN_COLOR KRONIKUS_LAST KRONIKUS_NOTIFY KRONIKUS_NOTIFY_MIN
+      KRONIKUS_START KRONIKUS_SKIN KRONIKUS_ICONS KRONIKUS_FONT KRONIKUS_FONT_SIZE KRONIKUS_EMOJI)
 avatars=(🥽 🦊 🐱 🐼 🦉 🐙 🐧 🐸 🚀 👾 🧙 🤖 😎 ⚡ 🌙 🍀 🔥 👻)
+signs=(❯ '$' '#' › ➜ λ ▶ %)
+# Picked with ← →. The sign uses terminal colors, so it follows the theme.
+declare -A choices=(
+    [KRONIKUS_SIGN_COLOR]='magenta cyan green yellow blue text'
+    [KRONIKUS_NOTIFY]='away always off'
+    [KRONIKUS_NOTIFY_MIN]='0 5 10 30 60'
+    [KRONIKUS_START]='shell box quick sessions'
+)
+# What a new Ghostty window opens (its `command`): a plain shell, or tmux through gterminal.
+declare -A starts=([shell]='🐚 a plain shell' [box]='⚡ quick terminal + ⌨ box' [quick]='⚡ quick terminal'
+                   [sessions]='👻 gterminal, to pick a session')
+# tmux bar skins (see tmux.conf → Skins and icons) and their icon sets.
+skins=(neon omarchy powerline bubbles minimal retro)
+declare -A skin_info=([neon]='rounded chips' [omarchy]='flat blocks, like Omarchy' [powerline]='arrow segments'
+                      [bubbles]='every tab a pill' [minimal]='words only' [retro]='[ brackets ]')
+icon_sets=(emoji nerd text)
+declare -A icon_look=([emoji]='🐚 emoji' [nerd]=' nerd' [text]='Aa text')
+declare -A ansi=([magenta]=35 [cyan]=36 [green]=32 [yellow]=33 [blue]=34 [text]=39)
+# Cursor colors: theme = what the theme says, text = the color of the text, or any #rrggbb.
+cursor_colors=(theme text '#e8789a' '#e3b261' '#6fcfa6' '#6db3f2' '#b794f0')
+declare -A cursor_names=(['#e8789a']=rose ['#e3b261']=amber ['#6fcfa6']=mint ['#6db3f2']=sky ['#b794f0']=violet)
 opacities=(1 0.97 0.93 0.88 0.8)
 # Cursor shapes with their look in the menu. Sizes 1-4: line thickness in px for
 # bar / underline, dot width as a part of the cell for the dot (a block fills the cell).
@@ -49,25 +80,41 @@ thick=(0 1 2 3 5) dots=(0 0.45 0.65 0.85 1.0)
 line_names=('' thin normal bold heavy) dot_names=('' small medium large huge)
 
 # Menu rows: section title, or "kind|label|key".
-# Kinds: avatar text path toggle theme opacity bar shape size tour help.
+# Kinds: avatar text path toggle start theme skin icons opacity bar font fontsize emoji
+#        shape size cursorcolor sign choice tour help.
 rows=(
     '👤 PROFILE'
     'avatar|Avatar|KRONIKUS_AVATAR'
     'text|Name|KRONIKUS_NAME'
     'path|Picture|KRONIKUS_PICTURE'
-    '👋 GREETING'
+    '👋 NEW TERMINAL'
+    'start|Opens|KRONIKUS_START'
     'toggle|Greeting|KRONIKUS_GREET'
     'toggle|Tip|KRONIKUS_TIPS'
     'toggle|Spinner|KRONIKUS_ANIM'
     'toggle|Ask tab name|KRONIKUS_ASK_TAB'
     '🎨 LOOK'
     'theme|Theme|'
+    'skin|Skin|KRONIKUS_SKIN'
+    'icons|Icons|KRONIKUS_ICONS'
     'opacity|See-through|'
     'bar|Bar|'
+    '🔤 FONT'
+    'font|Font|KRONIKUS_FONT'
+    'fontsize|Size|KRONIKUS_FONT_SIZE'
+    'emoji|Emoji|KRONIKUS_EMOJI'
     '📍 CURSOR'
     'shape|Shape|KRONIKUS_CURSOR'
     'size|Size|KRONIKUS_CURSOR_SIZE'
     'toggle|Blink|KRONIKUS_CURSOR_BLINK'
+    'cursorcolor|Color|KRONIKUS_CURSOR_COLOR'
+    '❯ PROMPT'
+    'sign|Sign|KRONIKUS_SIGN'
+    'choice|Sign color|KRONIKUS_SIGN_COLOR'
+    '⏱ COMMANDS'
+    'toggle|Last command|KRONIKUS_LAST'
+    'choice|Notify|KRONIKUS_NOTIFY'
+    'choice|After|KRONIKUS_NOTIFY_MIN'
     '🎓 HELP'
     'tour|Tour|'
     'help|Shortcuts|'
@@ -92,6 +139,24 @@ load() {
     [[ -f $tfile ]] && grep -q 'status-position bottom' "$tfile" && bar=bottom
     [[ " ${shapes[*]} " == *" ${val[KRONIKUS_CURSOR]} "* ]] || val[KRONIKUS_CURSOR]=bar
     [[ ${val[KRONIKUS_CURSOR_SIZE]} == [1-4] ]] || val[KRONIKUS_CURSOR_SIZE]=3
+    [[ ${val[KRONIKUS_CURSOR_COLOR]} =~ ^(theme|text|#[0-9a-fA-F]{6})$ ]] || val[KRONIKUS_CURSOR_COLOR]=theme
+    [[ " ${skins[*]} " == *" ${val[KRONIKUS_SKIN]} "* ]] || val[KRONIKUS_SKIN]=neon
+    [[ " ${icon_sets[*]} " == *" ${val[KRONIKUS_ICONS]} "* ]] || val[KRONIKUS_ICONS]=emoji
+    [[ -n ${starts[${val[KRONIKUS_START]}]} ]] || val[KRONIKUS_START]=shell
+    [[ ${val[KRONIKUS_FONT_SIZE]} =~ ^[0-9]+(\.5)?$ ]] || val[KRONIKUS_FONT_SIZE]=
+    # The font in config.ghostty, used until you pick another one here.
+    base_font= base_size=13
+    if [[ -f $conf/ghostty/config.ghostty ]]; then
+        while IFS= read -r line; do
+            [[ $line =~ ^font-family\ *=\ *\"?([^\"]*)\"?\ *$ ]] && base_font=${BASH_REMATCH[1]}
+            [[ $line =~ ^font-size\ *=\ *([0-9.]+) ]] && base_size=${BASH_REMATCH[1]}
+        done < "$conf/ghostty/config.ghostty"
+    fi
+    # Installed monospace fonts, and the emoji fonts (in color, then Noto's plain one).
+    mapfile -t fonts < <(fc-list :spacing=mono family 2>/dev/null | cut -d, -f1 | grep -iv emoji | sort -u)
+    # (Noto Color Emoji is Ghostty's own pick on Linux, the first choice.)
+    mapfile -t emojis < <(fc-list :color=true family 2>/dev/null | cut -d, -f1 | grep -vx 'Noto Color Emoji' | sort -u
+                          fc-list -q 'Noto Emoji' 2>/dev/null && echo 'Noto Emoji')
     theme=
     for f in "$conf/ghostty/theme.ghostty" "$conf/ghostty/config.ghostty"; do
         [[ -f $f ]] || continue
@@ -113,13 +178,28 @@ save() {
 
 # Ghostty part: see-through + cursor, then a reload (SIGUSR2) for every window.
 write_ghostty() {
-    local shape=${val[KRONIKUS_CURSOR]} size=${val[KRONIKUS_CURSOR_SIZE]} blink=false
+    local shape=${val[KRONIKUS_CURSOR]} size=${val[KRONIKUS_CURSOR_SIZE]} blink=false color=${val[KRONIKUS_CURSOR_COLOR]}
+    [[ $color == text ]] && color=cell-foreground
     (( val[KRONIKUS_CURSOR_BLINK] )) && blink=true
     mkdir -p "${gfile%/*}"
+    local font=${val[KRONIKUS_FONT]} emoji=${val[KRONIKUS_EMOJI]} fsize=${val[KRONIKUS_FONT_SIZE]}
     {   echo '# Written by ksettings (⚙ settings), overrides config.ghostty'
         echo "background-opacity = $opacity"
+        # Font: "" first, so it replaces config.ghostty's font instead of adding a fallback.
+        # config.ghostty asks for Lilex's Medium, which another font may not have.
+        if [[ -n $font ]]; then
+            echo 'font-family = ""'
+            echo "font-family = \"$font\""
+            fc-list -q ":family=$font:style=Medium" 2>/dev/null && echo 'font-style = Medium' || echo 'font-style = default'
+        fi
+        # The emoji font comes after it, so Ghostty takes emoji from there.
+        [[ -n $emoji ]] && echo "font-family = \"$emoji\""
+        [[ -n $fsize ]] && echo "font-size = $fsize"
+        # Opens: new windows run gterminal instead of the shell (it falls back to the shell).
+        [[ ${val[KRONIKUS_START]} != shell ]] && echo "command = $(cd "$here" && pwd -P)/gterminal --start ${val[KRONIKUS_START]}"
         # Ghostty's shell integration would force a bar at the prompt.
         echo 'shell-integration-features = no-cursor'
+        [[ $color != theme ]] && echo "cursor-color = $color"
         if [[ $shape == dot ]]; then
             # Ghostty has no round cursor: hide its block and let the shader draw a dot.
             write_shader
@@ -132,23 +212,35 @@ write_ghostty() {
         else
             echo "cursor-style = $shape"
             echo "cursor-style-blink = $blink"
+            # On a block, the letter underneath takes the background's color.
+            [[ $color != theme ]] && echo 'cursor-text = cell-background'
             echo "adjust-cursor-thickness = ${thick[size]}"
         fi
     } > "$gfile"
     pkill -USR2 -x ghostty 2>/dev/null
 }
 
-# tmux part: bar position + cursor shape (tmux would otherwise reset the cursor to a block).
+# tmux part: bar position, latest command, cursor shape (tmux would otherwise reset the cursor to a block).
 write_tmux() {
-    # The empty spacer line only looks right between a top bar and the terminal.
-    local lines=2 style=${val[KRONIKUS_CURSOR]}
-    [[ $bar == bottom ]] && lines=on
+    # Without the latest command the second line is an empty spacer, which only
+    # looks right between a top bar and the terminal.
+    local lines=2 second='#{E:@k-line2}' style=${val[KRONIKUS_CURSOR]}
+    (( val[KRONIKUS_LAST] )) || { second=; [[ $bar == bottom ]] && lines=on; }
     [[ $style == dot ]] && style=block  # the dot is a hidden block underneath
     (( val[KRONIKUS_CURSOR_BLINK] )) && [[ ${val[KRONIKUS_CURSOR]} != dot ]] && style=blinking-$style
     mkdir -p "${tfile%/*}"
-    printf '# Written by ksettings\nset -g status-position %s\nset -g status %s\nset -g cursor-style %s\n' \
-        "$bar" "$lines" "$style" > "$tfile"
-    tmux set -g status-position "$bar" \; set -g status "$lines" \; set -g cursor-style "$style" 2>/dev/null
+    printf "# Written by ksettings\nset -g status-position %s\nset -g status %s\nset -g status-format[1] '%s'\nset -g cursor-style %s\nset -g @k-skin %s\nset -g @k-icons %s\n" \
+        "$bar" "$lines" "$second" "$style" "${val[KRONIKUS_SKIN]}" "${val[KRONIKUS_ICONS]}" > "$tfile"
+    tmux set -g status-position "$bar" \; set -g status "$lines" \; set -g 'status-format[1]' "$second" \; set -g cursor-style "$style" 2>/dev/null
+}
+
+# Skin and icons: the tmux config builds the bar from @k-skin / @k-icons, so it is read again.
+apply_skin() {
+    local main
+    write_tmux
+    main=$(tmux display -p '#{config_files}' 2>/dev/null); main=${main%%,*}
+    [[ -f $main ]] || for main in ~/.tmux.conf "$conf/tmux/tmux.conf"; do [[ -f $main ]] && break; done
+    [[ -f $main ]] && tmux source-file "$main" 2>/dev/null
 }
 
 # The ● dot: a Ghostty custom shader (GLSL), with size and blink written in.
@@ -189,6 +281,19 @@ EOF
 
 at() { printf '\e[%d;%dH' "$1" "$2"; }
 
+# A key as a Monkeytype chip: quiet background, then what it does.
+key() { printf '\e[7;90m %s \e[0m \e[90m%s\e[0m   ' "$1" "$2"; }
+
+# Moves val[$1] by $2 steps through the values after it, going round.
+cycle() {
+    local key=$1 step=$2 i
+    shift 2
+    for (( i = 0; i < $#; i++ )); do [[ ${*:i + 1:1} == "${val[$key]}" ]] && break; done
+    (( i == $# )) && i=0
+    i=$(( (i + step + $#) % $# ))
+    val[$key]=${*:i + 1:1}
+}
+
 # Value column text for row $1 in REPLY, hint in HINT.
 describe() {
     local kind label key
@@ -203,8 +308,32 @@ describe() {
                  HINT='⏎ edit path' ;;
         toggle)  (( val[$key] )) && REPLY="$g● on$r" || REPLY="$d○ off$r"
                  HINT='⏎ on / off'
-                 [[ $key == KRONIKUS_ASK_TAB ]] && HINT='⏎ on / off · new tabs ask for a name' ;;
-        theme)   REPLY=${theme:-Ghostty default}; REPLY=${REPLY//light:/☀️ }; REPLY=${REPLY//,dark:/  🌙 }
+                 [[ $key == KRONIKUS_ASK_TAB ]] && HINT='⏎ on / off · new tabs ask for a name'
+                 [[ $key == KRONIKUS_LAST ]] && HINT='⏎ on / off · the line under the bar' ;;
+        start)   REPLY=${starts[${val[$key]}]}
+                 HINT='← → pick · what a new Ghostty window opens'
+                 [[ ${val[$key]} == box || ${val[$key]} == quick ]] && HINT='← → pick · tmux, not saved: no name to type' ;;
+        skin)    local i n=${val[$key]}
+                 for i in "${!skins[@]}"; do [[ ${skins[i]} == "$n" ]] && break; done
+                 REPLY="$b$m$n$r $d$(( i + 1 ))/${#skins[@]}$r" HINT="← → ${skin_info[$n]} · the tmux bar" ;;
+        icons)   local one
+                 REPLY=
+                 for one in "${icon_sets[@]}"; do
+                     [[ $one == "${val[$key]}" ]] && REPLY+="$b$m${icon_look[$one]}$r  " || REPLY+="$d${icon_look[$one]}$r  "
+                 done
+                 HINT='← → in the tmux bar · nerd = Nerd Font glyphs' ;;
+        font)    if [[ -n ${val[$key]} ]]; then REPLY=${val[$key]}
+                 else REPLY="${base_font:-Ghostty default} ${d}config.ghostty's$r"
+                 fi
+                 HINT='← → try the next one · ⏎ type a name' ;;
+        fontsize) REPLY="${val[$key]:-$base_size} pt"
+                 [[ -z ${val[$key]} ]] && REPLY+=" ${d}config.ghostty's$r"
+                 HINT='← → smaller / bigger · ⏎ type a size' ;;
+        emoji)   if [[ -n ${val[$key]} ]]; then REPLY="${val[$key]} 🎨 🦀 ✅"
+                 else REPLY="Ghostty's ${d}(Noto Color Emoji)$r 🎨 🦀 ✅"
+                 fi
+                 HINT='← → pick · emoji fonts you add show up here' ;;
+        theme)   REPLY=${theme:-Ghostty default}; REPLY=${REPLY//Solid /}; REPLY=${REPLY//MT /}; REPLY=${REPLY//light:/☀️ }; REPLY=${REPLY//,dark:/  🌙 }
                  HINT='⏎ open the theme picker' ;;
         opacity) if [[ $opacity == 1* ]]; then REPLY='100% solid'
                  else local f=${opacity#*.}00; REPLY="$(( 10#${f:0:2} ))%"
@@ -226,15 +355,45 @@ describe() {
                      REPLY+="$r ${names[n]}" HINT='← → smaller / bigger'
                      [[ ${val[KRONIKUS_CURSOR]} != dot ]] && REPLY+=" $d${thick[n]} px$r"
                  fi ;;
+        cursorcolor)
+                 local co=${val[$key]} hex
+                 case $co in
+                     theme) REPLY="$m█$r the theme's" ;;
+                     text)  REPLY="█ like the text" ;;
+                     *)     hex=${co#\#}
+                            printf -v REPLY '\e[38;2;%d;%d;%dm█%s %s' "0x${hex:0:2}" "0x${hex:2:2}" "0x${hex:4:2}" "$r" "${cursor_names[$co]:-$co}" ;;
+                 esac
+                 HINT='← → pick · ⏎ type a #rrggbb' ;;
+        sign)    local one
+                 REPLY=
+                 for one in "${signs[@]}"; do
+                     [[ $one == "${val[$key]}" ]] && REPLY+="$b$m$one$r  " || REPLY+="$d$one$r  "
+                 done
+                 [[ " ${signs[*]} " == *" ${val[$key]} "* ]] || REPLY+="$b$m${val[$key]}$r"
+                 HINT='← → pick · ⏎ type your own' ;;
+        choice)  REPLY=${val[$key]} HINT='← → pick'
+                 case $key in
+                     KRONIKUS_SIGN_COLOR) REPLY=$'\e['${ansi[$REPLY]}"m●$r $REPLY" ;;
+                     KRONIKUS_NOTIFY)     case $REPLY in
+                                              away)   REPLY='🔔 when you are not looking' ;;
+                                              always) REPLY='🔔 always' ;;
+                                              off)    REPLY="$d○ off$r" ;;
+                                          esac
+                                          HINT='← → pick · when a slow command ends' ;;
+                     KRONIKUS_NOTIFY_MIN) (( REPLY )) && REPLY="commands of ${REPLY}s or more" || REPLY='every command'
+                                          HINT='← → what counts as slow' ;;
+                 esac ;;
         tour)    REPLY= HINT='⏎ take the hands-on tour' ;;
         help)    REPLY= HINT='⏎ every click and key, and tips' ;;
     esac
 }
 
 draw() {
-    local i row=4 rows_ cols gap=1
+    local i row=4 rows_ cols gap=1 heads=0
     read -r rows_ cols < <(stty size </dev/tty)
-    (( rows_ < 35 )) && gap=0  # no blank line between sections when it would not fit
+    for i in "${rows[@]}"; do [[ $i == *'|'* ]] || (( heads++ )); done
+    # No blank line between sections when it would not fit (with the preview).
+    (( rows_ < 4 + ${#rows[@]} + heads + 9 )) && gap=0
     printf '\e[?25l\e[H\e[2J'
     at 2 3; printf '%s⚙ settings%s   %ssaved as you go%s' "$b$m" "$r" "$d" "$r"
     for i in "${!rows[@]}"; do
@@ -252,20 +411,23 @@ draw() {
         (( row++ ))
     done
 
-    # What the greeting and prompt will look like.
-    (( row++ ))
-    at $(( row++ )) 3; printf '%spreview%s' "$d" "$r"
-    at $(( row++ )) 5; printf '%s %s%s%s %sis back%s' "${val[KRONIKUS_AVATAR]}" "$b$m" "${val[KRONIKUS_NAME]}" "$r" "$d" "$r"
-    at $(( row++ )) 5; printf '%s╭─%s %s %s%s%s %sin%s 📂 %s~/code/app%s' "$m" "$r" "${val[KRONIKUS_AVATAR]}" "$b$m" "${val[KRONIKUS_NAME]}" "$r" "$d" "$r" "$c" "$r"
-    at $(( row++ )) 5; printf '%s╰─❯%s' "$m" "$r"
-    local prompt_row=$(( row - 1 ))
+    # What the greeting and prompt will look like (when the screen has room for it).
+    local prompt_row=0
+    if (( row + 6 < rows_ )); then
+        (( row++ ))
+        at $(( row++ )) 3; printf '%spreview%s' "$d" "$r"
+        # In the terminal's own font, so the 🔤 font rows show up here too.
+        at $(( row++ )) 5; printf '%s0O 1lI {} => != -> ===%s   %s main%s  🎨 🦀 ✅ 👻' "$d" "$r" "$g" "$r"
+        at $(( row++ )) 5; printf '%s %s%s%s %sis back%s' "${val[KRONIKUS_AVATAR]}" "$b$m" "${val[KRONIKUS_NAME]}" "$r" "$d" "$r"
+        at $(( row++ )) 5; printf '%s╭─%s %s %s%s%s %sin%s 📂 %s~/code/app%s' $'\e[90m' "$r" "${val[KRONIKUS_AVATAR]}" "$b$m" "${val[KRONIKUS_NAME]}" "$r" "$d" "$r" "$c" "$r"
+        at $(( row++ )) 5; printf '%s╰─%s%s%s' $'\e[90m' $'\e['"${ansi[${val[KRONIKUS_SIGN_COLOR]}]:-35}m" "${val[KRONIKUS_SIGN]}" "$r"
+        prompt_row=$(( row - 1 ))
+    fi
 
     at "$rows_" 3
-    printf '%s↑↓%s %smove%s   %s⏎%s %schange%s   %s← →%s %spick%s   %sq%s %sdone%s' \
-        "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r" "$b" "$r" "$d" "$r"
-    printf '   %snew terminals pick up greeting changes%s' "$d" "$r"
+    key ↑↓ move; key ⏎ change; key '← →' pick; key q done
     # The real cursor, after the preview prompt: shows the cursor settings live.
-    at "$prompt_row" 9; printf '\e[?25h'
+    (( prompt_row )) && { at "$prompt_row" $(( 8 + ${#val[KRONIKUS_SIGN]} )); printf '\e[?25h'; }
 }
 
 # Asks for a value on the bottom line, prefilled with $1. Result in REPLY.
@@ -293,7 +455,28 @@ change() {  # $1 = -1 / +1 for ← →, 0 for ⏎
         path)    (( $1 )) && return; ask "${val[$key]/#$HOME/\~}" 'picture (a small square PNG)'
                  [[ -n $REPLY ]] && { val[$key]=${REPLY/#\~/$HOME}; save; } ;;
         toggle)  val[$key]=$(( ! val[$key] )); save
-                 [[ $key == KRONIKUS_CURSOR_* ]] && { write_ghostty; write_tmux; } ;;
+                 [[ $key == KRONIKUS_CURSOR_* || $key == KRONIKUS_LAST ]] && { write_ghostty; write_tmux; } ;;
+        cursorcolor)
+                 if (( $1 )); then
+                     cycle "$key" "$1" "${cursor_colors[@]}"
+                 else
+                     ask "${val[$key]/theme/#}" 'cursor color (#rrggbb, or theme, or text)'
+                     [[ $REPLY =~ ^(theme|text|#[0-9a-fA-F]{6})$ ]] || return
+                     val[$key]=$REPLY
+                 fi
+                 save; write_ghostty ;;
+        sign)    if (( $1 )); then
+                     cycle "$key" "$1" "${signs[@]}"
+                 else
+                     ask "${val[$key]}" 'prompt sign (a character or two)'
+                     [[ -n ${REPLY// /} ]] || return
+                     val[$key]=${REPLY:0:4}
+                 fi
+                 save ;;
+        choice)  (( $1 )) || set -- 1
+                 read -ra list <<< "${choices[$key]}"
+                 cycle "$key" "$1" "${list[@]}"
+                 save ;;
         shape)   n=${#shapes[@]} i=0
                  for (( ; i < n; i++ )); do [[ ${shapes[i]} == "${val[$key]}" ]] && break; done
                  (( $1 )) || set -- 1
@@ -309,6 +492,41 @@ change() {  # $1 = -1 / +1 for ← →, 0 for ⏎
             (( i == n )) && i=2
             (( $1 )) && { opacity=${opacities[(i + $1 + n) % n]}; write_ghostty; } ;;
         bar)     [[ $bar == top ]] && bar=bottom || bar=top; write_tmux ;;
+        start)   (( $1 )) || set -- 1
+                 read -ra list <<< "${choices[$key]}"
+                 cycle "$key" "$1" "${list[@]}"; save; write_ghostty ;;
+        skin)    (( $1 )) || set -- 1
+                 cycle "$key" "$1" "${skins[@]}"; save; apply_skin ;;
+        icons)   (( $1 )) || set -- 1
+                 cycle "$key" "$1" "${icon_sets[@]}"; save; apply_skin ;;
+        font)    if (( $1 )); then
+                     (( ${#fonts[@]} )) || return
+                     [[ -z ${val[$key]} ]] && val[$key]=$base_font
+                     cycle "$key" "$1" "${fonts[@]}"
+                 else
+                     ask "${val[$key]:-$base_font}" 'font (an installed font, empty = config.ghostty'"'"'s)'
+                     if [[ -n $REPLY ]] && ! fc-list -q ":family=$REPLY" 2>/dev/null; then
+                         ask '' "\"$REPLY\" isn't installed (fc-list shows what is). ⏎"
+                         return
+                     fi
+                     val[$key]=$REPLY
+                 fi
+                 [[ ${val[$key]} == "$base_font" ]] && val[$key]=
+                 save; write_ghostty ;;
+        fontsize)
+                 if (( $1 )); then
+                     i=${val[$key]:-$base_size}; i=${i%.*}
+                     i=$(( i + $1 )); (( i < 6 )) && i=6; (( i > 40 )) && i=40
+                 else
+                     ask "${val[$key]:-$base_size}" 'font size in pt (like 13 or 13.5)'
+                     [[ $REPLY =~ ^[0-9]+(\.5)?$ ]] || return
+                     i=$REPLY
+                 fi
+                 val[$key]=$i
+                 [[ $i == "$base_size" ]] && val[$key]=
+                 save; write_ghostty ;;
+        emoji)   (( $1 )) || set -- 1
+                 cycle "$key" "$1" '' "${emojis[@]}"; save; write_ghostty ;;
         theme)   (( $1 )) && return; "$here/ktheme"; load; printf '\e[?1049h\e[?25l' ;;
         help)    (( $1 )) && return; "$here/ktips"; printf '\e[?1049h\e[?25l' ;;
         tour)    (( $1 )) && return
@@ -329,6 +547,9 @@ move() {
 
 load
 sel=1
+if [[ $1 == font ]]; then
+    for i in "${!rows[@]}"; do [[ ${rows[i]} == font\|* ]] && sel=$i; done
+fi
 printf '\e[?1049h\e[?25l'
 trap "printf '\e[?25h\e[?1049l'" EXIT
 trap : WINCH  # resize: interrupts read below, so the loop redraws
